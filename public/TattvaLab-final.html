@@ -1,0 +1,2117 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#283887">
+  <meta name="description" content="A guided Digital Electronics learning lab with clear theory, diagrams and practice.">
+  <title>TattvaLab — Digital Electronics</title>
+  <style>
+    :root {
+      color-scheme: light;
+      --blue: #283887;
+      --blue-dark: #1d2a68;
+      --red: #a21d2e;
+      --ink: #202d55;
+      --muted: #53617b;
+      --line: #ced2df;
+      --paper: #e9e9eb;
+      --canvas: #e1e2e6;
+      --font: "Metropolis", "Segoe UI", Aptos, system-ui, sans-serif;
+      --slab: "Zilla Slab", Georgia, serif;
+    }
+
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; scroll-padding-top: 90px; }
+    body { margin: 0; color: var(--ink); background: var(--canvas); font: 16px/1.6 var(--font); -webkit-font-smoothing: antialiased; }
+    button, input, textarea { font: inherit; }
+    button { color: inherit; }
+    a { color: inherit; text-decoration: none; }
+    button:focus-visible, a:focus-visible, input:focus-visible, textarea:focus-visible { outline: 3px solid #4b93d2; outline-offset: 3px; }
+    .shell { width: min(1180px, calc(100% - 48px)); margin: 0 auto; }
+    .topbar { position: sticky; z-index: 10; top: 0; border-bottom: 1px solid #d0d3dc; background: rgb(234 234 236 / 94%); backdrop-filter: blur(14px); }
+    .topbar__inner { min-height: 76px; display: flex; align-items: center; justify-content: space-between; gap: 20px; }
+    .brand { display: inline-flex; align-items: center; gap: 11px; color: var(--ink); font-size: 22px; font-weight: 760; letter-spacing: -.06em; }
+    .brand__mark { width: 40px; height: 40px; display: grid; place-items: center; color: #fff; border-radius: 13px; background: linear-gradient(140deg, var(--blue), #5b2d64 63%, var(--red)); box-shadow: 0 5px 13px #28388730; }
+    .brand__mark svg { width: 25px; height: 25px; }
+    .nav { display: flex; align-items: center; gap: 25px; color: #4e5b75; font-size: 14px; font-weight: 650; }
+    .nav a:hover { color: var(--red); }
+    .nav__cta, .button { min-height: 44px; display: inline-flex; align-items: center; justify-content: center; gap: 9px; padding: 0 17px; border: 0; border-radius: 10px; font-weight: 700; cursor: pointer; transition: transform .18s ease, box-shadow .18s ease; }
+    .nav__cta { color: #fff; background: linear-gradient(110deg, var(--blue), #71314f); }
+    .button:hover, .nav__cta:hover { transform: translateY(-2px); }
+    .button--light { color: var(--blue-dark); background: #fff; box-shadow: 0 8px 20px #121c4830; }
+    .button--primary { color: #fff; background: linear-gradient(110deg, var(--blue), #71314f 70%, var(--red)); box-shadow: 0 8px 19px #2838872b; }
+    .button--outline { color: var(--blue); border: 1px solid #c8ccda; background: #f1f1f2; }
+    .button--small { min-height: 40px; padding-inline: 13px; font-size: 14px; }
+    .hero { position: relative; isolation: isolate; display: grid; grid-template-columns: minmax(0, 1.1fr) minmax(330px, .8fr); align-items: center; gap: 42px; min-height: 485px; margin-top: 28px; padding: clamp(34px, 6vw, 74px); overflow: hidden; color: #fff; border-radius: 28px; background: radial-gradient(circle at 85% 15%, #ffffff24, transparent 27%), radial-gradient(ellipse at 86% 112%, #a21d2e9c, transparent 46%), linear-gradient(118deg, #1d2a68, #283887 58%, #49254d); box-shadow: 0 24px 55px #202d7026; }
+    .hero::before { position: absolute; z-index: -1; inset: 0; opacity: .13; background-image: linear-gradient(#ffffff40 1px, transparent 1px), linear-gradient(90deg, #ffffff40 1px, transparent 1px); background-size: 40px 40px; mask-image: linear-gradient(105deg, transparent 8%, #000 90%); content: ""; }
+    .kicker { display: inline-flex; align-items: center; gap: 10px; color: #e2def1; font-size: 12px; font-weight: 800; letter-spacing: .12em; }
+    .kicker i { width: 8px; height: 8px; border-radius: 50%; background: #df7584; box-shadow: 0 0 0 5px #df758422; }
+    .hero h1 { max-width: 690px; margin: 19px 0 17px; color: #fff; font-size: clamp(43px, 6vw, 72px); letter-spacing: -.07em; line-height: 1.04; }
+    .hero h1 em { color: #ffc4ce; font: 500 1em/1.05 var(--slab); }
+    .hero__copy > p { max-width: 560px; margin: 0; color: #e0e5f6; font-size: 18px; line-height: 1.75; }
+    .hero__actions { display: flex; flex-wrap: wrap; align-items: center; gap: 13px 20px; margin-top: 27px; }
+    .hero__link, .plain-link { display: inline-flex; align-items: center; gap: 8px; color: #fff; font-size: 15px; font-weight: 700; }
+    .hero__link:hover { color: #ffc4ce; }
+    .hero__facts { display: flex; flex-wrap: wrap; gap: 13px; align-items: center; margin-top: 31px; color: #d4dcf0; font-size: 13px; }
+    .hero__facts strong { color: #fff; font-size: 17px; }
+    .hero__facts i { width: 4px; height: 4px; border-radius: 50%; background: #de8594; }
+    .logic-card { padding: 22px; border: 1px solid #ffffff2c; border-radius: 20px; background: linear-gradient(145deg, #111b49ba, #182249e8); box-shadow: 0 22px 52px #08102a4a; transform: rotate(.7deg); }
+    .logic-card__head, .logic-card__head span { display: flex; align-items: center; }
+    .logic-card__head { justify-content: space-between; gap: 10px; color: #cbd5ef; font-size: 10px; font-weight: 800; letter-spacing: .13em; }
+    .logic-card__head span { gap: 8px; }
+    .logic-card__head i { width: 7px; height: 7px; border-radius: 50%; background: #df7584; }
+    .logic-card__prompt { display: grid; gap: 4px; margin: 21px 0 16px; }
+    .logic-card__prompt span { color: #bac7e3; font-size: 13px; }
+    .logic-card__prompt strong { font-size: 19px; }
+    .logic-circuit { display: flex; align-items: center; justify-content: space-between; gap: 10px; padding: 14px; border: 1px solid #ffffff20; border-radius: 13px; background: #ffffff0b; }
+    .logic-circuit__inputs { display: grid; gap: 10px; }
+    .logic-circuit__inputs span { display: flex; align-items: center; gap: 9px; color: #e0e6f6; font-size: 14px; }
+    .logic-circuit__inputs i { width: 8px; height: 8px; border-radius: 50%; background: #7586bb; }
+    .logic-circuit__inputs i.on { background: #e37f8e; box-shadow: 0 0 10px #e37f8e9c; }
+    .logic-circuit__inputs b { margin-left: auto; }
+    .logic-circuit svg { width: 105px; color: #aec2e8; }
+    .logic-circuit__out { display: grid; justify-items: center; color: #fff; }
+    .logic-circuit__out strong { font-size: 25px; }
+    .logic-circuit__out small { color: #bcc9e4; font-size: 10px; letter-spacing: .1em; }
+    .logic-rule { display: flex; justify-content: space-between; align-items: center; margin-top: 13px; padding: 11px 13px; border-left: 3px solid #c54a5e; border-radius: 0 9px 9px 0; background: #ffffff0d; }
+    .logic-rule span { color: #cbd5ef; font-size: 10px; font-weight: 750; letter-spacing: .1em; }
+    .logic-rule strong { font-size: 18px; }
+    .mini-truth { width: 100%; margin-top: 10px; border-spacing: 1px; border: 1px solid #ffffff20; border-radius: 9px; overflow: hidden; text-align: center; font-size: 12px; }
+    .mini-truth th, .mini-truth td { padding: 4px; background: #1b2854; }
+    .mini-truth th { color: #e6a8b1; font-size: 11px; }
+    .section { margin-top: 70px; }
+    .section-head { display: flex; align-items: end; justify-content: space-between; gap: 20px; margin-bottom: 22px; }
+    .eyebrow { color: var(--red); font-size: 11px; font-weight: 800; letter-spacing: .11em; }
+    .section-head h2 { margin: 6px 0 0; color: var(--blue-dark); font-size: clamp(29px, 3.5vw, 42px); letter-spacing: -.055em; line-height: 1.15; }
+    .section-head p { max-width: 420px; margin: 0; color: var(--muted); }
+    .path-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 15px; }
+    .path-card { position: relative; padding: 21px; overflow: hidden; border: 1px solid var(--line); border-radius: 16px; background: linear-gradient(135deg, #e9e9eb, #dcdee4); }
+    .path-card::after { position: absolute; top: -65px; right: -55px; width: 140px; height: 140px; border: 1px solid #28388724; border-radius: 50%; box-shadow: 0 0 0 18px #28388708, 0 0 0 36px #28388705; content: ""; }
+    .path-card__number { color: #8089a0; font-size: 12px; font-weight: 800; letter-spacing: .12em; }
+    .path-card h3 { position: relative; z-index: 1; margin: 8px 0 4px; color: var(--blue-dark); font-size: 20px; letter-spacing: -.035em; }
+    .path-card p { position: relative; z-index: 1; max-width: 480px; margin: 0; color: var(--muted); font-size: 14px; }
+    .path-card__links { position: relative; z-index: 1; display: flex; flex-wrap: wrap; gap: 7px; margin-top: 14px; }
+    .path-card__links button { padding: 6px 10px; color: var(--blue); border: 1px solid #c9cedd; border-radius: 999px; background: #ffffff82; font-size: 12px; font-weight: 650; cursor: pointer; }
+    .path-card__links button:hover { color: #fff; border-color: var(--blue); background: var(--blue); }
+    .lab-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; }
+    .lab-card { display: flex; min-width: 0; flex-direction: column; padding: 0 17px 16px; overflow: hidden; border: 1px solid #cfd2dc; border-radius: 16px; background: #e9e9eb; box-shadow: 0 7px 18px #202d700b; transition: transform .18s ease, box-shadow .18s ease; }
+    .lab-card:hover { transform: translateY(-4px); box-shadow: 0 15px 28px #202d7019; }
+    .lab-card__art { position: relative; display: flex; min-height: 128px; flex-direction: column; justify-content: space-between; margin: 0 -17px; padding: 15px 17px; overflow: hidden; color: #fff; background: radial-gradient(circle at 80% 40%, #ffffff2b, transparent 36%), linear-gradient(125deg, #1d2a68, #283887 60%, #672a4d); }
+    .lab-card__art::after { position: absolute; right: -37px; bottom: -78px; width: 165px; height: 165px; border: 1px solid #ffffff35; border-radius: 50%; box-shadow: 0 0 0 17px #ffffff0a, 0 0 0 34px #ffffff07; content: ""; }
+    .lab-card__number { position: relative; z-index: 1; color: #e0e4f3; font-size: 10px; font-weight: 800; letter-spacing: .13em; }
+    .lab-card__art strong { position: relative; z-index: 1; font: 500 clamp(24px, 3vw, 34px)/1.1 var(--slab); }
+    .lab-card__category { margin-top: 14px; color: var(--red); font-size: 10px; font-weight: 800; letter-spacing: .06em; }
+    .lab-card h3 { min-height: 50px; margin: 6px 0; color: var(--blue-dark); font-size: 19px; letter-spacing: -.035em; line-height: 1.3; }
+    .lab-card p { flex: 1; margin: 0 0 13px; color: #4d5a72; font-size: 14px; line-height: 1.65; }
+    .lab-card__meta { display: flex; justify-content: space-between; gap: 8px; padding: 10px 0; color: #59647a; border-top: 1px solid #ced1d9; font-size: 12px; }
+    .lab-card__open { display: flex; justify-content: space-between; padding-top: 10px; color: var(--blue); border-top: 1px solid #ced1d9; font-size: 14px; font-weight: 750; }
+    .lab-top { display: flex; align-items: center; gap: 8px; margin: 19px 0 12px; color: var(--blue); font-size: 13px; }
+    .lab-top button { display: inline-flex; align-items: center; gap: 7px; padding: 5px 0; color: inherit; border: 0; background: none; font-weight: 700; cursor: pointer; }
+    .lab-hero { display: grid; grid-template-columns: minmax(0, 1fr) 275px; align-items: center; gap: 35px; padding: clamp(26px, 5vw, 52px); color: #fff; border-radius: 24px; background: radial-gradient(circle at 90% 13%, #ffffff24, transparent 27%), radial-gradient(ellipse at 85% 112%, #a21d2e9c, transparent 48%), linear-gradient(116deg, #1d2a68, #283887 60%, #4d254c); box-shadow: 0 18px 40px #202d7025; }
+    .lab-hero__tag { color: #e7cbd4; font-size: 11px; font-weight: 800; letter-spacing: .12em; }
+    .lab-hero h1 { margin: 13px 0 10px; color: #fff; font-size: clamp(36px, 5vw, 58px); letter-spacing: -.065em; line-height: 1.06; }
+    .lab-hero h1 span { color: #ffbac5; }
+    .lab-hero p { max-width: 690px; margin: 0; color: #e1e6f5; font-size: 16px; line-height: 1.7; }
+    .lab-hero__meta { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 17px; color: #d8deef; font-size: 13px; }
+    .lab-hero__actions { display: flex; flex-wrap: wrap; gap: 10px 17px; margin-top: 21px; }
+    .lab-hero__direct { display: inline-flex; align-items: center; gap: 7px; padding: 8px 0; color: #fff; border: 0; background: none; font-size: 14px; font-weight: 700; cursor: pointer; }
+    .lab-route { display: grid; gap: 14px; padding: 18px; border: 1px solid #ffffff2a; border-radius: 16px; background: #111b496e; }
+    .lab-route > span { color: #d4ddef; font-size: 10px; font-weight: 800; letter-spacing: .13em; }
+    .lab-route__item { display: flex; align-items: center; gap: 10px; }
+    .lab-route__item b { display: grid; width: 31px; height: 31px; place-items: center; border: 1px solid #ffffff38; border-radius: 9px; background: #ffffff12; font-size: 11px; }
+    .lab-route__item span { display: grid; }
+    .lab-route__item strong { font-size: 13px; }
+    .lab-route__item small { color: #cbd4e9; font-size: 11px; }
+    .workflow { margin-top: 20px; overflow: visible; border: 1px solid #ccd0da; border-radius: 19px; background: #e9e9eb; box-shadow: 0 15px 40px #202d7010; scroll-margin-top: 88px; }
+    .workflow__head { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 20px 25px 15px; }
+    .workflow__head .eyebrow { font-size: 10px; }
+    .workflow__head h2 { margin: 4px 0 1px; color: var(--blue-dark); font-size: 24px; letter-spacing: -.04em; }
+    .workflow__head p { margin: 0; color: #626c80; font-size: 13px; }
+    .workflow__count { display: flex; align-items: center; gap: 6px; color: #667188; font-size: 10px; font-weight: 750; letter-spacing: .1em; white-space: nowrap; }
+    .workflow__count strong { color: var(--blue); font-size: 20px; }
+    .stepper { position: sticky; z-index: 8; top: 76px; display: flex; gap: 2px; padding: 0 15px; overflow-x: auto; border-block: 1px solid #d0d2da; background: #e9e9ebed; scrollbar-width: thin; scrollbar-color: #aeb5cc transparent; }
+    .stepper button { position: relative; display: flex; min-width: 84px; flex: 1 0 auto; align-items: center; justify-content: center; gap: 7px; min-height: 54px; padding: 6px; color: #657089; border: 0; background: transparent; font-size: 12px; font-weight: 650; cursor: pointer; }
+    .stepper button::after { position: absolute; right: 5px; bottom: -1px; left: 5px; height: 3px; background: transparent; content: ""; }
+    .stepper button.is-active { color: var(--blue-dark); }
+    .stepper button.is-active::after { background: linear-gradient(90deg, var(--blue), var(--red)); }
+    .stepper button > i { display: grid; width: 25px; height: 25px; flex: 0 0 auto; place-items: center; color: var(--blue); border: 1px solid #c4c9d8; border-radius: 50%; background: #f1f1f2; font-size: 9px; font-style: normal; }
+    .stepper button.is-active > i, .stepper button.is-done > i { color: #fff; border-color: var(--blue); background: linear-gradient(140deg, var(--blue), var(--red)); }
+    .workflow__content { min-height: 350px; padding: clamp(18px, 3vw, 32px); }
+    .aim-grid { display: grid; grid-template-columns: minmax(0, 1.4fr) minmax(240px, .75fr); gap: 25px; }
+    .status { display: inline-flex; margin-bottom: 16px; padding: 6px 10px; color: var(--blue); border: 1px solid #c7cbd9; border-radius: 999px; background: #dedfe5; font-size: 10px; font-weight: 800; letter-spacing: .05em; }
+    .aim h3 { max-width: 760px; margin: 9px 0; color: var(--blue-dark); font-size: clamp(26px, 3.2vw, 36px); letter-spacing: -.05em; line-height: 1.25; }
+    .aim > p { max-width: 750px; color: #4e5b74; font-size: 16px; line-height: 1.75; }
+    .objective { display: grid; margin: 21px 0; border-top: 1px solid var(--line); }
+    .objective > div { display: grid; grid-template-columns: 35px 1fr; gap: 10px; padding: 13px 0; border-bottom: 1px solid var(--line); }
+    .objective > div > b { color: var(--red); font-size: 12px; }
+    .objective p { margin: 0; color: #536079; font-size: 14px; }
+    .objective strong { display: block; color: var(--ink); }
+    .side-card, .detail-card { padding: 18px; border: 1px solid #d0d2da; border-radius: 15px; background: linear-gradient(140deg, #dedfe5, #eeeeef); }
+    .side-card h4, .detail-card h4 { margin: 5px 0 10px; color: var(--blue-dark); font-size: 19px; }
+    .clean-list { display: grid; gap: 8px; margin: 0; padding: 0; list-style: none; }
+    .clean-list li { display: flex; align-items: start; gap: 8px; color: #4c5972; font-size: 14px; line-height: 1.55; }
+    .clean-list li::before { color: var(--red); content: "✓"; font-weight: 800; }
+    .theory-opening { display: grid; grid-template-columns: minmax(0, 1.45fr) minmax(220px, .75fr); gap: 13px; margin-bottom: 16px; }
+    .theory-opening__copy { padding: 20px; border: 1px solid #d0d2db; border-radius: 15px; background: linear-gradient(125deg, #dedfe5, #ebebed); }
+    .theory-opening h3 { margin: 7px 0; color: var(--blue-dark); font-size: 23px; letter-spacing: -.04em; line-height: 1.3; }
+    .theory-opening p { margin: 0; color: #4b5871; font-size: 15px; line-height: 1.75; }
+    .learning-goal { display: grid; align-content: center; gap: 9px; padding: 19px; color: #fff; border-radius: 15px; background: linear-gradient(140deg, #283887, #343267); }
+    .learning-goal span { color: #f0b8c1; font-size: 10px; font-weight: 800; letter-spacing: .11em; }
+    .learning-goal strong { font-size: 14px; line-height: 1.6; }
+    .diagram { margin: 16px 0 20px; padding: 16px; border: 1px solid #cdd0da; border-radius: 16px; background: #dedfe4; }
+    .diagram__heading { display: grid; gap: 4px; margin-bottom: 12px; }
+    .diagram__heading strong { color: var(--blue-dark); font-size: 17px; }
+    .diagram__canvas { overflow-x: auto; border: 1px solid #d2d4dc; border-radius: 12px; background: #ebebed; scrollbar-width: thin; }
+    .diagram__canvas svg { display: block; width: 100%; min-width: 570px; height: auto; }
+    .diagram-box { fill: #f2f2f3; stroke: #283887; stroke-width: 2; }
+    .diagram-line { fill: none; stroke: #6976ab; stroke-width: 2; }
+    .diagram-node { fill: #28304d; font: 700 18px var(--font); }
+    .diagram-small { fill: #a21d2e; font: 800 13px var(--font); letter-spacing: 1px; }
+    .diagram-hint { margin: 8px 0 0; color: #59657b; font-size: 12px; }
+    .formula-row { display: flex; flex-wrap: wrap; gap: 8px; margin: 17px 0; padding: 17px; border: 1px solid #c9ccda; border-left: 5px solid var(--red); border-radius: 13px; background: linear-gradient(105deg, #daddE5, #ebebed); }
+    .formula-row__label { width: 100%; color: var(--red); font-size: 10px; font-weight: 800; letter-spacing: .12em; }
+    .formula { padding: 7px 10px; color: var(--blue); border: 1px solid #c8ccda; border-radius: 8px; background: #ededee; font-size: 16px; font-weight: 700; overflow-wrap: anywhere; }
+    .chapters { display: grid; gap: 10px; margin: 21px 0; }
+    .chapter { display: grid; grid-template-columns: 43px 1fr; gap: 13px; padding: 16px; border: 1px solid #d0d2da; border-radius: 14px; background: #e1e2e6; }
+    .chapter__number { display: grid; width: 39px; height: 39px; place-items: center; color: #fff; border-radius: 12px; background: linear-gradient(140deg, var(--blue), #54305c); font-size: 13px; font-weight: 800; }
+    .chapter h4 { margin: 3px 0 5px; color: var(--blue-dark); font-size: 18px; letter-spacing: -.03em; }
+    .chapter p { margin: 0; color: #4d5a72; font-size: 15px; line-height: 1.75; }
+    .highlights { display: grid; grid-template-columns: .9fr 1.25fr; gap: 12px; margin: 20px 0; }
+    .fact-card { padding: 19px; color: #fff; border-radius: 15px; background: radial-gradient(circle at 100% 0, #ffffff26, transparent 42%), linear-gradient(135deg, var(--blue), #303262); }
+    .fact-card p { margin: 9px 0 0; font-size: 16px; font-weight: 630; line-height: 1.6; }
+    .key-card { padding: 19px; border: 1px solid #d0d2da; border-radius: 15px; background: #dedfe4; }
+    .key-card .clean-list { margin-top: 10px; }
+    .example-card { margin: 18px 0; padding: 19px; border: 1px solid #d0d2da; border-radius: 15px; background: linear-gradient(110deg, #ebebed, #dedfe4); }
+    .example-card h4 { margin: 4px 0 6px; color: var(--blue-dark); font-size: 19px; }
+    .example-card p { margin: 0; color: #4d5a72; font-size: 15px; line-height: 1.75; }
+    .observation-table { width: 100%; margin-top: 10px; border-collapse: collapse; overflow: hidden; border-radius: 12px; }
+    .observation-table th, .observation-table td { padding: 9px 12px; border: 1px solid #cfd2dc; text-align: left; }
+    .observation-table th { color: #fff; background: var(--blue); font-size: 13px; }
+    .observation-table td { color: #40506c; font-size: 14px; }
+    .observation-table tr:nth-child(even) td { background: #dedfe4; }
+    .note { color: #626d81; font-size: 12px; }
+    .procedure-list { display: grid; gap: 9px; margin: 18px 0; padding: 0; list-style: none; counter-reset: procedure; }
+    .procedure-list li { display: grid; grid-template-columns: 38px 1fr; gap: 11px; padding: 14px; border: 1px solid #d0d2da; border-radius: 13px; background: #e1e2e6; counter-increment: procedure; }
+    .procedure-list li::before { display: grid; width: 33px; height: 33px; place-items: center; color: #fff; border-radius: 10px; background: var(--blue); font-size: 11px; font-weight: 800; content: counter(procedure, decimal-leading-zero); }
+    .procedure-list p { margin: 0; color: #4d5a72; font-size: 15px; }
+    .simulation-card { display: grid; grid-template-columns: 64px 1fr; gap: 17px; align-items: center; min-height: 220px; padding: 24px; border: 1px dashed #b8bed0; border-radius: 17px; background: radial-gradient(circle at 100% 0, #28388718, transparent 40%), #e1e2e6; }
+    .simulation-card__mark { display: grid; width: 61px; height: 61px; place-items: center; color: #fff; border-radius: 17px; background: linear-gradient(140deg, var(--blue), var(--red)); font-size: 21px; font-weight: 800; }
+    .simulation-card h3 { margin: 7px 0; color: var(--blue-dark); font-size: 23px; letter-spacing: -.04em; }
+    .simulation-card p { max-width: 630px; margin: 0; color: #505d75; font-size: 15px; line-height: 1.7; }
+    .assessment { display: grid; grid-template-columns: minmax(210px, .65fr) minmax(0, 1.35fr); gap: 22px; }
+    .assessment__intro h3 { margin: 8px 0; color: var(--blue-dark); font-size: 25px; letter-spacing: -.04em; }
+    .assessment__intro p { color: #55617a; font-size: 14px; line-height: 1.7; }
+    .quiz { padding: 19px; border: 1px solid #cfd2da; border-radius: 15px; background: #dedfe4; }
+    .quiz__progress { display: flex; justify-content: space-between; color: #59657e; font-size: 12px; font-weight: 700; }
+    .quiz h4 { margin: 14px 0; color: var(--blue-dark); font-size: 19px; line-height: 1.45; }
+    .answer-list { display: grid; gap: 8px; }
+    .answer { display: flex; align-items: center; gap: 10px; width: 100%; padding: 11px; color: #43516c; border: 1px solid #cbd0dc; border-radius: 11px; background: #ebebed; text-align: left; cursor: pointer; }
+    .answer:hover, .answer.selected { color: var(--blue); border-color: #8c97bf; background: #e5e7ef; }
+    .answer:disabled { cursor: default; }
+    .answer__key { display: grid; width: 25px; height: 25px; flex: 0 0 auto; place-items: center; color: var(--blue); border-radius: 8px; background: #dcdfe9; font-size: 11px; font-weight: 800; }
+    .answer.correct { border-color: #4b9774; background: #e2ede7; }
+    .answer.wrong { border-color: #bd6872; background: #f1e3e5; }
+    .quiz__foot { display: flex; justify-content: space-between; align-items: center; gap: 8px; margin-top: 15px; }
+    .quiz__foot span { color: #647088; font-size: 12px; }
+    .explanation { margin-top: 13px; padding: 12px; border-radius: 10px; background: #ececee; }
+    .explanation strong { color: var(--blue); }
+    .explanation p { margin: 4px 0 0; color: #536079; font-size: 14px; }
+    .ref-list { display: grid; gap: 9px; padding-left: 22px; color: #4c5972; }
+    .feedback { max-width: 680px; padding: 22px; border: 1px solid #d0d2da; border-radius: 16px; background: #dedfe4; }
+    .feedback h3 { margin: 5px 0; color: var(--blue-dark); }
+    .rating { display: flex; gap: 8px; margin: 14px 0; }
+    .rating button { width: 42px; height: 42px; color: var(--blue); border: 1px solid #c9ccda; border-radius: 11px; background: #ededee; font-weight: 800; cursor: pointer; }
+    .rating button.selected { color: #fff; border-color: var(--blue); background: var(--blue); }
+    .feedback textarea { width: 100%; margin: 8px 0 13px; padding: 12px; color: var(--ink); border: 1px solid #c9ccda; border-radius: 10px; background: #f2f2f3; resize: vertical; }
+    .report { padding: 20px; border: 1px solid #cfd2da; border-radius: 15px; background: #dedfe4; }
+    .report__head { display: flex; align-items: start; justify-content: space-between; gap: 12px; }
+    .report h3 { margin: 3px 0; color: var(--blue-dark); font-size: 24px; }
+    .report__grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; margin-top: 18px; }
+    .report__item { padding: 13px; border: 1px solid #cfd2dc; border-radius: 11px; background: #ebebed; }
+    .report__item span { color: var(--red); font-size: 10px; font-weight: 800; letter-spacing: .1em; }
+    .report__item p { margin: 5px 0 0; color: #4d5a72; font-size: 14px; }
+    .workflow__foot { display: flex; align-items: center; justify-content: space-between; gap: 10px; padding: 12px 20px; border-top: 1px solid #d0d2da; border-radius: 0 0 19px 19px; background: #dedfe4; }
+    .workflow__foot > span { color: #647088; font-size: 12px; }
+    .quiet-button { display: inline-flex; align-items: center; gap: 6px; min-height: 38px; padding: 0 5px; color: var(--blue); border: 0; background: transparent; font-weight: 700; cursor: pointer; }
+    .quiet-button:disabled { color: #9ca3b1; cursor: default; }
+    .disclaimer { margin: 25px auto 38px; color: #6a7487; font-size: 12px; text-align: center; }
+    .site-footer { padding: 23px 0; color: #dfe3f1; background: #1c2457; font-size: 13px; }
+    .site-footer__inner { display: flex; align-items: center; justify-content: space-between; gap: 15px; }
+    .site-footer a { color: #fff; font-weight: 700; }
+    .sr-only { position: absolute; width: 1px; height: 1px; padding: 0; overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; clip-path: inset(50%); }
+    @media (max-width: 880px) { .hero { grid-template-columns: 1fr 340px; gap: 24px; padding: 38px; } .lab-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } .lab-hero { grid-template-columns: minmax(0, 1fr) 245px; gap: 23px; } }
+    @media (max-width: 700px) { .shell { width: min(100% - 30px, 560px); } .topbar__inner { min-height: 67px; } .nav { gap: 12px; font-size: 13px; } .nav a:not(.nav__cta) { display: none; } .hero { grid-template-columns: 1fr; gap: 25px; min-height: 0; margin-top: 16px; padding: 28px 22px; border-radius: 22px; } .hero h1 { font-size: clamp(41px, 9vw, 57px); } .hero__copy > p { font-size: 16px; } .logic-card { max-width: 480px; width: 100%; margin-inline: auto; transform: none; } .section { margin-top: 49px; } .section-head { align-items: start; flex-direction: column; gap: 8px; } .path-grid { grid-template-columns: 1fr; } .lab-grid { grid-template-columns: 1fr; } .lab-card h3, .lab-card p { min-height: 0; } .lab-hero { grid-template-columns: 1fr; gap: 20px; padding: 26px 21px; border-radius: 21px; } .lab-route { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; padding: 13px; } .lab-route > span { grid-column: 1 / -1; } .lab-route__item { align-items: flex-start; flex-direction: column; gap: 6px; } .lab-route__item small { font-size: 10px; } .workflow { margin-top: 15px; border-radius: 17px; } .workflow__head { padding: 17px 16px 13px; } .workflow__head h2 { font-size: 21px; } .workflow__head p { max-width: 245px; } .workflow__count { font-size: 9px; } .workflow__content { padding: 17px 14px; } .aim-grid, .assessment { grid-template-columns: 1fr; gap: 16px; } .theory-opening { grid-template-columns: 1fr; } .highlights { grid-template-columns: 1fr; } .stepper { top: 67px; padding-inline: 7px; } .stepper button { min-width: 82px; min-height: 51px; font-size: 11px; } .workflow__foot { padding: 10px 12px; } .workflow__foot > span { font-size: 11px; } }
+    @media (max-width: 430px) { .hero { padding: 25px 18px; } .hero__actions { align-items: flex-start; flex-direction: column; gap: 9px; } .logic-card { padding: 17px; } .lab-hero { padding: 23px 18px; } .lab-hero__actions { align-items: flex-start; flex-direction: column; gap: 5px; } .lab-route { gap: 5px; padding: 11px; } .lab-route__item small { font-size: 10px; } .workflow__head { align-items: flex-start; gap: 5px; } .workflow__count { margin-top: 17px; } .chapter { grid-template-columns: 35px 1fr; gap: 10px; padding: 13px; } .chapter__number { width: 33px; height: 33px; border-radius: 10px; } .chapter p, .example-card p { font-size: 14px; } .formula { font-size: 14px; } .simulation-card { grid-template-columns: 1fr; padding: 20px; } .report__grid { grid-template-columns: 1fr; } }
+    @media print { .topbar, .lab-hero, .stepper, .workflow__foot, .site-footer, .no-print { display: none !important; } body { background: #fff; } .shell { width: 100%; } .workflow { box-shadow: none; } }
+  </style>
+</head>
+<body>
+  <div id="app"></div>
+  <script>
+    const LAB_DATA = {
+      "experiments": [
+        {
+          "slug": "bcd-7-segment-decoder",
+          "title": "BCD to 7-segment display",
+          "subject": "digital-electronics",
+          "category": "Display circuits",
+          "summary": "Follow a 4-bit decimal code through a decoder and see which display segments form each digit.",
+          "aim": "To understand how a BCD decoder selects the seven LED segments needed to show a decimal digit.",
+          "introduction": "A digital circuit often needs to show a number in a form people can read. A seven-segment display uses seven small light bars, named a to g. A decoder sits between a 4-bit BCD input and those bars. It turns the input code for a decimal digit into the correct pattern of segments.",
+          "apparatus": [
+            "BCD-to-seven-segment decoder or driver (for hardware practice)",
+            "Common-anode or common-cathode seven-segment display",
+            "Truth-table worksheet and pencil",
+            "Current-limiting resistors for a physical LED display"
+          ],
+          "objective": "Match valid BCD values from 0 to 9 with their seven-segment patterns and explain the decoder's role.",
+          "difficulty": "Introductory",
+          "duration": 18,
+          "simulation": "none",
+          "diagram": "seven-segment",
+          "quickFact": "A seven-segment display can show digits 0–9; the patterns for 10–15 are not valid BCD digits.",
+          "keyPoints": [
+            "BCD stores one decimal digit in four bits.",
+            "The decoder creates seven control outputs: a, b, c, d, e, f and g.",
+            "The required output polarity depends on the display and driver type."
+          ],
+          "prerequisites": [
+            "Binary place values",
+            "Decimal digits 0–9",
+            "Active-high and active-low signals"
+          ],
+          "theory": [
+            "Binary Coded Decimal (BCD) gives each decimal digit its own 4-bit code. For example, decimal 5 is 0101 in BCD. The codes 0000 through 1001 represent decimal 0 through 9. The remaining four 4-bit patterns are not decimal digits in ordinary BCD.",
+            "The display has seven light-emitting segments. They are labelled a at the top, then b and c on the right, d at the bottom, and e and f on the left. Segment g crosses the centre. To show a digit, the circuit turns on only the bars that draw that shape. For example, 1 uses b and c, while 8 uses all seven segments.",
+            "A BCD-to-seven-segment decoder reads the four input bits and produces seven outputs. Each output controls one segment. The decoder is combinational: for a fixed input code, it produces the same segment pattern. It does not remember the previous digit.",
+            "Display wiring affects the meaning of an output level. In a common-cathode display, a segment usually lights when its anode is driven high through a suitable resistor. In a common-anode display, a segment usually lights when its cathode is pulled low. Always check the driver and display datasheets; output polarity and pin order can differ between parts.",
+            "For a design, first write the required segment pattern for each valid BCD digit. Then make one truth table per segment. A logic designer may simplify those tables with Boolean algebra or a Karnaugh map. Some designs treat the invalid BCD inputs as don't-care cases, but that choice must be stated because it can change the circuit's behaviour for inputs 1010–1111."
+          ],
+          "equation": "BCD D₃D₂D₁D₀  →  decoder  →  segment outputs a, b, c, d, e, f, g",
+          "calculationExample": "For decimal 5, the BCD input is 0101. The usual seven-segment shape lights a, f, g, c and d; b and e stay off. The visible result is the digit 5.",
+          "procedure": [
+            "Label the seven display bars a through g on a sketch.",
+            "Write the BCD codes 0000 to 1001 beside decimal digits 0 to 9.",
+            "For each digit, mark which segments must be on and complete the observation table.",
+            "Check whether the chosen display is common-anode or common-cathode before interpreting a 0 or 1 at its inputs."
+          ],
+          "observations": {
+            "columns": [
+              "Digit",
+              "BCD input",
+              "Segments ON"
+            ],
+            "rows": [
+              [
+                "0",
+                "0000",
+                "a b c d e f"
+              ],
+              [
+                "1",
+                "0001",
+                "b c"
+              ],
+              [
+                "2",
+                "0010",
+                "a b d e g"
+              ],
+              [
+                "5",
+                "0101",
+                "a c d f g"
+              ],
+              [
+                "8",
+                "1000",
+                "a b c d e f g"
+              ],
+              [
+                "9",
+                "1001",
+                "a b c d f g"
+              ]
+            ],
+            "note": "This is the common seven-segment shape convention. A driver may invert the electrical levels, so 'segment on' is not always a logic 1 at the IC pin."
+          },
+          "precautions": [
+            "Do not connect an LED display directly to a supply without current limiting.",
+            "Check the datasheet for pin numbers, common pin type and active output polarity.",
+            "Mark invalid BCD inputs as unused or don't-care only when the design allows it."
+          ],
+          "conclusion": "The decoder translates one valid BCD digit into a set of seven segment-control signals. Correct interpretation depends on both the code table and the electrical type of the display.",
+          "assumptions": [
+            "The display is treated as seven ideal on/off segments; brightness and electrical current are outside this theory activity."
+          ],
+          "references": [
+            "M. Morris Mano and Michael D. Ciletti, Digital Design, 5th edition, Pearson.",
+            "R. P. Jain, Modern Digital Electronics, 4th edition, McGraw Hill Education.",
+            "Thomas L. Floyd, Digital Fundamentals, 11th edition, Pearson."
+          ],
+          "preTest": [
+            {
+              "id": "pre-1",
+              "prompt": "How many bits are used to store one BCD digit?",
+              "options": [
+                "2",
+                "3",
+                "4",
+                "8"
+              ],
+              "correctOption": 2,
+              "explanation": "One decimal digit uses a 4-bit BCD code."
+            },
+            {
+              "id": "pre-2",
+              "prompt": "Which segment labels are used in a seven-segment display?",
+              "options": [
+                "a to g",
+                "0 to 6",
+                "p to v",
+                "A to G only"
+              ],
+              "correctOption": 0,
+              "explanation": "The seven bars are labelled a, b, c, d, e, f and g."
+            }
+          ],
+          "postTest": [
+            {
+              "id": "post-1",
+              "prompt": "Which BCD input is outside the valid decimal digit range?",
+              "options": [
+                "1001",
+                "0111",
+                "1010",
+                "0000"
+              ],
+              "correctOption": 2,
+              "explanation": "BCD values 1010 through 1111 do not represent decimal digits 0 through 9."
+            },
+            {
+              "id": "post-2",
+              "prompt": "What does the decoder do?",
+              "options": [
+                "Stores the last digit",
+                "Converts a BCD code into segment controls",
+                "Changes decimal into analogue voltage",
+                "Counts clock pulses"
+              ],
+              "correctOption": 1,
+              "explanation": "A BCD decoder creates the control pattern for the seven display segments."
+            }
+          ]
+        },
+        {
+          "slug": "digital-logic-families",
+          "title": "Digital logic families",
+          "subject": "digital-electronics",
+          "category": "Logic circuits",
+          "summary": "Compare how TTL and CMOS families represent logic levels and what to check before connecting them.",
+          "aim": "To compare important electrical properties of common digital logic families and understand safe signal compatibility.",
+          "introduction": "A logic gate is not only a Boolean rule. It is also an electronic circuit with voltage limits, current needs and switching speed. A logic family is a group of gates made with a similar circuit technology. TTL and CMOS are two widely studied families.",
+          "apparatus": [
+            "Datasheets for one TTL and one CMOS logic IC",
+            "Comparison worksheet",
+            "Calculator for voltage-margin examples",
+            "Digital multimeter only if physical measurements are being made"
+          ],
+          "objective": "Use datasheet values to compare logic thresholds, noise margins, input current, output drive and delay.",
+          "difficulty": "Intermediate",
+          "duration": 22,
+          "simulation": "none",
+          "diagram": "logic-families",
+          "quickFact": "A logic '1' is a voltage range, not one exact voltage; use the limits in the device datasheet.",
+          "keyPoints": [
+            "TTL uses bipolar transistor circuits; CMOS uses MOS transistors.",
+            "A receiving input's voltage limits must match the sending output's guaranteed limits.",
+            "Noise margin tells how much unwanted voltage change a logic signal can tolerate."
+          ],
+          "prerequisites": [
+            "Logic 0 and logic 1",
+            "Voltage and current",
+            "Reading minimum and maximum values in a datasheet"
+          ],
+          "theory": [
+            "A digital input is interpreted as LOW or HIGH using voltage ranges. The input does not require one perfect voltage. A datasheet gives limits such as VIL(max), the highest voltage guaranteed to be read as LOW, and VIH(min), the lowest voltage guaranteed to be read as HIGH.",
+            "A digital output also has guaranteed ranges. VOL(max) is the highest LOW output voltage under stated conditions; VOH(min) is the lowest HIGH output voltage. The word guaranteed matters: typical values are useful for understanding, but design checks should use the specified limits and load conditions.",
+            "TTL logic uses bipolar junction transistors in its internal circuits. CMOS logic uses complementary MOS transistors. Modern CMOS often uses little static power when it is not switching, while switching power rises with activity and load. Exact speed, power and drive capability depend on the particular part and technology generation.",
+            "Noise margin measures the gap between a valid output level and the nearest input threshold. The HIGH noise margin is NMH = VOH(min) − VIH(min). The LOW noise margin is NML = VIL(max) − VOL(max). A larger positive margin gives more room for noise before a receiving gate misreads the signal.",
+            "Before connecting two ICs, compare supply voltages, input thresholds, output drive, fan-out and timing. A logic HIGH from one family is not automatically a valid HIGH for every other family. Check the datasheets, and use a suitable level shifter when the voltage ranges do not line up."
+          ],
+          "equation": "NMH = VOH(min) − VIH(min)     ·     NML = VIL(max) − VOL(max)",
+          "calculationExample": "If a datasheet gives VOH(min) = 4.4 V and VIH(min) = 2.0 V, then NMH = 4.4 − 2.0 = 2.4 V. Use the actual part's datasheet values in a real design.",
+          "procedure": [
+            "Choose one TTL IC and one CMOS IC and open their datasheets.",
+            "Record each device's supply range, VIL(max), VIH(min), VOL(max) and VOH(min).",
+            "Calculate the HIGH and LOW noise margins for the stated load conditions.",
+            "Decide whether one device's output levels are guaranteed to satisfy the other's input limits."
+          ],
+          "observations": {
+            "columns": [
+              "Property",
+              "What to look for"
+            ],
+            "rows": [
+              [
+                "Supply",
+                "Allowed VCC range"
+              ],
+              [
+                "Input LOW",
+                "VIL(max)"
+              ],
+              [
+                "Input HIGH",
+                "VIH(min)"
+              ],
+              [
+                "Output LOW",
+                "VOL(max) at stated load"
+              ],
+              [
+                "Output HIGH",
+                "VOH(min) at stated load"
+              ],
+              [
+                "Switching",
+                "Propagation delay and load"
+              ],
+              [
+                "Power",
+                "Static and switching conditions"
+              ]
+            ],
+            "note": "No numerical family values are assumed here. Fill this table from the exact IC datasheets you choose."
+          },
+          "precautions": [
+            "Do not treat a typical value as a guaranteed limit.",
+            "Never connect an output to a supply rail unless the circuit is designed for that connection.",
+            "Check supply voltage and input protection before connecting different IC families."
+          ],
+          "conclusion": "Logic families share the same Boolean ideas but can differ electrically. Datasheet limits and noise margins are needed to check that two connected devices communicate reliably.",
+          "assumptions": [
+            "The comparison uses static digital limits and does not include a specific IC's complete electrical characteristics."
+          ],
+          "references": [
+            "M. Morris Mano and Michael D. Ciletti, Digital Design, 5th edition, Pearson.",
+            "R. P. Jain, Modern Digital Electronics, 4th edition, McGraw Hill Education.",
+            "Thomas L. Floyd, Digital Fundamentals, 11th edition, Pearson."
+          ],
+          "preTest": [
+            {
+              "id": "pre-1",
+              "prompt": "What does VIH(min) describe?",
+              "options": [
+                "Lowest guaranteed HIGH input voltage",
+                "Highest LOW output voltage",
+                "Supply current",
+                "Clock period"
+              ],
+              "correctOption": 0,
+              "explanation": "VIH(min) is the lowest input voltage guaranteed to be read as HIGH."
+            },
+            {
+              "id": "pre-2",
+              "prompt": "Which device information should be used for a real compatibility check?",
+              "options": [
+                "A random web diagram",
+                "Only typical values",
+                "The exact IC datasheets",
+                "The package colour"
+              ],
+              "correctOption": 2,
+              "explanation": "The specific parts' datasheet limits determine electrical compatibility."
+            }
+          ],
+          "postTest": [
+            {
+              "id": "post-1",
+              "prompt": "How is HIGH noise margin calculated?",
+              "options": [
+                "VOH(min) − VIH(min)",
+                "VIH − VIL",
+                "VCC × current",
+                "VOL(max) − VOH(min)"
+              ],
+              "correctOption": 0,
+              "explanation": "NMH is the guaranteed output-HIGH level minus the receiving input-HIGH threshold."
+            },
+            {
+              "id": "post-2",
+              "prompt": "Does a logic HIGH always mean one exact voltage?",
+              "options": [
+                "Yes, exactly VCC",
+                "No, it is a range",
+                "Yes, always 5 V",
+                "No, it means any voltage"
+              ],
+              "correctOption": 1,
+              "explanation": "Digital logic defines valid voltage ranges in the device specifications."
+            }
+          ]
+        },
+        {
+          "slug": "logic-gate-explorer",
+          "title": "Boolean functions with logic gates",
+          "subject": "digital-electronics",
+          "category": "Boolean logic",
+          "summary": "Read a Boolean rule, build its truth table and connect the terms to NOT, AND and OR gates.",
+          "aim": "To express a Boolean function with logic gates and check that its truth table matches the required behaviour.",
+          "introduction": "Digital circuits make decisions using two states, usually written as 0 and 1. Boolean algebra gives short rules for combining those states. Logic gates are the circuit blocks that carry out these rules. A truth table lists the output for every possible input combination.",
+          "apparatus": [
+            "Boolean expression worksheet",
+            "Truth-table grid",
+            "Logic-gate symbols or digital logic trainer for physical practice",
+            "Pencil and eraser for simplifying expressions"
+          ],
+          "objective": "Move between a truth table, Boolean expression and logic-gate diagram without changing the function.",
+          "difficulty": "Introductory",
+          "duration": 20,
+          "simulation": "none",
+          "diagram": "boolean-logic",
+          "quickFact": "For n binary inputs, a complete truth table has 2ⁿ rows.",
+          "keyPoints": [
+            "NOT changes 0 to 1 and 1 to 0; AND needs every input to be 1.",
+            "OR is 1 when at least one input is 1; XOR is 1 when inputs differ.",
+            "Equivalent Boolean expressions always give the same output for every input row."
+          ],
+          "prerequisites": [
+            "Binary values",
+            "AND, OR and NOT symbols",
+            "Truth-table rows"
+          ],
+          "theory": [
+            "A Boolean variable can take only one of two values: 0 or 1. In a circuit, these stand for LOW and HIGH logic states. The exact voltages that count as LOW or HIGH depend on the device, but the Boolean rules describe the logical behaviour.",
+            "The basic operations are NOT, AND and OR. NOT inverts one value. AND is 1 only when all its inputs are 1. OR is 1 when one or more inputs are 1. XOR is 1 when its two inputs are different. NAND and NOR are the inverted forms of AND and OR; XNOR is the inverted form of XOR.",
+            "An expression can be converted to a circuit by following its operations. For F = A'B + AC, first invert A to make A'. Use one AND gate for A'B and another for AC. Finally, use an OR gate to combine the two terms. The apostrophe means NOT, multiplication means AND, and plus means OR in Boolean notation.",
+            "A truth table is a complete check of a Boolean function. With n inputs there are 2ⁿ possible input rows. Write one row for each combination, evaluate the expression, and compare it with the required output. For three inputs A, B and C, eight rows are needed.",
+            "Boolean identities can make a circuit smaller. For example, De Morgan's laws say (AB)' = A' + B' and (A + B)' = A'B'. These rules help change NAND/NOR structures into equivalent circuits. Any simplification should preserve the truth table; a changed row means the new expression is not equivalent."
+          ],
+          "equation": "F = A'B + AC     ·     (AB)' = A' + B'     ·     (A + B)' = A'B'",
+          "calculationExample": "For A=0, B=1, C=0: A'B = 1×1 = 1 and AC = 0×0 = 0, so F = 1 OR 0 = 1.",
+          "procedure": [
+            "Choose a Boolean function and identify each input variable.",
+            "List all 2ⁿ input combinations in a truth table.",
+            "Evaluate the expression one operation at a time and record the output.",
+            "Sketch the matching gates and verify that each gate produces the same table."
+          ],
+          "observations": {
+            "columns": [
+              "A",
+              "B",
+              "C",
+              "F = A'B + AC"
+            ],
+            "rows": [
+              [
+                "0",
+                "0",
+                "0",
+                "0"
+              ],
+              [
+                "0",
+                "0",
+                "1",
+                "0"
+              ],
+              [
+                "0",
+                "1",
+                "0",
+                "1"
+              ],
+              [
+                "0",
+                "1",
+                "1",
+                "1"
+              ],
+              [
+                "1",
+                "0",
+                "0",
+                "0"
+              ],
+              [
+                "1",
+                "0",
+                "1",
+                "1"
+              ],
+              [
+                "1",
+                "1",
+                "0",
+                "0"
+              ],
+              [
+                "1",
+                "1",
+                "1",
+                "1"
+              ]
+            ],
+            "note": "The table is a reference for the example function. The diagram shows one direct gate implementation."
+          },
+          "precautions": [
+            "Keep the variable order fixed in every row.",
+            "Use parentheses when an expression could be read in more than one way.",
+            "Check the output for all rows before saying two expressions are equivalent."
+          ],
+          "conclusion": "A Boolean function can be represented as an expression, truth table and gate circuit. Each form should describe the same output for every possible input.",
+          "assumptions": [
+            "Inputs and outputs are ideal binary states; voltage thresholds and gate delays are not included."
+          ],
+          "references": [
+            "M. Morris Mano and Michael D. Ciletti, Digital Design, 5th edition, Pearson.",
+            "R. P. Jain, Modern Digital Electronics, 4th edition, McGraw Hill Education.",
+            "Thomas L. Floyd, Digital Fundamentals, 11th edition, Pearson."
+          ],
+          "preTest": [
+            {
+              "id": "pre-1",
+              "prompt": "How many truth-table rows are needed for three binary inputs?",
+              "options": [
+                "3",
+                "6",
+                "8",
+                "9"
+              ],
+              "correctOption": 2,
+              "explanation": "A complete table has 2³ = 8 rows."
+            },
+            {
+              "id": "pre-2",
+              "prompt": "When does a two-input XOR output 1?",
+              "options": [
+                "When both inputs are 0",
+                "When the inputs differ",
+                "Only when both are 1",
+                "Always"
+              ],
+              "correctOption": 1,
+              "explanation": "XOR is 1 when its two inputs are different."
+            }
+          ],
+          "postTest": [
+            {
+              "id": "post-1",
+              "prompt": "In Boolean algebra, what does A' mean?",
+              "options": [
+                "A plus 1",
+                "NOT A",
+                "A times A",
+                "A is unknown"
+              ],
+              "correctOption": 1,
+              "explanation": "The apostrophe denotes the complement or NOT of A."
+            },
+            {
+              "id": "post-2",
+              "prompt": "For A=0, B=1, C=0, what is A'B + AC?",
+              "options": [
+                "0",
+                "1",
+                "2",
+                "Undefined"
+              ],
+              "correctOption": 1,
+              "explanation": "A'B=1 and AC=0, so the OR of the terms is 1."
+            }
+          ]
+        },
+        {
+          "slug": "multiplexer-logic-design",
+          "title": "Logic functions using a multiplexer",
+          "subject": "digital-electronics",
+          "category": "Data selection",
+          "summary": "See how select bits choose one input path and how a multiplexer can implement a Boolean function.",
+          "aim": "To understand the operation of a multiplexer and use its data and select inputs to represent a logic function.",
+          "introduction": "A multiplexer, or MUX, is a digital selector. It has several data inputs, a smaller number of select inputs and one output. The select code chooses which data input is connected to the output. This is useful when a circuit needs to share one path among many signals.",
+          "apparatus": [
+            "Multiplexer truth-table worksheet",
+            "Logic-gate symbols",
+            "A 4-to-1 MUX IC or digital trainer for physical practice",
+            "Datasheet if a specific IC is selected"
+          ],
+          "objective": "Predict the selected MUX input from the select bits and map a truth table onto the data inputs.",
+          "difficulty": "Intermediate",
+          "duration": 22,
+          "simulation": "none",
+          "diagram": "multiplexer",
+          "quickFact": "A MUX with 2 select bits can choose among 4 data inputs because 2² = 4.",
+          "keyPoints": [
+            "Select inputs choose a data path; they are not the same as data inputs.",
+            "A 4-to-1 MUX uses two select bits to choose D₀, D₁, D₂ or D₃.",
+            "Active-low enable pins and output polarity vary by IC, so check the datasheet."
+          ],
+          "prerequisites": [
+            "Binary numbers",
+            "Truth tables",
+            "AND, OR and NOT operations"
+          ],
+          "theory": [
+            "A multiplexer sends one of its data inputs to a single output. A 4-to-1 MUX has four data inputs D₀–D₃ and two select bits S₁ and S₀. The select code 00 picks D₀, 01 picks D₁, 10 picks D₂ and 11 picks D₃, using the usual bit order.",
+            "The output can be written as a sum of four selected terms: Y = D₀S₁'S₀' + D₁S₁'S₀ + D₂S₁S₀' + D₃S₁S₀. Only the term matching the current select code is enabled. The selected data value then appears at the output, subject to the device's enable and polarity rules.",
+            "A MUX can also build a Boolean function. Choose some function variables as the select bits. For each select combination, look at the truth table and place the required remaining value on that data input. A data input may be tied to 0, tied to 1, or connected to another variable or its complement.",
+            "For example, if the select bits are A and B, the four MUX inputs correspond to the four AB rows. Write the desired function output for each row. Those four values become D₀ through D₃. This method gives a direct circuit structure and is often useful when a suitable MUX IC is already available.",
+            "When using a real part, check whether it has an enable pin and whether the enable is active-high or active-low. Also check which select pin is the most significant bit. Reversing S₁ and S₀ swaps the input order even though the IC itself is working correctly."
+          ],
+          "equation": "Y = D₀S₁'S₀' + D₁S₁'S₀ + D₂S₁S₀' + D₃S₁S₀",
+          "calculationExample": "If S₁S₀ = 10, the third data input D₂ is selected. If D₂=1, the ideal MUX output is Y=1.",
+          "procedure": [
+            "Draw the input and select pins of a 4-to-1 MUX.",
+            "Write the select code next to the data input it chooses.",
+            "Use the required truth table to find the output for each select combination.",
+            "Connect each data input to the value needed for that row, then check enable and polarity details."
+          ],
+          "observations": {
+            "columns": [
+              "S₁",
+              "S₀",
+              "Selected input",
+              "Y"
+            ],
+            "rows": [
+              [
+                "0",
+                "0",
+                "D₀",
+                "D₀"
+              ],
+              [
+                "0",
+                "1",
+                "D₁",
+                "D₁"
+              ],
+              [
+                "1",
+                "0",
+                "D₂",
+                "D₂"
+              ],
+              [
+                "1",
+                "1",
+                "D₃",
+                "D₃"
+              ]
+            ],
+            "note": "The output equals the selected data input when the MUX is enabled. Some ICs invert this convention or add an active-low enable."
+          },
+          "precautions": [
+            "Keep the select-bit order consistent with the circuit and truth table.",
+            "Check the enable pin before testing data selection.",
+            "Do not assume an IC output is non-inverting; confirm its symbol and datasheet."
+          ],
+          "conclusion": "A multiplexer selects one data input using a binary control code. By assigning the data inputs from a truth table, the MUX can implement many Boolean functions.",
+          "assumptions": [
+            "The diagram uses an enabled, non-inverting ideal 4-to-1 MUX."
+          ],
+          "references": [
+            "M. Morris Mano and Michael D. Ciletti, Digital Design, 5th edition, Pearson.",
+            "R. P. Jain, Modern Digital Electronics, 4th edition, McGraw Hill Education.",
+            "Thomas L. Floyd, Digital Fundamentals, 11th edition, Pearson."
+          ],
+          "preTest": [
+            {
+              "id": "pre-1",
+              "prompt": "How many select bits are needed to choose among four MUX inputs?",
+              "options": [
+                "1",
+                "2",
+                "3",
+                "4"
+              ],
+              "correctOption": 1,
+              "explanation": "Two bits represent four select codes."
+            },
+            {
+              "id": "pre-2",
+              "prompt": "If S₁S₀=11, which input is selected in the usual 4-to-1 MUX?",
+              "options": [
+                "D₀",
+                "D₁",
+                "D₂",
+                "D₃"
+              ],
+              "correctOption": 3,
+              "explanation": "The binary select code 11 selects D₃ in the usual ordering."
+            }
+          ],
+          "postTest": [
+            {
+              "id": "post-1",
+              "prompt": "What is the main job of a MUX?",
+              "options": [
+                "Store a bit",
+                "Select one data input for an output",
+                "Count clock pulses",
+                "Convert analogue to digital"
+              ],
+              "correctOption": 1,
+              "explanation": "A multiplexer routes one selected data input to its output."
+            },
+            {
+              "id": "post-2",
+              "prompt": "A 4-to-1 MUX has how many data inputs?",
+              "options": [
+                "2",
+                "3",
+                "4",
+                "8"
+              ],
+              "correctOption": 2,
+              "explanation": "The name 4-to-1 means four data inputs and one output."
+            }
+          ]
+        },
+        {
+          "slug": "decoder-logic-design",
+          "title": "Logic functions using decoders",
+          "subject": "digital-electronics",
+          "category": "Code conversion",
+          "summary": "Turn an n-bit input code into one selected output and use decoder outputs to form logic functions.",
+          "aim": "To explain how a decoder identifies an input code and how its outputs can be combined to create a Boolean function.",
+          "introduction": "A decoder reads a binary code and activates the output assigned to that code. A 2-to-4 decoder has two input bits and four output lines. With an active-high design, exactly one output is high for each input code when the decoder is enabled.",
+          "apparatus": [
+            "Decoder truth-table worksheet",
+            "2-to-4 decoder IC or logic trainer for physical practice",
+            "Datasheet for enable and output polarity",
+            "Logic gates for combining selected outputs"
+          ],
+          "objective": "Complete a decoder truth table, identify one-hot output behaviour and combine minterm outputs into a function.",
+          "difficulty": "Intermediate",
+          "duration": 20,
+          "simulation": "none",
+          "diagram": "decoder",
+          "quickFact": "An n-input decoder can have up to 2ⁿ distinct output lines.",
+          "keyPoints": [
+            "Each output represents one input code, also called a minterm.",
+            "Enable pins can switch the whole decoder on or off.",
+            "Real decoder outputs may be active-low instead of active-high."
+          ],
+          "prerequisites": [
+            "Binary code ordering",
+            "AND and NOT gates",
+            "Truth tables and minterms"
+          ],
+          "theory": [
+            "A decoder converts an input code into a set of output lines. With n input bits, there are 2ⁿ possible codes, so a full decoder can provide up to 2ⁿ outputs. A 2-to-4 decoder has four output lines labelled Y₀ through Y₃.",
+            "For an enabled active-high 2-to-4 decoder, input 00 activates Y₀, 01 activates Y₁, 10 activates Y₂ and 11 activates Y₃. Only one output is high at a time. This is called one-hot behaviour. If the enable input is off, all outputs follow the disabled state specified by the device.",
+            "Each output corresponds to one minterm. For inputs A and B, Y₀ = A'B', Y₁ = A'B, Y₂ = AB' and Y₃ = AB in the active-high ideal model. A Boolean function can be created by OR-ing the outputs for the input rows where the function should be 1.",
+            "Many decoder ICs use active-low output pins. In that case, the selected output goes low rather than high, and the combining logic may need NAND/NOR gates or an inversion. Read the logic symbol carefully and check the IC truth table before wiring it.",
+            "Decoders are used in address selection, memory chip enables, display control and instruction decoding. They can also be cascaded to create a larger decoder, as long as enable and output polarities are connected correctly."
+          ],
+          "equation": "Y₀=A'B'     Y₁=A'B     Y₂=AB'     Y₃=AB",
+          "calculationExample": "For A=1 and B=0, the binary code is 10. The active-high 2-to-4 decoder selects Y₂; the other outputs remain 0.",
+          "procedure": [
+            "Write the input codes in binary order from 00 to 11.",
+            "For each code, mark the output line that should be selected.",
+            "Translate the selected output into its minterm expression.",
+            "Combine the minterms for the required function and account for the IC's output polarity."
+          ],
+          "observations": {
+            "columns": [
+              "A",
+              "B",
+              "Y₀",
+              "Y₁",
+              "Y₂",
+              "Y₃"
+            ],
+            "rows": [
+              [
+                "0",
+                "0",
+                "1",
+                "0",
+                "0",
+                "0"
+              ],
+              [
+                "0",
+                "1",
+                "0",
+                "1",
+                "0",
+                "0"
+              ],
+              [
+                "1",
+                "0",
+                "0",
+                "0",
+                "1",
+                "0"
+              ],
+              [
+                "1",
+                "1",
+                "0",
+                "0",
+                "0",
+                "1"
+              ]
+            ],
+            "note": "Reference table for an enabled, active-high decoder. An IC with active-low outputs shows the inverse levels."
+          },
+          "precautions": [
+            "Check whether the decoder's outputs are active-high or active-low.",
+            "Confirm the enable pins are in their active state.",
+            "Do not combine decoder outputs until their polarity is known."
+          ],
+          "conclusion": "A decoder selects an output line for each input code. Its minterm outputs can be combined to realise logic functions, with enable and polarity handled correctly.",
+          "assumptions": [
+            "Truth-table values describe an enabled, active-high 2-to-4 decoder."
+          ],
+          "references": [
+            "M. Morris Mano and Michael D. Ciletti, Digital Design, 5th edition, Pearson.",
+            "R. P. Jain, Modern Digital Electronics, 4th edition, McGraw Hill Education.",
+            "Thomas L. Floyd, Digital Fundamentals, 11th edition, Pearson."
+          ],
+          "preTest": [
+            {
+              "id": "pre-1",
+              "prompt": "How many outputs can a full 2-input decoder have?",
+              "options": [
+                "2",
+                "3",
+                "4",
+                "8"
+              ],
+              "correctOption": 2,
+              "explanation": "A full decoder has 2² = 4 output lines."
+            },
+            {
+              "id": "pre-2",
+              "prompt": "What does one-hot behaviour mean?",
+              "options": [
+                "Every output is high",
+                "Only one output is selected at a time",
+                "The input has one bit",
+                "The decoder stores one bit"
+              ],
+              "correctOption": 1,
+              "explanation": "For each enabled code, one output line represents that code."
+            }
+          ],
+          "postTest": [
+            {
+              "id": "post-1",
+              "prompt": "For a 2-to-4 decoder, which output is selected by input 10 in the usual order?",
+              "options": [
+                "Y₀",
+                "Y₁",
+                "Y₂",
+                "Y₃"
+              ],
+              "correctOption": 2,
+              "explanation": "Binary code 10 corresponds to output Y₂."
+            },
+            {
+              "id": "post-2",
+              "prompt": "What must be checked before combining real decoder outputs?",
+              "options": [
+                "Package colour",
+                "Output polarity",
+                "Wire length only",
+                "Clock frequency only"
+              ],
+              "correctOption": 1,
+              "explanation": "Active-low outputs need different combining logic from active-high outputs."
+            }
+          ]
+        },
+        {
+          "slug": "digital-comparator",
+          "title": "Digital comparator",
+          "subject": "digital-electronics",
+          "category": "Data comparison",
+          "summary": "Compare two binary words and identify whether A is greater than, equal to or less than B.",
+          "aim": "To understand the three outputs of a magnitude comparator and trace how the most significant unequal bit decides the result.",
+          "introduction": "A digital comparator checks two binary numbers. It reports whether the first number is greater than, equal to or less than the second. The same idea works for one-bit values and for wider binary words.",
+          "apparatus": [
+            "Binary comparison worksheet",
+            "Truth table or comparator IC datasheet",
+            "Logic trainer and indicator LEDs for physical practice",
+            "Pencil for tracing bit priority"
+          ],
+          "objective": "Compare binary values, distinguish equality from magnitude and explain why the most significant differing bit decides the result.",
+          "difficulty": "Intermediate",
+          "duration": 18,
+          "simulation": "none",
+          "diagram": "comparator",
+          "quickFact": "For unsigned binary numbers, the first differing bit from the left decides which number is larger.",
+          "keyPoints": [
+            "A comparator commonly provides A>B, A=B and A\u003cB outputs.",
+            "Equality can be checked by XNOR-ing each pair of corresponding bits.",
+            "Signed comparison needs an agreed number representation; this module uses unsigned values."
+          ],
+          "prerequisites": [
+            "Binary place values",
+            "AND, OR and XNOR",
+            "Most significant and least significant bit"
+          ],
+          "theory": [
+            "A magnitude comparator takes two binary words, A and B, and produces three results: A>B, A=B and A\u003cB. For two unsigned inputs, exactly one of these results is true. The output tells which relationship holds for the current pair of numbers.",
+            "To check equality, compare corresponding bit pairs. An XNOR output is 1 when the two bits match. AND all the XNOR results together: equality is true only when every pair matches. For four bits, EQ = (A₃ XNOR B₃)(A₂ XNOR B₂)(A₁ XNOR B₁)(A₀ XNOR B₀).",
+            "To compare magnitude, start with the most significant bit. If A₃ and B₃ differ, that bit decides the result. If they match, move to the next bit. Continue until the first difference appears. The word with a 1 in that position is greater. If no bit differs, the numbers are equal.",
+            "For example, 1010 is greater than 1001. The first two bits match. At the third bit from the left, A has 1 and B has 0, so A is greater; the last bit cannot change that result. This left-to-right priority is why a multi-bit comparator can be built from stages.",
+            "A signed comparison needs more information than the bit patterns alone. Two's-complement numbers interpret the most significant bit as a sign bit, so the unsigned comparison rule cannot be applied directly. This module uses unsigned binary numbers unless a signed format is stated."
+          ],
+          "equation": "EQ = ∏ᵢ(Aᵢ XNOR Bᵢ)     ·     exactly one of GT, EQ or LT is true",
+          "calculationExample": "Compare A=1010₂ (10) with B=1001₂ (9). The first different bit is the third bit from the left: 1 > 0, so A>B.",
+          "procedure": [
+            "Write both binary words with their most significant bits aligned.",
+            "Compare from left to right until the first different bit appears.",
+            "Record A>B, A=B or A\u003cB; only one result should be true.",
+            "Check equality separately by comparing every corresponding bit pair."
+          ],
+          "observations": {
+            "columns": [
+              "A",
+              "B",
+              "A>B",
+              "A=B",
+              "A\u003cB"
+            ],
+            "rows": [
+              [
+                "00",
+                "00",
+                "0",
+                "1",
+                "0"
+              ],
+              [
+                "01",
+                "10",
+                "0",
+                "0",
+                "1"
+              ],
+              [
+                "10",
+                "01",
+                "1",
+                "0",
+                "0"
+              ],
+              [
+                "11",
+                "11",
+                "0",
+                "1",
+                "0"
+              ]
+            ],
+            "note": "Two-bit unsigned examples. Output meanings are often labelled GT, EQ and LT on a comparator IC."
+          },
+          "precautions": [
+            "Align bit positions before comparing the words.",
+            "Decide whether the values are unsigned or signed before interpreting them.",
+            "For valid unsigned inputs, check that exactly one comparison output is active."
+          ],
+          "conclusion": "A comparator determines greater-than, equality or less-than. Equality requires every bit pair to match; magnitude is decided by the first unequal bit from the left.",
+          "assumptions": [
+            "Inputs are unsigned binary words and the ideal comparator outputs are active-high."
+          ],
+          "references": [
+            "M. Morris Mano and Michael D. Ciletti, Digital Design, 5th edition, Pearson.",
+            "R. P. Jain, Modern Digital Electronics, 4th edition, McGraw Hill Education.",
+            "Thomas L. Floyd, Digital Fundamentals, 11th edition, Pearson."
+          ],
+          "preTest": [
+            {
+              "id": "pre-1",
+              "prompt": "When comparing two unsigned binary words, which bit is checked first?",
+              "options": [
+                "Least significant",
+                "Most significant",
+                "A random bit",
+                "Only the sign bit"
+              ],
+              "correctOption": 1,
+              "explanation": "The most significant bit has the greatest place value and is checked first."
+            },
+            {
+              "id": "pre-2",
+              "prompt": "What does XNOR return when its two inputs match?",
+              "options": [
+                "0",
+                "1",
+                "A clock pulse",
+                "High impedance"
+              ],
+              "correctOption": 1,
+              "explanation": "XNOR is 1 for equal inputs."
+            }
+          ],
+          "postTest": [
+            {
+              "id": "post-1",
+              "prompt": "For unsigned values, which is larger: 1010₂ or 1001₂?",
+              "options": [
+                "1010₂",
+                "1001₂",
+                "They are equal",
+                "Cannot compare"
+              ],
+              "correctOption": 0,
+              "explanation": "The first differing bit is 1 versus 0 in 1010, so 1010 is larger."
+            },
+            {
+              "id": "post-2",
+              "prompt": "For equal binary words, how many of GT, EQ and LT should be true?",
+              "options": [
+                "None",
+                "Exactly one: EQ",
+                "Two",
+                "All three"
+              ],
+              "correctOption": 1,
+              "explanation": "Equal words make the equality output true and the other two false."
+            }
+          ]
+        },
+        {
+          "slug": "adders-and-subtractors",
+          "title": "Adders and subtractors",
+          "subject": "digital-electronics",
+          "category": "Arithmetic circuits",
+          "summary": "Follow sum, carry, difference and borrow signals through one-bit arithmetic circuits.",
+          "aim": "To explain how half and full adders and subtractors perform binary arithmetic using logic gates.",
+          "introduction": "Digital systems use arithmetic circuits to add and subtract binary numbers. These circuits work one bit at a time. A carry or borrow links one bit position to the next, allowing small one-bit blocks to form wider arithmetic units.",
+          "apparatus": [
+            "Binary arithmetic worksheet",
+            "Logic-gate symbols or arithmetic IC datasheet",
+            "Breadboard and digital trainer for physical practice",
+            "Truth-table sheet for carry and borrow"
+          ],
+          "objective": "Calculate one-bit sums and differences and trace carry or borrow into the next bit position.",
+          "difficulty": "Intermediate",
+          "duration": 24,
+          "simulation": "none",
+          "diagram": "arithmetic",
+          "quickFact": "A full adder adds three one-bit values: A, B and carry-in.",
+          "keyPoints": [
+            "A half adder has no carry-in; a full adder does.",
+            "The sum/difference bit is formed with XOR operations.",
+            "Carry and borrow are separate outputs and must be passed to the next stage."
+          ],
+          "prerequisites": [
+            "Binary addition and subtraction",
+            "XOR and AND gates",
+            "Truth-table notation"
+          ],
+          "theory": [
+            "A half adder adds two bits A and B. Its sum is S = A XOR B, and its carry is C = AB. The carry is 1 only for 1+1. Because the half adder has no carry input, it cannot by itself add the incoming carry from a previous bit position.",
+            "A full adder includes carry-in Cin. It adds A, B and Cin, then produces a sum bit S and carry-out Cout. The equations are S = A XOR B XOR Cin and Cout = AB + Cin(A XOR B). The carry-out becomes the carry-in for the next, more significant bit.",
+            "Subtraction also needs two outputs. A half subtractor finds A−B and gives a difference D plus borrow Bout. A full subtractor also accepts a borrow-in Bin. One useful expression is D = A XOR B XOR Bin and Bout = A'B + A'Bin + B Bin.",
+            "A multi-bit adder connects several full adders in a row. Each stage passes its carry to the next stage. This simple ripple-carry arrangement is easy to understand, but the carry may need to travel through several stages before the final answer is ready. Faster designs use extra logic to calculate carries more quickly.",
+            "For a physical circuit, verify which pin is carry-in and which is carry-out. Also check whether the IC uses active-low outputs. When adding fixed-width values, a final carry may indicate overflow beyond the available unsigned bit width; it is not part of the sum bits unless the design keeps it."
+          ],
+          "equation": "Full adder: S=A⊕B⊕Cin; Cout=AB+Cin(A⊕B)     ·     Full subtractor: D=A⊕B⊕Bin",
+          "calculationExample": "For A=1, B=1 and Cin=1, the total is 3 (binary 11). Therefore S=1 and Cout=1.",
+          "procedure": [
+            "Make the truth table for a half adder using A and B.",
+            "Add the carry-in column to form a full-adder table.",
+            "Check each row by converting the input bits to a small decimal sum.",
+            "Repeat for subtraction and record when a borrow is needed."
+          ],
+          "observations": {
+            "columns": [
+              "A",
+              "B",
+              "Cin",
+              "Sum",
+              "Cout"
+            ],
+            "rows": [
+              [
+                "0",
+                "0",
+                "0",
+                "0",
+                "0"
+              ],
+              [
+                "0",
+                "1",
+                "0",
+                "1",
+                "0"
+              ],
+              [
+                "1",
+                "0",
+                "1",
+                "0",
+                "1"
+              ],
+              [
+                "1",
+                "1",
+                "1",
+                "1",
+                "1"
+              ]
+            ],
+            "note": "Selected full-adder rows. In every row, A+B+Cin = 2×Cout + Sum."
+          },
+          "precautions": [
+            "Do not mix up carry-in and carry-out.",
+            "Use the same bit order when connecting stages.",
+            "Keep the carry-out separate when checking a fixed-width sum."
+          ],
+          "conclusion": "Half and full adders and subtractors create result bits plus carry or borrow signals. Cascading the one-bit stages allows arithmetic on wider binary words.",
+          "assumptions": [
+            "The equations describe ideal one-bit binary circuits with active-high signals."
+          ],
+          "references": [
+            "M. Morris Mano and Michael D. Ciletti, Digital Design, 5th edition, Pearson.",
+            "R. P. Jain, Modern Digital Electronics, 4th edition, McGraw Hill Education.",
+            "Thomas L. Floyd, Digital Fundamentals, 11th edition, Pearson."
+          ],
+          "preTest": [
+            {
+              "id": "pre-1",
+              "prompt": "What extra input does a full adder have compared with a half adder?",
+              "options": [
+                "Borrow-out",
+                "Carry-in",
+                "Clock",
+                "Select line"
+              ],
+              "correctOption": 1,
+              "explanation": "A full adder includes carry-in from the previous bit stage."
+            },
+            {
+              "id": "pre-2",
+              "prompt": "What is the half-adder sum for A=1 and B=1?",
+              "options": [
+                "0",
+                "1",
+                "2",
+                "Carry only"
+              ],
+              "correctOption": 0,
+              "explanation": "1 XOR 1 = 0; the carry output is 1."
+            }
+          ],
+          "postTest": [
+            {
+              "id": "post-1",
+              "prompt": "For A=1, B=1 and Cin=1, what are Sum and Cout?",
+              "options": [
+                "Sum 0, Cout 0",
+                "Sum 1, Cout 1",
+                "Sum 0, Cout 1",
+                "Sum 1, Cout 0"
+              ],
+              "correctOption": 1,
+              "explanation": "The total is 3, which is binary 11: Sum=1 and Cout=1."
+            },
+            {
+              "id": "post-2",
+              "prompt": "What does a ripple adder pass from one bit stage to the next?",
+              "options": [
+                "Select code",
+                "Carry-out",
+                "Display segment",
+                "Clock enable"
+              ],
+              "correctOption": 1,
+              "explanation": "Each full-adder stage passes its carry-out to the next stage's carry-in."
+            }
+          ]
+        },
+        {
+          "slug": "flip-flops",
+          "title": "Flip-flops and one-bit memory",
+          "subject": "digital-electronics",
+          "category": "Sequential circuits",
+          "summary": "Compare SR, JK, D and T flip-flops and see how a clock controls changes in stored state.",
+          "aim": "To understand how common flip-flops store one bit and how their input rules control the next state.",
+          "introduction": "Combinational circuits respond to their current inputs. Sequential circuits also depend on what happened before. A flip-flop is a basic sequential circuit that stores one bit. Its output can stay the same until a clock edge or control input tells it to change.",
+          "apparatus": [
+            "Flip-flop truth-table worksheet",
+            "Timing diagram grid",
+            "SR, JK, D or T flip-flop datasheet",
+            "Digital trainer and clock source for physical practice"
+          ],
+          "objective": "Read flip-flop truth tables and predict the stored output after an active clock edge.",
+          "difficulty": "Intermediate",
+          "duration": 24,
+          "simulation": "none",
+          "diagram": "flip-flop",
+          "quickFact": "A flip-flop stores one bit; a bank of n flip-flops can store an n-bit word.",
+          "keyPoints": [
+            "A D flip-flop copies D to Q at its active clock edge.",
+            "A T flip-flop changes state when T=1 and holds when T=0.",
+            "The SR invalid condition depends on the gate design and input polarity."
+          ],
+          "prerequisites": [
+            "Logic gates",
+            "Clock and edge symbols",
+            "Present state and next state"
+          ],
+          "theory": [
+            "A flip-flop stores one binary value. Q is the stored output, and Q' (or Q-bar) is usually its complement. The clock tells the circuit when to sample input values. An edge-triggered flip-flop changes state at a rising or falling edge, depending on its design.",
+            "An SR flip-flop has Set and Reset controls. Set makes Q become 1; Reset makes Q become 0; with neither active, the circuit holds its state. Some SR designs have an input combination that is forbidden. The forbidden combination depends on whether the inputs are active-high or active-low, so use the exact truth table for the chosen circuit.",
+            "A JK flip-flop improves on the SR form. When J=0 and K=0, it holds. J=1, K=0 sets; J=0, K=1 resets; J=1, K=1 toggles the state at the active clock edge. 'Toggle' means Q changes from 0 to 1 or from 1 to 0.",
+            "A D flip-flop has one data input. At the active edge, the value at D is copied to Q. A T flip-flop holds when T=0 and toggles when T=1. These behaviours make D flip-flops useful for storing data and T/JK flip-flops useful in counting circuits.",
+            "A timing diagram shows how inputs, clock and output change over time. Only sample the data at the active edge for an edge-triggered part. Real circuits also have setup and hold requirements around that edge. If the input changes too close to the clock, the output may not settle as expected; a digital truth table does not show this analogue timing risk."
+          ],
+          "equation": "D flip-flop: Q(next)=D at active clock edge     ·     T flip-flop: Q(next)=Q⊕T",
+          "calculationExample": "If a D flip-flop has D=1 just before its active clock edge, Q becomes 1 after the edge and keeps that value until a later active edge loads new data.",
+          "procedure": [
+            "Choose one flip-flop type and write down its input names.",
+            "Copy its truth table from the exact circuit or datasheet.",
+            "Track the present state and apply the input rule at each active clock edge.",
+            "Draw Q and Q' on a timing diagram and confirm that the state changes only as specified."
+          ],
+          "observations": {
+            "columns": [
+              "Type",
+              "Input condition",
+              "Next state"
+            ],
+            "rows": [
+              [
+                "D",
+                "D=0 at active edge",
+                "Q=0"
+              ],
+              [
+                "D",
+                "D=1 at active edge",
+                "Q=1"
+              ],
+              [
+                "T",
+                "T=0 at active edge",
+                "Hold Q"
+              ],
+              [
+                "T",
+                "T=1 at active edge",
+                "Toggle Q"
+              ],
+              [
+                "JK",
+                "J=1, K=1 at active edge",
+                "Toggle Q"
+              ]
+            ],
+            "note": "The table gives common positive-edge behaviour. Clear, preset, active-low controls and SR rules vary by device."
+          },
+          "precautions": [
+            "Check whether the part triggers on a rising edge or falling edge.",
+            "Check active-low bubbles and asynchronous preset/clear pins.",
+            "Do not use the SR forbidden input combination for the selected design."
+          ],
+          "conclusion": "Flip-flops store one bit and change state according to their input rule and clock edge. Their timing and active input polarity must be checked for the exact device.",
+          "assumptions": [
+            "The examples use ideal edge-triggered behaviour and omit setup/hold timing and metastability."
+          ],
+          "references": [
+            "M. Morris Mano and Michael D. Ciletti, Digital Design, 5th edition, Pearson.",
+            "R. P. Jain, Modern Digital Electronics, 4th edition, McGraw Hill Education.",
+            "Thomas L. Floyd, Digital Fundamentals, 11th edition, Pearson."
+          ],
+          "preTest": [
+            {
+              "id": "pre-1",
+              "prompt": "How much information does one flip-flop store?",
+              "options": [
+                "One bit",
+                "One byte",
+                "One decimal digit",
+                "One clock"
+              ],
+              "correctOption": 0,
+              "explanation": "A flip-flop stores one binary state."
+            },
+            {
+              "id": "pre-2",
+              "prompt": "What does a D flip-flop do at its active edge?",
+              "options": [
+                "Adds D to Q",
+                "Copies D to Q",
+                "Always toggles",
+                "Clears the clock"
+              ],
+              "correctOption": 1,
+              "explanation": "The D value is sampled and becomes the next Q value at the active edge."
+            }
+          ],
+          "postTest": [
+            {
+              "id": "post-1",
+              "prompt": "For a T flip-flop with T=0, what is the usual next-state behaviour?",
+              "options": [
+                "Toggle",
+                "Hold the current state",
+                "Set to 1",
+                "Reset the clock"
+              ],
+              "correctOption": 1,
+              "explanation": "T=0 makes the flip-flop hold its current value."
+            },
+            {
+              "id": "post-2",
+              "prompt": "When does an edge-triggered flip-flop sample its input?",
+              "options": [
+                "At its active clock edge",
+                "At every time",
+                "Only when power is off",
+                "At the end of the lab"
+              ],
+              "correctOption": 0,
+              "explanation": "The active clock edge is the sampling event for an edge-triggered flip-flop."
+            }
+          ]
+        },
+        {
+          "slug": "shift-registers",
+          "title": "Shift registers",
+          "subject": "digital-electronics",
+          "category": "Data storage",
+          "summary": "Trace how a row of flip-flops moves data by one bit position on each clock edge.",
+          "aim": "To explain how shift registers store and move serial or parallel data under clock control.",
+          "introduction": "A register is a group of flip-flops used to hold several bits. A shift register connects the stored bits so that each clock edge moves data to a neighbouring position. Depending on its input and output connections, it can accept or produce data one bit at a time or several bits together.",
+          "apparatus": [
+            "Shift-register timing worksheet",
+            "Four-bit SIPO or PISO shift-register datasheet",
+            "Clock source and digital trainer for physical practice",
+            "Record sheet for serial input and parallel outputs"
+          ],
+          "objective": "Trace the state of a four-bit shift register after each clock edge and distinguish common input/output modes.",
+          "difficulty": "Intermediate",
+          "duration": 20,
+          "simulation": "none",
+          "diagram": "shift-register",
+          "quickFact": "A 4-bit register can hold 16 different bit patterns, from 0000 to 1111.",
+          "keyPoints": [
+            "Each flip-flop stores one bit; an n-bit register stores n bits.",
+            "A SIPO register accepts serial data and exposes its stored bits in parallel.",
+            "The direction and active clock edge depend on the device wiring."
+          ],
+          "prerequisites": [
+            "D flip-flops",
+            "Clock edges",
+            "Binary bit ordering"
+          ],
+          "theory": [
+            "A shift register is a chain of flip-flops. At a clock edge, each stage takes the previous stage's value, while the first stage takes a new input bit. The stored word therefore moves one place along the chain. A serial input supplies one new bit at a time.",
+            "A Serial-In Parallel-Out (SIPO) register accepts bits one after another and makes the stored word available at several outputs. A Parallel-In Serial-Out (PISO) register loads several bits together and sends them out one at a time. SISO shifts serial data in and out; PIPO loads and reads multiple bits in parallel.",
+            "Suppose a four-bit SIPO register starts at 0000 and the new serial bit enters Q₀. For inputs 1, 0, 1 and 1, the states after four active edges are 0001, 0010, 0101 and 1011 when written Q₃Q₂Q₁Q₀. The bit order should always be stated because diagrams may shift left or right.",
+            "Shift registers are used for temporary storage, serial-to-parallel conversion, parallel-to-serial conversion and simple data movement. A control input may select shift or parallel-load mode. The exact mode table, reset behaviour and edge direction vary among devices.",
+            "A shift register changes only when its clock is applied, unless it has asynchronous reset or set controls. In a real circuit, observe the timing requirements and logic levels. A slow or bouncing manual clock can create extra transitions, so lab hardware may include a debounced clock source."
+          ],
+          "equation": "For each active edge: Q₀(next)=serial input; Qᵢ(next)=Qᵢ₋₁ for i=1…n−1",
+          "calculationExample": "Starting from Q₃Q₂Q₁Q₀=0000, shift in 1, then 0, then 1, then 1. The successive states are 0001 → 0010 → 0101 → 1011.",
+          "procedure": [
+            "Draw four stages and label the output order Q₃Q₂Q₁Q₀.",
+            "Write the initial register state.",
+            "Apply one serial input bit per active clock edge and shift the old values one place.",
+            "Compare the final state with the serial sequence and confirm the stated shift direction."
+          ],
+          "observations": {
+            "columns": [
+              "Clock edge",
+              "Serial input",
+              "Q₃Q₂Q₁Q₀"
+            ],
+            "rows": [
+              [
+                "Start",
+                "—",
+                "0000"
+              ],
+              [
+                "1",
+                "1",
+                "0001"
+              ],
+              [
+                "2",
+                "0",
+                "0010"
+              ],
+              [
+                "3",
+                "1",
+                "0101"
+              ],
+              [
+                "4",
+                "1",
+                "1011"
+              ]
+            ],
+            "note": "Example for a four-bit register that shifts toward Q₃ and loads the new serial bit into Q₀."
+          },
+          "precautions": [
+            "Write the shift direction and bit order before recording values.",
+            "Apply one clean clock edge per bit when using hardware.",
+            "Check whether a control pin selects shift, parallel-load or hold mode."
+          ],
+          "conclusion": "A shift register uses clocked storage stages to move data one position at a time. Its mode determines how data enters and leaves the register.",
+          "assumptions": [
+            "The example uses a four-bit SIPO chain that shifts toward Q₃ on one active edge per input bit."
+          ],
+          "references": [
+            "M. Morris Mano and Michael D. Ciletti, Digital Design, 5th edition, Pearson.",
+            "R. P. Jain, Modern Digital Electronics, 4th edition, McGraw Hill Education.",
+            "Thomas L. Floyd, Digital Fundamentals, 11th edition, Pearson."
+          ],
+          "preTest": [
+            {
+              "id": "pre-1",
+              "prompt": "What is the main action of a shift register at a clock edge?",
+              "options": [
+                "It moves stored bits between stages",
+                "It compares two numbers",
+                "It converts BCD to decimal",
+                "It creates a clock"
+              ],
+              "correctOption": 0,
+              "explanation": "A shift register moves its stored data to neighbouring stages at a clock edge."
+            },
+            {
+              "id": "pre-2",
+              "prompt": "What does SIPO mean?",
+              "options": [
+                "Serial-In Parallel-Out",
+                "Set-In Pulse-Out",
+                "Shift-In Phase-Out",
+                "Serial-Input Power-Output"
+              ],
+              "correctOption": 0,
+              "explanation": "SIPO accepts bits serially and exposes them in parallel."
+            }
+          ],
+          "postTest": [
+            {
+              "id": "post-1",
+              "prompt": "How many patterns can a 4-bit register store?",
+              "options": [
+                "4",
+                "8",
+                "16",
+                "32"
+              ],
+              "correctOption": 2,
+              "explanation": "Four bits represent 2⁴ = 16 possible patterns."
+            },
+            {
+              "id": "post-2",
+              "prompt": "In a SIPO register, how does data enter?",
+              "options": [
+                "All bits at once only",
+                "One bit at a time",
+                "As an analogue signal",
+                "Through the output pin"
+              ],
+              "correctOption": 1,
+              "explanation": "Serial input supplies one bit per clock step."
+            }
+          ]
+        },
+        {
+          "slug": "arithmetic-logic-unit",
+          "title": "Arithmetic Logic Unit (ALU)",
+          "subject": "digital-electronics",
+          "category": "Processor building blocks",
+          "summary": "Explore how operation-select signals choose arithmetic or logic work on binary operands.",
+          "aim": "To understand the main blocks of an ALU and explain how operation-select inputs choose its result.",
+          "introduction": "An Arithmetic Logic Unit (ALU) is a processor building block that performs arithmetic and Boolean operations. It receives binary operands and control signals, then produces a result. The operation code tells the ALU which function to perform.",
+          "apparatus": [
+            "ALU block-diagram worksheet",
+            "Operation table for a selected ALU design",
+            "Binary arithmetic and logic worksheet",
+            "Datasheet if studying a specific ALU IC"
+          ],
+          "objective": "Read an ALU block diagram, separate data inputs from control inputs and predict results for simple operations.",
+          "difficulty": "Intermediate",
+          "duration": 25,
+          "simulation": "none",
+          "diagram": "alu",
+          "quickFact": "An ALU's operation codes and flags are defined by its design; there is no single universal ALU truth table.",
+          "keyPoints": [
+            "A and B are operands; select lines choose the operation.",
+            "The same input values can produce different results under different operation codes.",
+            "Carry, zero and equality flags are examples; the available flags depend on the ALU."
+          ],
+          "prerequisites": [
+            "Binary addition",
+            "Boolean operations",
+            "Multiplexers and control signals"
+          ],
+          "theory": [
+            "An ALU is a combinational block that performs arithmetic and logic operations on binary words. Common operations include addition, subtraction, AND, OR and exclusive-OR. The ALU receives one or more operands, operation-select bits and sometimes a carry-in.",
+            "The control code chooses the operation. Inside the ALU, several result paths may be calculated, and a selector routes the chosen result to the output. A mode input in some designs selects arithmetic or logic behaviour. The meaning of each code must be read from the operation table for that particular ALU.",
+            "An ALU may also produce status flags. A carry flag can report a carry out of the most significant bit. A zero flag can report that every result bit is 0. An equality output may indicate that two operands match. Different processors and ICs use different flag sets and definitions, especially for signed overflow.",
+            "A 4-bit ALU works on four-bit operands; wider processors use wider ALUs or combine smaller units. A well-known classic example, the 74181, is a 4-bit ALU IC with arithmetic and logic functions selected by control inputs. It is useful for study, but its truth table and electrical requirements must be taken from its own datasheet.",
+            "To predict an ALU output, first identify the operand width and operation code. Next calculate the selected operation using that width. Finally, record any carry or status flags separately. For fixed-width arithmetic, a result that needs an extra bit may be truncated in the main output while the carry is reported separately."
+          ],
+          "equation": "Result = ALU(A, B, operation code, optional carry-in)",
+          "calculationExample": "For a 4-bit unsigned ALU set to ADD, A=0101₂ (5) and B=0011₂ (3) give 1000₂ (8), with carry-out 0. A different operation code would use the same inputs in a different way.",
+          "procedure": [
+            "Choose an ALU design and read its operation table.",
+            "Record operand width, input values and operation-select code.",
+            "Calculate the selected arithmetic or logic result by hand.",
+            "Record result bits and status flags separately, then compare with the device table."
+          ],
+          "observations": {
+            "columns": [
+              "Operation",
+              "A",
+              "B",
+              "Result"
+            ],
+            "rows": [
+              [
+                "A AND B",
+                "0101",
+                "0011",
+                "0001"
+              ],
+              [
+                "A OR B",
+                "0101",
+                "0011",
+                "0111"
+              ],
+              [
+                "A XOR B",
+                "0101",
+                "0011",
+                "0110"
+              ],
+              [
+                "A + B",
+                "0101",
+                "0011",
+                "1000"
+              ]
+            ],
+            "note": "Four-bit illustrative results. Actual select codes and available operations depend on the chosen ALU."
+          },
+          "precautions": [
+            "Read the operation table for the exact ALU before assigning select codes.",
+            "Keep the operand width fixed when writing binary results.",
+            "Record carry and other flags separately from the main result."
+          ],
+          "conclusion": "An ALU uses control inputs to select an arithmetic or logic operation on binary operands. Its result and flags must be interpreted using that ALU's operation table and word width.",
+          "assumptions": [
+            "The example is an ideal four-bit unit; timing, electrical limits and signed overflow rules are not modelled."
+          ],
+          "references": [
+            "M. Morris Mano and Michael D. Ciletti, Digital Design, 5th edition, Pearson.",
+            "R. P. Jain, Modern Digital Electronics, 4th edition, McGraw Hill Education.",
+            "Thomas L. Floyd, Digital Fundamentals, 11th edition, Pearson."
+          ],
+          "preTest": [
+            {
+              "id": "pre-1",
+              "prompt": "What tells an ALU which operation to perform?",
+              "options": [
+                "Operation-select code",
+                "Display segment",
+                "Register address only",
+                "Noise margin"
+              ],
+              "correctOption": 0,
+              "explanation": "The control or select code chooses the ALU function."
+            },
+            {
+              "id": "pre-2",
+              "prompt": "Is every ALU guaranteed to use the same operation-code table?",
+              "options": [
+                "Yes",
+                "No, it depends on the design",
+                "Only for 4-bit ALUs",
+                "Only when adding"
+              ],
+              "correctOption": 1,
+              "explanation": "ALU operations and select codes are device-specific."
+            }
+          ],
+          "postTest": [
+            {
+              "id": "post-1",
+              "prompt": "What is 0101₂ + 0011₂ in a four-bit unsigned example?",
+              "options": [
+                "0110",
+                "0111",
+                "1000",
+                "1111"
+              ],
+              "correctOption": 2,
+              "explanation": "5 + 3 = 8, which is 1000₂."
+            },
+            {
+              "id": "post-2",
+              "prompt": "What should be done with carry and status flags?",
+              "options": [
+                "Ignore them",
+                "Record them separately from the result",
+                "Add them to the opcode",
+                "Treat them as input data"
+              ],
+              "correctOption": 1,
+              "explanation": "Flags report extra information about the operation and are separate from result bits."
+            }
+          ]
+        }
+      ],
+      "theorySectionTitles": {
+        "bcd-7-segment-decoder": [
+          "Write a decimal digit in binary",
+          "Meet the seven display segments",
+          "What the decoder changes",
+          "Check the display wiring",
+          "From a digit to a circuit"
+        ],
+        "digital-logic-families": [
+          "A logic level is a range",
+          "Read guaranteed output levels",
+          "TTL and CMOS inside",
+          "How noise margin protects a signal",
+          "Before connecting two families"
+        ],
+        "logic-gate-explorer": [
+          "Start with 0 and 1",
+          "What each gate means",
+          "Turn a rule into a circuit",
+          "Check every input case",
+          "Simplify without changing the result"
+        ],
+        "multiplexer-logic-design": [
+          "One output, many possible inputs",
+          "Select bits choose a data line",
+          "The Boolean form of a MUX",
+          "Build a function from a truth table",
+          "Check select order and enable"
+        ],
+        "decoder-logic-design": [
+          "Turn a code into a selected line",
+          "Follow the input code",
+          "Each output is a minterm",
+          "Build functions from decoder outputs",
+          "Check the active level"
+        ],
+        "digital-comparator": [
+          "What a comparator tells you",
+          "Test whether two words match",
+          "Start at the most significant bit",
+          "Work through one comparison",
+          "Unsigned and signed are different"
+        ],
+        "adders-and-subtractors": [
+          "Add two single bits",
+          "Include a carry-in",
+          "Subtract with a borrow",
+          "Connect stages for wider values",
+          "Read the result and carry correctly"
+        ],
+        "flip-flops": [
+          "A circuit that remembers",
+          "The SR and JK behaviours",
+          "What toggle means",
+          "The D and T flip-flops",
+          "Read clock timing carefully"
+        ],
+        "shift-registers": [
+          "Store bits in connected stages",
+          "Choose how data enters and leaves",
+          "Trace the bits after each clock",
+          "Where shift registers are useful",
+          "Clock edges control the movement"
+        ],
+        "arithmetic-logic-unit": [
+          "One block for many operations",
+          "Control bits choose the operation",
+          "Understand the status flags",
+          "Operand width matters",
+          "Predict the result step by step"
+        ]
+      }
+    };
+    const labs = LAB_DATA.experiments;
+    const chapterTitles = LAB_DATA.theorySectionTitles;
+    const stages = ["Aim", "Theory", "Pretest", "Procedure", "Simulation", "Posttest", "References", "Feedback", "Report"];
+    const stageCopy = {
+      Aim: ["Start with the aim", "Know what you will understand before you begin."],
+      Theory: ["Understand the idea", "Read the concept, follow the diagram, then check the rule."],
+      Pretest: ["Check what you already know", "A quick self-check gives you a useful starting point."],
+      Procedure: ["Work through the steps", "Use the procedure to practise the concept on paper."],
+      Simulation: ["Interactive simulation", "The interactive model can be connected here when it is ready."],
+      Posttest: ["Check what makes sense now", "Try the core ideas again and review each explanation."],
+      References: ["Go a little further", "Use these references to explore the subject in more depth."],
+      Feedback: ["Help improve this lab", "Share a quick rating and a note about the learning experience."],
+      Report: ["Your lab summary", "Review your answers and experiment conclusion."],
+    };
+    const diagramTitles = {
+      "seven-segment": ["BCD input", "BCD decoder", "Display"],
+      "logic-families": ["TTL", "Logic levels", "CMOS"],
+      "boolean-logic": ["Inputs A, B, C", "NOT · AND · OR", "Function F"],
+      multiplexer: ["Data inputs", "4 : 1 MUX", "Output Y"],
+      decoder: ["Input code", "Decoder", "Selected output"],
+      comparator: ["Word A", "Comparator", "A > B · A = B · A < B"],
+      arithmetic: ["A, B, carry / borrow", "Adder · Subtractor", "Result bits"],
+      "flip-flop": ["D + clock", "D flip-flop", "Stored output Q"],
+      "shift-register": ["Serial input", "DFF → DFF → DFF", "Parallel bits"],
+      alu: ["Operands A, B", "ALU + control", "Result + flags"],
+    };
+    const moduleMarks = {
+      "seven-segment": "BCD → 7 SEG", "logic-families": "TTL · CMOS", "boolean-logic": "F = A′B + AC",
+      multiplexer: "4 : 1 MUX", decoder: "2 → 4", comparator: "A  ?  B", arithmetic: "SUM + CARRY",
+      "flip-flop": "D → Q", "shift-register": "Q₀ → Q₁ → Q₂", alu: "ALU(A, B, OP)",
+    };
+    const app = document.querySelector("#app");
+    let activeSlug = null;
+    let activeStage = "Aim";
+    const quizSessions = Object.create(null);
+    const feedbackRatings = Object.create(null);
+    const safe = (value) => String(value ?? "").replace(/[&<>"']/g, (character) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" })[character]);
+    const currentLab = () => labs.find((lab) => lab.slug === activeSlug);
+
+    function labButton(lab, label = "Open lab", className = "lab-card__open") {
+      return `<button class="${className}" data-action="open" data-slug="${safe(lab.slug)}"><span>${safe(label)}</span><span aria-hidden="true">↗</span></button>`;
+    }
+
+    function renderHeader() {
+      return `<header class="topbar"><div class="shell topbar__inner">
+        <a class="brand" href="#home" data-action="home" aria-label="TattvaLab home">
+          <span class="brand__mark" aria-hidden="true"><svg viewBox="0 0 32 32" fill="none"><path d="M6 8h20M10 13h12M16 8v17M8 23h4m8-3h4" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/><circle cx="8" cy="23" r="2" fill="#f4a8b3"/><circle cx="24" cy="20" r="2" fill="#f4a8b3"/></svg></span>
+          <span>tattvalab</span>
+        </a>
+        <nav class="nav" aria-label="Main navigation"><a href="#catalogue" data-action="catalogue">Explore labs</a><a href="#paths" data-action="paths">Learning paths</a><a class="nav__cta" href="#catalogue" data-action="catalogue">All 10 experiments&nbsp; ↗</a></nav>
+      </div></header>`;
+    }
+
+    function renderLogicPreview() {
+      return `<aside class="logic-card" aria-label="AND gate concept preview">
+        <div class="logic-card__head"><span><i></i> CONCEPT PREVIEW</span><strong>AND GATE</strong></div>
+        <div class="logic-card__prompt"><span>When does the output turn on?</span><strong>Only when both inputs are 1.</strong></div>
+        <div class="logic-circuit"><div class="logic-circuit__inputs"><span><i class="on"></i>A <b>1</b></span><span><i></i>B <b>0</b></span></div>
+          <svg viewBox="0 0 106 74" role="img" aria-label="Two inputs connected to an AND gate"><path d="M13 10h32a27 27 0 0 1 0 54H13z" fill="none" stroke="currentColor" stroke-width="2.6"/><path d="M0 25h13M0 49h13M72 37h25" stroke="currentColor" stroke-width="2.6"/><circle cx="5" cy="25" r="3" fill="#e37f8e"/><circle cx="5" cy="49" r="3" fill="#91a0c2"/></svg>
+          <div class="logic-circuit__out"><strong>Y = 0</strong><small>LOW</small></div></div>
+        <div class="logic-rule"><span>BOOLEAN RULE</span><strong>Y = A · B</strong></div>
+        <table class="mini-truth"><thead><tr><th>A</th><th>B</th><th>Y</th></tr></thead><tbody><tr><td>0</td><td>0</td><td>0</td></tr><tr><td>0</td><td>1</td><td>0</td></tr><tr><td>1</td><td>0</td><td>0</td></tr><tr><td>1</td><td>1</td><td>1</td></tr></tbody></table>
+      </aside>`;
+    }
+
+    const paths = [
+      { name: "Start with logic", description: "Learn binary rules and the electrical signals behind them.", slugs: ["logic-gate-explorer", "digital-logic-families"] },
+      { name: "Combine and calculate", description: "Select, decode, compare and do binary arithmetic.", slugs: ["multiplexer-logic-design", "decoder-logic-design", "digital-comparator", "adders-and-subtractors", "bcd-7-segment-decoder"] },
+      { name: "Store and move bits", description: "See how clocked circuits remember data and shift it.", slugs: ["flip-flops", "shift-registers"] },
+      { name: "Put the pieces together", description: "Meet the ALU at the heart of a processor datapath.", slugs: ["arithmetic-logic-unit"] },
+    ];
+
+    function renderHome() {
+      const pathCards = paths.map((path, index) => {
+        const links = path.slugs.map((slug) => {
+          const lab = labs.find((item) => item.slug === slug);
+          return lab ? `<button data-action="open" data-slug="${safe(slug)}">${safe(lab.title)} ↗</button>` : "";
+        }).join("");
+        return `<article class="path-card"><span class="path-card__number">0${index + 1}</span><h3>${safe(path.name)}</h3><p>${safe(path.description)}</p><div class="path-card__links">${links}</div></article>`;
+      }).join("");
+      const labCards = labs.map((lab, index) => `<article class="lab-card">
+        <div class="lab-card__art"><span class="lab-card__number">MODULE ${String(index + 1).padStart(2, "0")}</span><strong>${safe(moduleMarks[lab.diagram] || lab.category)}</strong></div>
+        <span class="lab-card__category">${safe(lab.category)} · ${safe(lab.difficulty)}</span>
+        <h3>${safe(lab.title)}</h3><p>${safe(lab.summary)}</p>
+        <div class="lab-card__meta"><span>◷ ${safe(lab.duration)} min</span><span>Diagram + theory</span></div>
+        ${labButton(lab)}
+      </article>`).join("");
+      return `${renderHeader()}<main id="main-content" class="shell">
+        <section class="hero"><div class="hero__copy"><span class="kicker"><i></i> DIGITAL ELECTRONICS · GUIDED LABS</span>
+          <h1>Digital logic, made clear.<br><em>One circuit at a time.</em></h1>
+          <p>Explore 10 guided labs with clear theory, circuit diagrams, worked examples and quick checks.</p>
+          <div class="hero__actions"><a class="button button--light" href="#catalogue" data-action="catalogue">Explore all 10 labs&nbsp; →</a><button class="hero__link" data-action="open" data-slug="logic-gate-explorer">Start with logic gates&nbsp; ↗</button></div>
+          <div class="hero__facts"><span><strong>10</strong> experiments</span><i></i><span><strong>3</strong> learning phases</span><i></i><span>Work at your pace</span></div>
+        </div>${renderLogicPreview()}</section>
+        <section class="section" id="paths"><div class="section-head"><div><span class="eyebrow">A CLEAR ROUTE THROUGH THE SUBJECT</span><h2>Choose a starting point.</h2></div><p>Follow a learning path, or jump straight to the experiment you need.</p></div><div class="path-grid">${pathCards}</div></section>
+        <section class="section" id="catalogue"><div class="section-head"><div><span class="eyebrow">THEORY · DIAGRAMS · PRACTICE</span><h2>All ten experiments.</h2></div><p>Open any module directly. Theory, pre-test, procedure and report are one click away.</p></div><div class="lab-grid">${labCards}</div></section>
+        <p class="disclaimer">TattvaLab is an independent learning resource and is not an official Medi-Caps University product or student record.</p>
+      </main>${renderFooter()}`;
+    }
+
+    function renderFooter() {
+      return `<footer class="site-footer"><div class="shell site-footer__inner"><span>Understand. Experiment. Discover. Digital Electronics, explained clearly.</span><a href="#home" data-action="home">TattvaLab</a></div></footer>`;
+    }
+
+    function renderDiagram(lab) {
+      const labels = diagramTitles[lab.diagram] || ["Inputs", "Logic block", "Output"];
+      return `<figure class="diagram"><div class="diagram__heading"><span class="eyebrow">CONCEPT DIAGRAM</span><strong>${safe(lab.category)} · how the signals move</strong></div>
+        <div class="diagram__canvas"><svg viewBox="0 0 820 190" role="img" aria-label="${safe(labels.join(" to "))}">
+          <defs><marker id="arrow-${safe(lab.slug)}" markerWidth="9" markerHeight="9" refX="7" refY="3" orient="auto"><path d="M0 0 L0 6 L7 3z" fill="#a21d2e"/></marker></defs>
+          <text x="48" y="38" class="diagram-small">INPUT / CONTROL</text><text x="340" y="38" class="diagram-small">CIRCUIT IDEA</text><text x="645" y="38" class="diagram-small">WHAT TO OBSERVE</text>
+          <rect x="35" y="59" width="205" height="89" rx="14" class="diagram-box"/><text x="137" y="111" text-anchor="middle" class="diagram-node">${safe(labels[0])}</text>
+          <path d="M240 103 H310" class="diagram-line" marker-end="url(#arrow-${safe(lab.slug)})"/>
+          <rect x="310" y="59" width="205" height="89" rx="14" class="diagram-box"/><text x="412" y="111" text-anchor="middle" class="diagram-node">${safe(labels[1])}</text>
+          <path d="M515 103 H585" class="diagram-line" marker-end="url(#arrow-${safe(lab.slug)})"/>
+          <rect x="585" y="59" width="205" height="89" rx="14" class="diagram-box"/><text x="687" y="111" text-anchor="middle" class="diagram-node">${safe(labels[2])}</text>
+        </svg></div><figcaption class="diagram-hint">Follow the signal from left to right. On a small screen, swipe the diagram sideways.</figcaption></figure>`;
+    }
+
+    function renderTheory(lab) {
+      const formulas = lab.equation.split(/\s+·\s+/).map((formula) => `<span class="formula">${safe(formula)}</span>`).join("");
+      const chapters = lab.theory.map((paragraph, index) => `<article class="chapter"><span class="chapter__number">${String(index + 1).padStart(2, "0")}</span><div><span class="eyebrow">CONCEPT ${String(index + 1).padStart(2, "0")}</span><h4>${safe(chapterTitles[lab.slug]?.[index] || `Build the idea · ${index + 1}`)}</h4><p>${safe(paragraph)}</p></div></article>`).join("");
+      const keyPoints = lab.keyPoints.map((point) => `<li>${safe(point)}</li>`).join("");
+      const rows = lab.observations.rows.map((row) => `<tr>${row.map((cell) => `<td>${safe(cell)}</td>`).join("")}</tr>`).join("");
+      const columns = lab.observations.columns.map((column) => `<th>${safe(column)}</th>`).join("");
+      return `<section class="theory-opening"><div class="theory-opening__copy"><span class="eyebrow">FIRST, THE BIG IDEA</span><h3>${safe(lab.aim)}</h3><p>${safe(lab.introduction)}</p></div><aside class="learning-goal"><span>LEARNING GOAL</span><strong>${safe(lab.objective)}</strong></aside></section>
+        ${renderDiagram(lab)}
+        <div class="formula-row"><span class="formula-row__label">THE CORE RULE</span>${formulas}</div>
+        <div class="chapters">${chapters}</div>
+        <div class="highlights"><aside class="fact-card"><span class="eyebrow" style="color:#f0b8c1">DID YOU KNOW?</span><p>${safe(lab.quickFact)}</p></aside><section class="key-card"><span class="eyebrow">KEEP THESE IN MIND</span><ul class="clean-list">${keyPoints}</ul></section></div>
+        <section class="example-card"><span class="eyebrow">LET’S APPLY IT</span><h4>Worked example</h4><p>${safe(lab.calculationExample)}</p></section>
+        <section class="detail-card"><span class="eyebrow">CHECK YOUR UNDERSTANDING</span><h4>Observation table</h4><div style="overflow-x:auto"><table class="observation-table"><thead><tr>${columns}</tr></thead><tbody>${rows}</tbody></table></div><p class="note">${safe(lab.observations.note)}</p></section>
+        <section class="detail-card" style="margin-top:14px"><span class="eyebrow">ASSUMPTIONS AND LIMITS</span>${lab.assumptions.map((item) => `<p>${safe(item)}</p>`).join("")}<p class="note">Use the table to practise. The interactive simulation can be added later.</p></section>`;
+    }
+
+    function getQuizState(slug, kind) {
+      if (!quizSessions[slug]) quizSessions[slug] = {};
+      if (!quizSessions[slug][kind]) quizSessions[slug][kind] = { index: 0, answers: {}, submitted: false, score: null };
+      return quizSessions[slug][kind];
+    }
+
+    function renderQuiz(lab, kind) {
+      const questions = kind === "preTest" ? lab.preTest : lab.postTest;
+      const state = getQuizState(lab.slug, kind);
+      const index = Math.min(state.index, questions.length - 1);
+      const question = questions[index];
+      const selected = state.answers[question.id];
+      const answered = Object.keys(state.answers).length;
+      const options = question.options.map((option, optionIndex) => {
+        const correct = state.submitted && optionIndex === question.correctOption;
+        const wrong = state.submitted && selected === optionIndex && !correct;
+        return `<button class="answer ${selected === optionIndex ? "selected" : ""} ${correct ? "correct" : ""} ${wrong ? "wrong" : ""}" data-action="answer" data-kind="${kind}" data-option="${optionIndex}" ${state.submitted ? "disabled" : ""}><span class="answer__key">${String.fromCharCode(65 + optionIndex)}</span><span>${safe(option)}</span></button>`;
+      }).join("");
+      const allAnswered = questions.every((item) => state.answers[item.id] !== undefined);
+      const explanation = state.submitted ? `<div class="explanation"><strong>${selected === question.correctOption ? "That’s right." : "Review the concept."}</strong><p>${safe(question.explanation)}</p></div>` : "";
+      const result = state.submitted ? `<div class="explanation"><strong>Your score: ${state.score}/${questions.length}</strong><p>This is an ungraded practice check. Review the explanations as you go.</p></div>` : "";
+      const last = index === questions.length - 1;
+      return `<div class="assessment"><section class="assessment__intro"><span class="eyebrow">${kind === "preTest" ? "BEFORE THE THEORY" : "AFTER THE THEORY"}</span><h3>${kind === "preTest" ? "What do you already know?" : "What makes more sense now?"}</h3><p>Try each question and read its explanation. Your responses stay in this page session.</p><span class="eyebrow">${questions.length} QUESTIONS · UNGRADED PRACTICE</span></section>
+        <section class="quiz"><div class="quiz__progress"><span>QUESTION ${String(index + 1).padStart(2, "0")} / ${String(questions.length).padStart(2, "0")}</span><span>${answered} answered</span></div><h4>${safe(question.prompt)}</h4><div class="answer-list">${options}</div>${explanation}<div class="quiz__foot"><button class="button button--outline button--small" data-action="quiz-prev" data-kind="${kind}" ${index === 0 ? "disabled" : ""}>← Previous</button>
+          ${state.submitted ? `<span>Score ${state.score}/${questions.length}</span>` : last ? `<button class="button button--primary button--small" data-action="quiz-submit" data-kind="${kind}" ${allAnswered ? "" : "disabled"}>Submit answers →</button>` : `<button class="button button--primary button--small" data-action="quiz-next" data-kind="${kind}" ${selected === undefined ? "disabled" : ""}>Next →</button>`}</div>${result}</section></div>`;
+    }
+
+    function renderStage(lab) {
+      switch (activeStage) {
+        case "Aim": return `<div class="aim-grid"><section class="aim"><span class="status">THEORY READY · SIMULATION TO FOLLOW</span><span class="eyebrow">THE AIM</span><h3>${safe(lab.aim)}</h3><p>${safe(lab.summary)}</p><div class="objective"><div><b>01</b><p><strong>By the end, you can</strong>${safe(lab.objective)}</p></div><div><b>02</b><p><strong>Time needed</strong>About ${safe(lab.duration)} minutes, at your own pace</p></div></div><section class="detail-card"><span class="eyebrow">WHAT YOU MAY NEED</span><ul class="clean-list">${lab.apparatus.map((item) => `<li>${safe(item)}</li>`).join("")}</ul></section></section><aside class="side-card"><span class="eyebrow">BEFORE YOU BEGIN</span><h4>Helpful prerequisites</h4><ul class="clean-list">${lab.prerequisites.map((item) => `<li>${safe(item)}</li>`).join("")}</ul><p class="note">Read the theory and follow the concept diagram first.</p></aside></div>`;
+        case "Theory": return renderTheory(lab);
+        case "Pretest": return renderQuiz(lab, "preTest");
+        case "Procedure": return `<section><span class="eyebrow">PROCEDURE</span><h3 style="color:var(--blue-dark);margin:7px 0">Work through these steps.</h3><p class="note">Use the concept diagram and observation table to check each result.</p><ol class="procedure-list">${lab.procedure.map((step) => `<li><p>${safe(step)}</p></li>`).join("")}</ol><section class="detail-card"><span class="eyebrow">PRECAUTIONS</span><ul class="clean-list">${lab.precautions.map((item) => `<li>${safe(item)}</li>`).join("")}</ul></section></section>`;
+        case "Simulation": return `<section class="simulation-card"><span class="simulation-card__mark">${String(labs.indexOf(lab) + 1).padStart(2, "0")}</span><div><span class="eyebrow">SIMULATION WILL BE ADDED LATER</span><h3>The theory and diagram are ready.</h3><p>Follow the procedure and practise with the observation table for now. This panel is ready for the interactive Replit model when it is available.</p></div></section>`;
+        case "Posttest": return renderQuiz(lab, "postTest");
+        case "References": return `<section><span class="eyebrow">FURTHER READING</span><h3 style="color:var(--blue-dark);font-size:25px">Explore the topic further</h3><p class="note">These digital-design references cover the ideas in this module with more examples and exercises.</p><ol class="ref-list">${lab.references.map((item) => `<li>${safe(item)}</li>`).join("")}</ol></section>`;
+        case "Feedback": return `<form class="feedback" id="feedback-form"><span class="eyebrow">LEARNER FEEDBACK</span><h3>How was this experiment?</h3><p class="note">Your note stays in this browser session. It is not sent to a server.</p><span class="eyebrow">CHOOSE A RATING</span><div class="rating">${[1, 2, 3, 4, 5].map((rating) => `<button type="button" data-action="rating" data-rating="${rating}" class="${feedbackRatings[lab.slug] === rating ? "selected" : ""}" aria-pressed="${feedbackRatings[lab.slug] === rating}">${rating}</button>`).join("")}</div><label for="feedback-note">What would you improve?</label><textarea id="feedback-note" rows="4" placeholder="Share an optional note"></textarea><button class="button button--primary button--small" type="submit" ${feedbackRatings[lab.slug] ? "" : "disabled"}>Save feedback →</button><p id="feedback-status" class="note" aria-live="polite"></p></form>`;
+        case "Report": {
+          const pre = quizSessions[lab.slug]?.preTest?.score;
+          const post = quizSessions[lab.slug]?.postTest?.score;
+          return `<section class="report"><div class="report__head"><div><span class="eyebrow">TAT TVALAB · DIGITAL ELECTRONICS</span><h3>Experiment summary</h3><p>${safe(lab.title)}</p></div><button class="button button--outline button--small no-print" data-action="print">Print report</button></div><div class="report__grid"><div class="report__item"><span>AIM</span><p>${safe(lab.aim)}</p></div><div class="report__item"><span>CORE RULE</span><p>${safe(lab.equation)}</p></div><div class="report__item"><span>PRE-TEST</span><p>${pre === undefined ? "Not recorded" : `${pre}/${lab.preTest.length} correct`}</p></div><div class="report__item"><span>POST-TEST</span><p>${post === undefined ? "Not recorded" : `${post}/${lab.postTest.length} correct`}</p></div><div class="report__item"><span>ASSUMPTIONS</span><p>${safe(lab.assumptions.join(" "))}</p></div><div class="report__item"><span>CONCLUSION</span><p>${safe(lab.conclusion)}</p></div></div></section>`;
+        }
+      }
+    }
+
+    function renderLab() {
+      const lab = currentLab();
+      if (!lab) { activeSlug = null; return renderHome(); }
+      const index = labs.indexOf(lab);
+      const stageIndex = stages.indexOf(activeStage);
+      const stepButtons = stages.map((stage, stageNumber) => `<button class="${stage === activeStage ? "is-active" : ""} ${stageNumber < stageIndex ? "is-done" : ""}" data-action="stage" data-stage="${stage}" aria-current="${stage === activeStage ? "step" : "false"}"><i>${stageNumber < stageIndex ? "✓" : String(stageNumber + 1).padStart(2, "0")}</i>${stage}</button>`).join("");
+      const [heading, subheading] = stageCopy[activeStage];
+      const nextLabel = activeStage === "Pretest" ? "Continue to procedure" : activeStage === "Posttest" ? "Continue to references" : activeStage === "Feedback" ? "Continue to report" : "Continue";
+      return `${renderHeader()}<main id="main-content" class="shell"><div class="lab-top"><button data-action="catalogue">← Digital Electronics</button><span>/</span><span>${safe(lab.title)}</span></div>
+        <section class="lab-hero"><div><span class="lab-hero__tag">LAB ${String(index + 1).padStart(2, "0")} · ${safe(lab.category).toUpperCase()}</span><h1>${safe(lab.title)}<span>.</span></h1><p>${safe(lab.summary)}</p><div class="lab-hero__meta"><span>◷ About ${safe(lab.duration)} min</span><span>· ${safe(lab.difficulty)}</span><span>· Digital Electronics</span></div><div class="lab-hero__actions"><button class="button button--light" data-action="stage" data-stage="Theory">▤&nbsp; Start with theory&nbsp; →</button><button class="lab-hero__direct" data-action="stage" data-stage="Pretest">Take the pre-test&nbsp; ↗</button></div></div>
+          <aside class="lab-route"><span>YOUR LEARNING ROUTE</span><div class="lab-route__item"><b>01</b><span><strong>Understand</strong><small>Theory and visual diagram</small></span></div><div class="lab-route__item"><b>02</b><span><strong>Try it</strong><small>Procedure and quick checks</small></span></div><div class="lab-route__item"><b>03</b><span><strong>Review</strong><small>Post-test and report</small></span></div></aside>
+        </section>
+        <section id="lab-workflow" class="workflow"><div class="workflow__head"><div><span class="eyebrow">YOUR LAB · ${safe(lab.category.toUpperCase())}</span><h2>${safe(heading)}</h2><p>${safe(subheading)}</p></div><span class="workflow__count"><strong>${String(stageIndex + 1).padStart(2, "0")}</strong> · ${String(stages.length).padStart(2, "0")} STAGES</span></div>
+          <nav class="stepper" aria-label="Experiment stages">${stepButtons}</nav><div class="workflow__content">${renderStage(lab)}</div>
+          <footer class="workflow__foot"><button class="quiet-button" data-action="previous" ${stageIndex === 0 ? "disabled" : ""}>← Previous</button><span>Stage ${stageIndex + 1} of ${stages.length}</span><button class="button button--primary button--small" data-action="next">${stageIndex === stages.length - 1 ? "Finish" : `${safe(nextLabel)} →`}</button></footer>
+        </section><p class="disclaimer">TattvaLab is an independent learning resource and is not an official Medi-Caps University product or student record.</p></main>${renderFooter()}`;
+    }
+
+    function render() {
+      document.title = activeSlug ? `${currentLab()?.title || "Lab"} · TattvaLab` : "TattvaLab — Digital Electronics";
+      app.innerHTML = activeSlug ? renderLab() : renderHome();
+      if (activeSlug) history.replaceState(null, "", `#${activeSlug}/${activeStage.toLowerCase()}`);
+      else history.replaceState(null, "", "#home");
+    }
+
+    function openLab(slug, stage = "Aim") {
+      if (!labs.some((lab) => lab.slug === slug)) return;
+      activeSlug = slug;
+      activeStage = stage;
+      render();
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    }
+
+    function setStage(stage) {
+      if (!stages.includes(stage)) return;
+      activeStage = stage;
+      render();
+      document.querySelector("#lab-workflow")?.scrollIntoView({ behavior: "smooth", block: "start" });
+    }
+
+    function submitQuiz(kind) {
+      const lab = currentLab();
+      if (!lab) return;
+      const questions = kind === "preTest" ? lab.preTest : lab.postTest;
+      const state = getQuizState(lab.slug, kind);
+      if (!questions.every((question) => state.answers[question.id] !== undefined)) return;
+      state.score = questions.reduce((sum, question) => sum + (state.answers[question.id] === question.correctOption ? 1 : 0), 0);
+      state.submitted = true;
+      render();
+    }
+
+    app.addEventListener("click", (event) => {
+      const control = event.target.closest("[data-action]");
+      if (!control) return;
+      const action = control.dataset.action;
+      const lab = currentLab();
+      if (action === "home") { activeSlug = null; render(); window.scrollTo({ top: 0, behavior: "smooth" }); }
+      if (action === "catalogue" || action === "paths") {
+        if (activeSlug) { activeSlug = null; render(); }
+        window.setTimeout(() => document.querySelector(action === "paths" ? "#paths" : "#catalogue")?.scrollIntoView({ behavior: "smooth" }), 20);
+      }
+      if (action === "open") openLab(control.dataset.slug);
+      if (action === "stage") setStage(control.dataset.stage);
+      if (action === "previous" && lab) setStage(stages[Math.max(0, stages.indexOf(activeStage) - 1)]);
+      if (action === "next" && lab) setStage(stages[Math.min(stages.length - 1, stages.indexOf(activeStage) + 1)]);
+      if (action === "answer" && lab) {
+        const kind = control.dataset.kind;
+        const state = getQuizState(lab.slug, kind);
+        const question = (kind === "preTest" ? lab.preTest : lab.postTest)[state.index];
+        if (!state.submitted) state.answers[question.id] = Number(control.dataset.option);
+        render();
+      }
+      if (action === "quiz-prev" && lab) { const state = getQuizState(lab.slug, control.dataset.kind); state.index = Math.max(0, state.index - 1); render(); }
+      if (action === "quiz-next" && lab) { const state = getQuizState(lab.slug, control.dataset.kind); state.index = Math.min((control.dataset.kind === "preTest" ? lab.preTest : lab.postTest).length - 1, state.index + 1); render(); }
+      if (action === "quiz-submit") submitQuiz(control.dataset.kind);
+      if (action === "rating" && lab) { feedbackRatings[lab.slug] = Number(control.dataset.rating); render(); }
+      if (action === "print") window.print();
+    });
+
+    app.addEventListener("submit", (event) => {
+      if (event.target.id !== "feedback-form") return;
+      event.preventDefault();
+      const status = document.querySelector("#feedback-status");
+      if (status) status.textContent = "Thanks — your rating is noted for this session.";
+    });
+
+    render();
+  </script>
+</body>
+</html>

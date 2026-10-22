@@ -1,69 +1,122 @@
-import Image from "next/image";
+import Link from "next/link";
+import { ArrowRight, ArrowUpRight, BookOpenCheck, CircuitBoard, Clock3, Cpu, Layers } from "lucide-react";
+import { ExperimentCard } from "@/components/experiment-card";
+import { ProgressDashboard } from "@/components/progress-dashboard";
+import { experiments } from "@/lib/experiments";
+
+const tracks = [
+  {
+    number: "01",
+    title: "Start with logic",
+    description: "Get comfortable with binary rules and the electrical signals behind them.",
+    icon: CircuitBoard,
+    slugs: ["logic-gate-explorer", "digital-logic-families"],
+    accent: "logic",
+  },
+  {
+    number: "02",
+    title: "Combine and calculate",
+    description: "Select data, decode inputs, compare words and do binary arithmetic.",
+    icon: Cpu,
+    slugs: ["multiplexer-logic-design", "decoder-logic-design", "digital-comparator", "adders-and-subtractors", "bcd-7-segment-decoder"],
+    accent: "combine",
+  },
+  {
+    number: "03",
+    title: "Store and move bits",
+    description: "See how clocked circuits remember data and shift it between stages.",
+    icon: Layers,
+    slugs: ["flip-flops", "shift-registers"],
+    accent: "memory",
+  },
+  {
+    number: "04",
+    title: "Put the pieces together",
+    description: "Meet the arithmetic logic unit at the heart of a processor datapath.",
+    icon: BookOpenCheck,
+    slugs: ["arithmetic-logic-unit"],
+    accent: "system",
+  },
+];
 
 export default function Home() {
+  const experimentsBySlug = new Map(experiments.map((experiment) => [experiment.slug, experiment]));
+
   return (
-    <div className="flex flex-col flex-1 items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex flex-1 w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert h-5 w-[100px]"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the{" "}
-            <code className="rounded bg-black/[.06] px-1.5 py-0.5 font-mono text-[0.9em] dark:bg-white/[.08]">
-              page.tsx
-            </code>{" "}
-            file.
-          </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Learning
-            </a>{" "}
-            center.
-          </p>
+    <main id="main-content" className="home-lab">
+      <section className="home-lab-hero container">
+        <div className="home-lab-hero__copy">
+          <span className="home-lab-kicker"><i /> DIGITAL ELECTRONICS · GUIDED LABS</span>
+          <h1>Digital logic, made clear.<br /><em>One circuit at a time.</em></h1>
+          <p>Explore 10 guided labs with clear theory, circuit diagrams, worked examples and quick checks.</p>
+          <div className="home-lab-hero__actions">
+            <Link className="button button--primary button--large" href="/labs/digital-electronics">Explore all 10 labs <ArrowRight size={18} /></Link>
+            <Link className="home-lab-hero__text-link" href="/experiment/logic-gate-explorer">Start with logic gates <ArrowUpRight size={17} /></Link>
+          </div>
+          <div className="home-lab-hero__facts">
+            <span><strong>10</strong> focused experiments</span><i />
+            <span><strong>3</strong> learning phases</span><i />
+            <span><Clock3 size={16} /> Work at your pace</span>
+          </div>
         </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert h-[14px] w-4"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={14}
-            />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
+
+        <aside className="logic-preview" aria-label="AND gate concept example">
+          <div className="logic-preview__top"><span><i /> CONCEPT PREVIEW</span><strong>AND GATE</strong></div>
+          <div className="logic-preview__question"><span>When does the output turn on?</span><strong>Only when <em>both</em> inputs are 1.</strong></div>
+          <div className="logic-preview__circuit">
+            <div className="logic-preview__inputs"><span><i className="is-high" /> A <b>1</b></span><span><i /> B <b>0</b></span></div>
+            <svg viewBox="0 0 106 74" role="img" aria-label="Two inputs connected to an AND gate">
+              <path d="M13 10h32a27 27 0 0 1 0 54H13z" fill="none" stroke="currentColor" strokeWidth="2.6" />
+              <path d="M0 25h13M0 49h13M72 37h25" stroke="currentColor" strokeWidth="2.6" />
+              <circle cx="5" cy="25" r="3" fill="#81bce8" /><circle cx="5" cy="49" r="3" fill="#9aa9c4" />
+            </svg>
+            <div className="logic-preview__result"><span>Y</span><strong>0</strong><small>LOW</small></div>
+          </div>
+          <div className="logic-preview__rule"><span>BOOLEAN RULE</span><strong>Y = A · B</strong></div>
+          <div className="logic-preview__table"><span>A</span><span>B</span><span>Y</span><b>0</b><b>0</b><b>0</b><b>0</b><b>1</b><b>0</b><b>1</b><b>0</b><b>0</b><b>1</b><b>1</b><b className="is-output">1</b></div>
+          <p className="logic-preview__caption">A small example of the kind of idea you’ll learn to explain.</p>
+        </aside>
+      </section>
+
+      <section className="learning-map container" aria-labelledby="learning-map-title">
+        <div className="section-heading learning-map__heading">
+          <div><span className="eyebrow">A clear route through the subject</span><h2 id="learning-map-title">Choose a starting point.</h2></div>
+          <p>Follow the learning path, or jump straight to the experiment you need.</p>
         </div>
-      </main>
-    </div>
+        <div className="learning-map__grid">
+          {tracks.map((track) => {
+            const Icon = track.icon;
+            return (
+              <article className={`learning-track learning-track--${track.accent}`} key={track.number}>
+                <div className="learning-track__top"><span>{track.number}</span><Icon size={21} strokeWidth={1.8} /></div>
+                <h3>{track.title}</h3>
+                <p>{track.description}</p>
+                <div className="learning-track__links">
+                  {track.slugs.map((slug) => {
+                    const experiment = experimentsBySlug.get(slug);
+                    if (!experiment) return null;
+                    return <Link href={`/experiment/${slug}`} key={slug}>{experiment.title}<ArrowUpRight size={14} /></Link>;
+                  })}
+                </div>
+              </article>
+            );
+          })}
+        </div>
+      </section>
+
+      <section className="home-experiment-list container" aria-labelledby="all-experiments-title">
+        <div className="section-heading">
+          <div><span className="eyebrow">Theory · diagrams · practice</span><h2 id="all-experiments-title">All ten experiments.</h2></div>
+          <Link href="/labs/digital-electronics" className="text-link">Open the full catalogue <ArrowRight size={16} /></Link>
+        </div>
+        <div className="experiment-grid">{experiments.map((experiment, index) => <ExperimentCard key={experiment.slug} experiment={experiment} index={index} />)}</div>
+      </section>
+
+      <section className="home-progress container">
+        <div className="home-progress__intro"><span className="eyebrow">Your work stays yours</span><h2>Pick up where you left off.</h2><p>Experiment scores and completion live in this browser on your device.</p><Link href="/progress" className="text-link">View my progress <ArrowRight size={16} /></Link></div>
+        <div className="home-progress__panel"><ProgressDashboard compact /></div>
+      </section>
+      <p className="home-disclaimer container">TattvaLab is an independent learning resource and is not an official Medi-Caps University product or student record.</p>
+    </main>
   );
 }

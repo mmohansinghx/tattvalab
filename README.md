@@ -1,36 +1,63 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# TattvaLab
 
-## Getting Started
+TattvaLab is an independent, theory-led learning site for Digital Electronics. It guides learners through ten experiment modules with clear explanations, circuit diagrams, examples, and practice questions. Its blue visual theme is inspired by Medi-Caps University; TattvaLab is not an official university product.
 
-First, run the development server:
+## Run locally
+
+Requirements: Node.js 20.9 or later and pnpm.
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
+pnpm install
 pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open `http://localhost:3000`.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Learning flow
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+Each module has direct navigation through Aim, Theory, Pre-test, Procedure, Simulation, Post-test, References, Feedback, and Report. Theory uses original, introductory explanations with key points, examples, and diagrams. Interactive simulations are planned and can be added to the Simulation step later.
 
-## Learn More
+The ten Digital Electronics modules are:
 
-To learn more about Next.js, take a look at the following resources:
+1. BCD to 7-segment display
+2. Digital logic families
+3. Boolean functions with logic gates
+4. Logic functions using a multiplexer
+5. Logic functions using decoders
+6. Digital comparator
+7. Adders and subtractors
+8. Flip-flops and one-bit memory
+9. Shift registers
+10. Arithmetic Logic Unit (ALU)
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Routes
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+- `/` — homepage and learning paths
+- `/labs` — experiment catalogue
+- `/labs/digital-electronics` — Digital Electronics collection
+- `/experiment/[slug]` — guided experiment workflow
+- `/progress` — browser-local progress dashboard
 
-## Deploy on Vercel
+`/TattvaLab-final.html` serves a single-file HTML version with its styles, scripts, and lab content embedded.
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## Project structure
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+- `app/` — Next.js App Router pages and global styles
+- `components/` — shared navigation, catalogue, diagrams, progress, and experiment workflow
+- `lib/experiments.ts` — typed Digital Electronics module content and assessment questions
+- `lib/progress.ts` — browser-local progress storage
+- `lib/simulation.ts` — deterministic simulation calculation helpers
+- `docs/` — product, design, workflow, and assessment notes
+
+Progress is stored in the current browser using `localStorage`; it is not an institutional student record and does not sync between devices.
+
+## Commands
+
+```bash
+pnpm lint        # ESLint
+pnpm typecheck   # TypeScript check
+pnpm test        # Vitest unit tests
+pnpm test:e2e    # Playwright smoke tests
+pnpm build       # production build
+pnpm start       # serve the production build
+```

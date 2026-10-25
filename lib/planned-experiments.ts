@@ -1,10 +1,17 @@
 export type PlannedExperiment = {
   slug: string;
   title: string;
+  aim?: string;
+  hasTheory?: boolean;
 };
 
 export const plannedExperiments: PlannedExperiment[] = [
-  { slug: "logic-gates-rtl-dtl-ttl", title: "Logic gates using RTL, DTL and TTL" },
+  {
+    slug: "logic-gates-rtl-dtl-ttl",
+    title: "Logic gates using RTL, DTL and TTL",
+    aim: "To verify and interpret the truth tables of logic gates (AND, OR, NOT, NAND, NOR, Ex-OR, Ex-NOR).",
+    hasTheory: true,
+  },
   { slug: "logic-functions-gate-ics", title: "Logic functions using logic gate ICs" },
   { slug: "half-full-adders", title: "Half Adder and Full Adder circuits" },
   { slug: "half-full-subtractors", title: "Half Subtractor and Full Subtractor circuits" },

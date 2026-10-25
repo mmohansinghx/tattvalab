@@ -4,6 +4,7 @@ import { useState } from "react";
 import Link from "next/link";
 import { ArrowLeft, ArrowRight, BookOpen, Check, FileText } from "lucide-react";
 import type { PlannedExperiment } from "@/lib/planned-experiments";
+import { LogicGatesTheory } from "@/components/logic-gates-theory";
 
 const stages = ["Aim", "Theory", "Pretest", "Procedure", "Simulation", "Posttest", "References", "Feedback", "Report"] as const;
 
@@ -21,8 +22,8 @@ export function PlannedExperimentPage({ experiment, moduleNumber, initialSection
             <div className="experiment-hero__copy">
               <div className="experiment-hero__eyebrow"><span>MODULE {String(moduleNumber).padStart(2, "0")}</span><i /> DIGITAL ELECTRONICS</div>
               <h1 id="experiment-title">{experiment.title}<span>.</span></h1>
-              <p>This experiment page is ready for your content.</p>
-              <div className="experiment-hero__meta"><span><FileText size={16} /> Experiment</span><i /><span>Content pending</span><i /><span>Digital Electronics</span></div>
+              <p>{experiment.hasTheory ? "Study the logic rules, symbols, and truth tables behind seven common gates." : "This experiment page is ready for your content."}</p>
+              <div className="experiment-hero__meta"><span><FileText size={16} /> Experiment</span><i /><span>{experiment.hasTheory ? "Theory available" : "Content pending"}</span><i /><span>Digital Electronics</span></div>
               <div className="experiment-hero__actions">
                 <button className="button button--hero" type="button" onClick={() => setStepIndex(1)}><BookOpen size={18} /> Open theory section <ArrowRight size={17} /></button>
                 <Link className="experiment-hero__secondary" href="/labs/digital-electronics">All Digital Electronics modules <ArrowRight size={16} /></Link>
@@ -39,18 +40,27 @@ export function PlannedExperimentPage({ experiment, moduleNumber, initialSection
 
           <section className="workflow-card" aria-label="Experiment page structure">
             <div className="workflow-card__top">
-              <div><span className="eyebrow">YOUR EXPERIMENT · CONTENT PENDING</span><h2>{stage}</h2><p>Add your {stage.toLowerCase()} content here when ready.</p></div>
+              <div><span className="eyebrow">YOUR EXPERIMENT · {stage === "Theory" && experiment.hasTheory ? "THEORY READY" : "CONTENT PENDING"}</span><h2>{stage}</h2><p>{stage === "Theory" && experiment.hasTheory ? "Review the gate symbols, Boolean rules and complete truth table." : `Add your ${stage.toLowerCase()} content here when ready.`}</p></div>
               <span className="workflow-card__count"><strong>{String(stepIndex + 1).padStart(2, "0")}</strong><i />{String(stages.length).padStart(2, "0")} SECTIONS</span>
             </div>
             <div className="workflow-stepper" role="group" aria-label="Experiment sections">
               {stages.map((item, index) => <button className={`workflow-step ${index === stepIndex ? "workflow-step--active" : ""} ${index < stepIndex ? "workflow-step--done" : ""}`} key={item} type="button" aria-current={index === stepIndex ? "step" : undefined} onClick={() => setStepIndex(index)}><span>{index < stepIndex ? <Check size={13} /> : String(index + 1).padStart(2, "0")}</span><small>{item}</small></button>)}
             </div>
             <div className="workflow-content">
-              <div className="empty-state planned-stage">
-                <span className="empty-state__icon"><FileText size={21} /></span>
-                <h3>{stage}</h3>
-                <p>Content will be added here.</p>
-              </div>
+              {stage === "Theory" && experiment.hasTheory ? (
+                <LogicGatesTheory />
+              ) : stage === "Aim" && experiment.aim ? (
+                <div className="planned-stage-aim">
+                  <span className="eyebrow">EXPERIMENT AIM</span>
+                  <p>{experiment.aim}</p>
+                </div>
+              ) : (
+                <div className="empty-state planned-stage">
+                  <span className="empty-state__icon"><FileText size={21} /></span>
+                  <h3>{stage}</h3>
+                  <p>Content will be added here.</p>
+                </div>
+              )}
             </div>
             <div className="workflow-card__footer">
               <button className="text-button" type="button" onClick={() => setStepIndex((current) => Math.max(0, current - 1))} disabled={stepIndex === 0}><ArrowLeft size={15} /> Previous</button>

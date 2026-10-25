@@ -14,7 +14,7 @@ export function ProgressDashboard({ compact = false }: { compact?: boolean }) {
     const record = progress[experiment.slug];
     if (!record) return [];
     return [
-      record.preTestScore === null ? null : { name: experiment.title.replace(" explorer", ""), stage: "Pre-test", score: record.preTestScore },
+      record.preTestScore === null ? null : { name: experiment.title.replace(" explorer", ""), stage: "Theory Test", score: record.preTestScore },
       record.postTestScore === null ? null : { name: experiment.title.replace(" explorer", ""), stage: "Post-test", score: record.postTestScore },
     ].filter((item): item is { name: string; stage: string; score: number } => item !== null);
   }), [progress]);

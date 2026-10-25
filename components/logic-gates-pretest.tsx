@@ -15,10 +15,10 @@ export function LogicGatesPretest({ experimentSlug }: { experimentSlug: string }
   const question = logicGatesPretest[currentIndex];
   const answeredCount = useMemo(() => Object.keys(answers).length, [answers]);
   const score = useMemo(() => logicGatesPretest.reduce((total, item) => total + (answers[item.id] === item.answerIndex ? 1 : 0), 0), [answers]);
-  const allAnswered = answeredCount === logicGatesPretest.length;
   const percent = Math.round((answeredCount / logicGatesPretest.length) * 100);
+  const unansweredCount = logicGatesPretest.length - answeredCount;
 
-  function finishTest() {
+  function submitTest() {
     const now = new Date().toISOString();
     const currentProgress = getProgressSnapshot();
     const previous: ExperimentProgress = currentProgress[experimentSlug] ?? {
@@ -47,10 +47,10 @@ export function LogicGatesPretest({ experimentSlug }: { experimentSlug: string }
     return (
       <section className="pretest" aria-labelledby="pretest-results-title">
         <div className="pretest-results">
-          <span className="eyebrow">PRE-TEST · RESULTS</span>
+          <span className="eyebrow">THEORY TEST · RESULTS</span>
           <div className="pretest-results__score"><strong>{score}<small> / {logicGatesPretest.length}</small></strong><span>{Math.round((score / logicGatesPretest.length) * 100)}% score</span></div>
           <h3 id="pretest-results-title">{rating}</h3>
-          <p>You earned one mark for each correct answer. Review any missed items below, then retake the test if you want another attempt.</p>
+          <p>You earned one mark for each correct answer. Unanswered questions counted as zero. Review the answers below, then retake the test if you want another attempt.</p>
           <div className="pretest-results__levels">
             {levels.map((level) => {
               const levelQuestions = logicGatesPretest.filter((item) => item.difficulty === level);
@@ -59,7 +59,7 @@ export function LogicGatesPretest({ experimentSlug }: { experimentSlug: string }
             })}
           </div>
           <p className={`pretest-results__save ${saved ? "pretest-results__save--success" : "pretest-results__save--local"}`}><Check size={15} />{saved ? "Score saved on this device and added to your progress." : "Test scored. Browser storage was unavailable, so this score will not appear in Progress."}</p>
-          <button className="button button--secondary" type="button" onClick={restartTest}><RotateCcw size={16} /> Retake pre-test</button>
+          <button className="button button--secondary" type="button" onClick={restartTest}><RotateCcw size={16} /> Retake theory test</button>
         </div>
         <section className="pretest-review" aria-labelledby="pretest-review-title">
           <div className="pretest-review__heading"><span className="eyebrow">ANSWER REVIEW</span><h3 id="pretest-review-title">Check your reasoning</h3></div>
@@ -85,7 +85,7 @@ export function LogicGatesPretest({ experimentSlug }: { experimentSlug: string }
   return (
     <section className="pretest" aria-labelledby="pretest-title">
       <header className="pretest__header">
-        <div><span className="eyebrow">SCORED PRE-TEST · 20 MARKS</span><h3 id="pretest-title">Check what you know</h3><p>20 multiple-choice questions, from fundamentals to advanced. No timer and no negative marking. Correct answers and explanations appear after you submit the complete test.</p></div>
+        <div><span className="eyebrow">THEORY TEST · 20 MARKS</span><h3 id="pretest-title">Check what you know</h3><p>20 multiple-choice questions, from fundamentals to advanced. No timer and no negative marking. Submit whenever you are ready; unanswered questions count as zero. Correct answers and explanations appear after submission.</p></div>
         <div className="pretest__score-guide"><strong>1 mark</strong><span>for each correct answer</span></div>
       </header>
       <div className="pretest__progress-row"><span>{answeredCount} of {logicGatesPretest.length} answered</span><strong>{percent}%</strong></div>
@@ -111,9 +111,12 @@ export function LogicGatesPretest({ experimentSlug }: { experimentSlug: string }
       <div className="pretest__navigation">
         <button className="text-button" type="button" onClick={() => setCurrentIndex((index) => Math.max(0, index - 1))} disabled={currentIndex === 0}><ArrowLeft size={15} /> Previous</button>
         <span>Question {currentIndex + 1} of {logicGatesPretest.length}</span>
-        {currentIndex < logicGatesPretest.length - 1 ? <button className="button button--primary button--small" type="button" onClick={() => setCurrentIndex((index) => Math.min(logicGatesPretest.length - 1, index + 1))}>Next question <ArrowRight size={15} /></button> : <button className="button button--primary button--small" type="button" disabled={!allAnswered} onClick={finishTest}><Send size={15} /> Submit scored test</button>}
+        {currentIndex < logicGatesPretest.length - 1 ? <button className="button button--primary button--small" type="button" onClick={() => setCurrentIndex((index) => Math.min(logicGatesPretest.length - 1, index + 1))}>Next question <ArrowRight size={15} /></button> : <span />}
       </div>
-      {currentIndex === logicGatesPretest.length - 1 && !allAnswered && <p className="pretest__submit-hint">Answer the remaining {logicGatesPretest.length - answeredCount} question{logicGatesPretest.length - answeredCount === 1 ? "" : "s"} before submitting.</p>}
+      <div className="pretest__submit-row">
+        <div className="pretest__submit-copy"><strong>Ready to finish?</strong><span>{unansweredCount ? `${unansweredCount} unanswered question${unansweredCount === 1 ? "" : "s"} will count as zero marks.` : "All 20 questions are answered."}</span></div>
+        <button className="button button--primary" type="button" onClick={submitTest}><Send size={16} /> Submit theory test</button>
+      </div>
     </section>
   );
 }

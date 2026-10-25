@@ -5,7 +5,7 @@ import type { PlannedExperiment } from "@/lib/planned-experiments";
 const quickSections = [
   { label: "Aim", section: "aim" },
   { label: "Theory", section: "theory" },
-  { label: "Pre-test", section: "pretest" },
+  { label: "Theory Test", section: "theory-test" },
   { label: "Simulation", section: "simulation" },
   { label: "Report", section: "report" },
 ];

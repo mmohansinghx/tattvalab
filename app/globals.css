@@ -1310,7 +1310,11 @@ body { background: #eaeaea; color: #171b2d; font-family: "Metropolis", "Segoe UI
 .pretest__navigation > span { color: #7b899b; font-size: 12px; font-weight: 650; }
 .pretest__navigation .button { min-height: 42px; }
 .pretest__navigation .button:disabled { opacity: .48; cursor: not-allowed; }
-.pretest__submit-hint { margin: -9px 0 0; color: #976d24; font-size: 12px; text-align: right; }
+.pretest__submit-row { display: flex; align-items: center; justify-content: space-between; gap: 16px; padding: 14px 16px; border: 1px solid #d4e2f1; border-radius: 12px; background: #f4f8fd; }
+.pretest__submit-copy { display: grid; gap: 3px; }
+.pretest__submit-copy strong { color: #27496f; font-size: 13px; }
+.pretest__submit-copy span { color: #657b94; font-size: 12px; line-height: 1.5; }
+.pretest__submit-row .button { flex: 0 0 auto; min-height: 43px; }
 .pretest-results { display: grid; justify-items: center; gap: 12px; padding: clamp(21px, 4vw, 38px); border: 1px solid #d2e0ee; border-radius: 17px; background: linear-gradient(145deg, #fff, #f1f7fc); text-align: center; }
 .pretest-results__score { display: grid; justify-items: center; gap: 2px; margin-top: 3px; }
 .pretest-results__score > strong { color: #1c4e83; font-size: clamp(50px, 7vw, 72px); line-height: 1; letter-spacing: -.06em; }
@@ -1885,6 +1889,8 @@ html[data-reduce-motion="true"] *, html[data-reduce-motion="true"] *::before, ht
   .pretest-results__levels { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .pretest__navigation { flex-wrap: wrap; }
   .pretest__navigation > span { order: 3; width: 100%; text-align: center; }
+  .pretest__submit-row { align-items: stretch; flex-direction: column; }
+  .pretest__submit-row .button { width: 100%; justify-content: center; }
 }
 @media (max-width: 900px) {
   .logic-theory__gate-layout { grid-template-columns: minmax(150px, .7fr) minmax(220px, 1.3fr); }

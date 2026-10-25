@@ -2,7 +2,7 @@
 
 import { useMemo, useState } from "react";
 import { Search, Sparkles, X } from "lucide-react";
-import { PlannedExperimentCard } from "@/components/planned-experiment-card";
+import { ExperimentListRow } from "@/components/experiment-list-row";
 import { plannedExperiments } from "@/lib/planned-experiments";
 
 export function LabCatalogue() {
@@ -24,7 +24,7 @@ export function LabCatalogue() {
         <label className="select-field"><span className="sr-only">Sort experiments</span><select value={sort} onChange={(event) => setSort(event.target.value)}><option value="recommended">Photo order</option><option value="title">A to Z</option></select></label>
       </div>
       <div className="catalogue-results" aria-live="polite"><span>{filtered.length} {filtered.length === 1 ? "experiment" : "experiments"}</span>{hasFilters && <button className="text-button" onClick={clearFilters} type="button">Clear filters <X size={14} /></button>}</div>
-      {filtered.length ? <div className="experiment-grid">{filtered.map((experiment, index) => <PlannedExperimentCard key={experiment.slug} experiment={experiment} index={index} moduleNumber={sort === "recommended" ? plannedExperiments.findIndex((item) => item.slug === experiment.slug) + 1 : index + 1} />)}</div> : <div className="empty-state empty-state--catalogue"><span className="empty-state__icon"><Search size={21} /></span><h3>No experiments found</h3><p>Try a shorter search or clear the filter to see all ten topics.</p><button className="button button--secondary" type="button" onClick={clearFilters}>Reset filter</button></div>}
+      {filtered.length ? <div className="experiment-list">{filtered.map((experiment, index) => <ExperimentListRow key={experiment.slug} experiment={experiment} index={index} moduleNumber={sort === "recommended" ? plannedExperiments.findIndex((item) => item.slug === experiment.slug) + 1 : index + 1} />)}</div> : <div className="empty-state empty-state--catalogue"><span className="empty-state__icon"><Search size={21} /></span><h3>No experiments found</h3><p>Try a shorter search or clear the filter to see all ten topics.</p><button className="button button--secondary" type="button" onClick={clearFilters}>Reset filter</button></div>}
       <div className="catalogue-note"><Sparkles size={16} /><p>These are the 10 Digital Electronics experiment titles from your photo. Their pages are ready for the content you will add.</p></div>
     </>
   );

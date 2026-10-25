@@ -7,8 +7,9 @@ import type { PlannedExperiment } from "@/lib/planned-experiments";
 
 const stages = ["Aim", "Theory", "Pretest", "Procedure", "Simulation", "Posttest", "References", "Feedback", "Report"] as const;
 
-export function PlannedExperimentPage({ experiment, moduleNumber }: { experiment: PlannedExperiment; moduleNumber: number }) {
-  const [stepIndex, setStepIndex] = useState(0);
+export function PlannedExperimentPage({ experiment, moduleNumber, initialSection = "Aim" }: { experiment: PlannedExperiment; moduleNumber: number; initialSection?: string }) {
+  const requestedIndex = stages.findIndex((item) => item.toLowerCase() === initialSection.toLowerCase());
+  const [stepIndex, setStepIndex] = useState(requestedIndex < 0 ? 0 : requestedIndex);
   const stage = stages[stepIndex];
 
   return (
@@ -21,7 +22,7 @@ export function PlannedExperimentPage({ experiment, moduleNumber }: { experiment
               <div className="experiment-hero__eyebrow"><span>MODULE {String(moduleNumber).padStart(2, "0")}</span><i /> DIGITAL ELECTRONICS</div>
               <h1 id="experiment-title">{experiment.title}<span>.</span></h1>
               <p>This experiment page is ready for your content.</p>
-              <div className="experiment-hero__meta"><span><FileText size={16} /> Page outline</span><i /><span>Content pending</span><i /><span>Digital Electronics</span></div>
+              <div className="experiment-hero__meta"><span><FileText size={16} /> Experiment</span><i /><span>Content pending</span><i /><span>Digital Electronics</span></div>
               <div className="experiment-hero__actions">
                 <button className="button button--hero" type="button" onClick={() => setStepIndex(1)}><BookOpen size={18} /> Open theory section <ArrowRight size={17} /></button>
                 <Link className="experiment-hero__secondary" href="/labs/digital-electronics">All Digital Electronics modules <ArrowRight size={16} /></Link>

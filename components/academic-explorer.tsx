@@ -12,7 +12,7 @@ import {
   GraduationCap,
   Zap,
 } from "lucide-react";
-import { PlannedExperimentCard } from "@/components/planned-experiment-card";
+import { ExperimentListRow } from "@/components/experiment-list-row";
 import { plannedExperiments } from "@/lib/planned-experiments";
 
 const levels = [
@@ -128,8 +128,8 @@ export function AcademicExplorer() {
               <div><span className="eyebrow">Digital Electronics · Graduation</span><h3>All 10 experiments</h3></div>
               <span>Each title opens its own experiment page.</span>
             </div>
-            <div className="experiment-grid">
-              {plannedExperiments.map((experiment, index) => <PlannedExperimentCard key={experiment.slug} experiment={experiment} index={index} moduleNumber={index + 1} />)}
+            <div className="experiment-list">
+              {plannedExperiments.map((experiment, index) => <ExperimentListRow key={experiment.slug} experiment={experiment} index={index} moduleNumber={index + 1} />)}
             </div>
           </div>
         </div>

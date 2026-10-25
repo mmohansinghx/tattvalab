@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { ArrowLeft, ArrowRight, ArrowUpRight, Atom, BookOpenCheck, ChevronRight, CircuitBoard, Zap } from "lucide-react";
-import { PlannedExperimentCard } from "@/components/planned-experiment-card";
+import { ExperimentListRow } from "@/components/experiment-list-row";
 import { subjects, type SubjectId } from "@/lib/experiments";
 import { plannedExperiments } from "@/lib/planned-experiments";
 
@@ -33,7 +33,7 @@ export function SubjectLanding({ subject }: { subject: SubjectId }) {
         {hasModules ? (
           <>
             <div className="section-heading section-heading--left"><div><span className="eyebrow">Photo list · Graduation</span><h2>All 10 experiments</h2></div><Link className="text-link" href="/labs">Browse all subjects <ArrowUpRight size={16} /></Link></div>
-            <div className="experiment-grid">{modules.map((experiment, index) => <PlannedExperimentCard key={experiment.slug} experiment={experiment} index={index} moduleNumber={index + 1} />)}</div>
+            <div className="experiment-list">{modules.map((experiment, index) => <ExperimentListRow key={experiment.slug} experiment={experiment} index={index} moduleNumber={index + 1} />)}</div>
             <div className="faculty-note"><div className="faculty-note__icon"><BookOpenCheck size={20} /></div><div><strong>10 Digital Electronics experiments</strong><p>Choose a title to open its separate experiment page. Content sections are ready for your material.</p></div></div>
           </>
         ) : (

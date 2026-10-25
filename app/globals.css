@@ -1245,8 +1245,22 @@ body { background: #eaeaea; color: #171b2d; font-family: "Metropolis", "Segoe UI
 .home-lab .experiment-card { min-width: 0; padding: 0 18px 17px; overflow: hidden; border: 1px solid #cfd2dc; border-radius: 17px; background: #e4e5e9; box-shadow: 0 8px 20px rgb(29 39 90 / 5%); transition: transform .2s ease, box-shadow .2s ease, border-color .2s ease; }
 .home-lab .experiment-card:hover { transform: translateY(-4px); border-color: #9ca6cb; box-shadow: 0 15px 30px rgb(29 39 90 / 12%); }
 .experiment-card__visual { position: relative; display: flex; min-height: 142px; flex-direction: column; justify-content: space-between; margin: 0 -18px; padding: 16px 18px 15px; overflow: hidden; color: #fff; background: radial-gradient(circle at 78% 38%, rgb(255 255 255 / 17%), transparent 35%), linear-gradient(125deg, #1d2a68, #283887 58%, #652846); }
-.experiment-card--planned .experiment-card__visual { background: radial-gradient(circle at 78% 38%, rgb(255 255 255 / 18%), transparent 35%), linear-gradient(125deg, #183d68, #2364a1 58%, #4678a8); }
-.experiment-card--planned .experiment-card__category { color: #607a98; }
+.experiment-list { display: grid; grid-template-columns: minmax(0, 1fr); gap: 13px; }
+.experiment-list-row { display: grid; grid-template-columns: minmax(0, 1fr) 238px; min-height: 126px; overflow: hidden; border: 1px solid #cfd5df; border-radius: 5px; background: #f2f3f5; box-shadow: 0 3px 10px rgb(27 49 78 / 4%); animation: fadeUp .45s both; transition: border-color .18s, box-shadow .18s, transform .18s; }
+.experiment-list-row:hover { transform: translateY(-2px); border-color: #9eabc0; box-shadow: 0 9px 22px rgb(27 49 78 / 10%); }
+.experiment-list-row__main { min-width: 0; padding: 17px 20px 14px; }
+.experiment-list-row__meta { display: flex; align-items: center; gap: 9px; color: #64738a; font-size: 11px; font-weight: 700; letter-spacing: .07em; text-transform: uppercase; }
+.experiment-list-row__meta span { color: #9c2638; }
+.experiment-list-row__meta i { width: 3px; height: 3px; border-radius: 50%; background: #9eabc0; }
+.experiment-list-row h3 { margin: 7px 0 10px; color: #23346f; font-size: clamp(17px, 1.6vw, 21px); font-weight: 650; line-height: 1.28; letter-spacing: -.025em; }
+.experiment-list-row h3 a:hover { color: #a21d2e; }
+.experiment-list-row__sections { display: flex; flex-wrap: wrap; gap: 7px 18px; }
+.experiment-list-row__sections a { display: inline-flex; align-items: center; gap: 3px; color: #a42d39; font-size: 12px; font-weight: 650; transition: color .18s; }
+.experiment-list-row__sections a:hover { color: #283887; text-decoration: underline; text-underline-offset: 3px; }
+.experiment-list-row__action { display: flex; flex-direction: column; justify-content: center; gap: 11px; padding: 18px 21px; color: #fff; background: linear-gradient(135deg, #25366f, #315b94); }
+.experiment-list-row__action > span { color: #d0dcf2; font-size: 11px; font-weight: 650; letter-spacing: .06em; text-transform: uppercase; }
+.experiment-list-row__action strong { display: flex; align-items: center; justify-content: space-between; gap: 12px; font-size: 15px; font-weight: 700; }
+.experiment-list-row__action:hover { background: linear-gradient(135deg, #1e2e65, #284f86); }
 .planned-stage { min-height: 230px; margin: 0; border-color: #d8e4f1; background: linear-gradient(145deg, #f8fbff, #f0f5fb); }
 .planned-stage h3 { color: #173e68; }
 .planned-stage p { color: #5b7390; }
@@ -1495,4 +1509,11 @@ body { background: #eaeaea; color: #171b2d; font-family: "Metropolis", "Segoe UI
   .workflow-card__count { margin-top: 18px; }
   .workflow-card__footer { gap: 5px; }
   .workflow-footer__center { font-size: 11px; }
+}
+@media (max-width: 740px) {
+  .experiment-list { gap: 10px; }
+  .experiment-list-row { grid-template-columns: minmax(0, 1fr); }
+  .experiment-list-row__main { padding: 15px 16px 14px; }
+  .experiment-list-row__action { min-height: 62px; flex-direction: row; align-items: center; justify-content: space-between; gap: 12px; padding: 12px 16px; }
+  .experiment-list-row__action > span { font-size: 10px; }
 }

@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { ArrowRight, ArrowUpRight, BookOpenCheck, Compass, Lightbulb } from "lucide-react";
+import { HomeLevelSelector } from "@/components/home-level-selector";
 
 export const metadata: Metadata = {
   title: "TattvaLab | Virtual Labs",
@@ -39,6 +40,8 @@ export default function Home() {
           <p className="tattvalab-visual__caption">A calm, clear space for learning by exploring.</p>
         </aside>
       </section>
+
+      <HomeLevelSelector />
 
       <section className="tattvalab-about container" id="about">
         <div className="tattvalab-about__intro">

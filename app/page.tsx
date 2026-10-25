@@ -18,7 +18,8 @@ export default function Home() {
           <div className="home-lab-hero__facts">
             <span><strong>3</strong> subjects</span><i />
             <span><strong>3</strong> study levels</span><i />
-            <span><Clock3 size={16} /> 10 graduation labs ready</span>
+            <span><Clock3 size={16} /> 10 graduation labs ready</span><i />
+            <span><strong>10</strong> experiment pages outlined</span>
           </div>
         </div>
 

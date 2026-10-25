@@ -13,7 +13,9 @@ import {
   Zap,
 } from "lucide-react";
 import { ExperimentCard } from "@/components/experiment-card";
+import { PlannedExperimentCard } from "@/components/planned-experiment-card";
 import { experiments } from "@/lib/experiments";
+import { plannedExperiments } from "@/lib/planned-experiments";
 
 const levels = [
   { id: "class-11", title: "Class 11", detail: "School level" },
@@ -148,9 +150,9 @@ export function AcademicExplorer() {
             <div>
               <span className="eyebrow">Graduation · Digital Electronics</span>
               <h3>Start anywhere in the collection.</h3>
-              <p>All ten modules include an aim, original theory, diagrams, worked examples and practice.</p>
+              <p>10 existing labs are ready. The 10 experiment pages from your list have their own URLs and are ready for your content.</p>
             </div>
-            <Link className="button button--primary" href="/labs/digital-electronics">Open all 10 labs <ArrowRight size={16} /></Link>
+            <Link className="button button--primary" href="/labs/digital-electronics">Explore all 20 modules <ArrowRight size={16} /></Link>
           </div>
           <div className="academic-path-grid">
             {tracks.map((track) => (
@@ -169,11 +171,20 @@ export function AcademicExplorer() {
           </div>
           <div className="academic-collection__modules">
             <div className="section-heading section-heading--left">
-              <div><span className="eyebrow">Theory · diagrams · practice</span><h3>All 10 experiments</h3></div>
+              <div><span className="eyebrow">Current learning content</span><h3>10 experiments ready</h3></div>
               <span>Choose a module to open its aim, theory or pre-test.</span>
             </div>
             <div className="experiment-grid">
               {experiments.map((experiment, index) => <ExperimentCard key={experiment.slug} experiment={experiment} index={index} />)}
+            </div>
+          </div>
+          <div className="academic-collection__modules">
+            <div className="section-heading section-heading--left">
+              <div><span className="eyebrow">Your experiment list</span><h3>10 page outlines · content pending</h3></div>
+              <span>Open a module to see its separate page and section structure.</span>
+            </div>
+            <div className="experiment-grid">
+              {plannedExperiments.map((experiment, index) => <PlannedExperimentCard key={experiment.slug} experiment={experiment} index={experiments.length + index} />)}
             </div>
           </div>
         </div>

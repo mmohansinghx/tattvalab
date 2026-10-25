@@ -1245,6 +1245,11 @@ body { background: #eaeaea; color: #171b2d; font-family: "Metropolis", "Segoe UI
 .home-lab .experiment-card { min-width: 0; padding: 0 18px 17px; overflow: hidden; border: 1px solid #cfd2dc; border-radius: 17px; background: #e4e5e9; box-shadow: 0 8px 20px rgb(29 39 90 / 5%); transition: transform .2s ease, box-shadow .2s ease, border-color .2s ease; }
 .home-lab .experiment-card:hover { transform: translateY(-4px); border-color: #9ca6cb; box-shadow: 0 15px 30px rgb(29 39 90 / 12%); }
 .experiment-card__visual { position: relative; display: flex; min-height: 142px; flex-direction: column; justify-content: space-between; margin: 0 -18px; padding: 16px 18px 15px; overflow: hidden; color: #fff; background: radial-gradient(circle at 78% 38%, rgb(255 255 255 / 17%), transparent 35%), linear-gradient(125deg, #1d2a68, #283887 58%, #652846); }
+.experiment-card--planned .experiment-card__visual { background: radial-gradient(circle at 78% 38%, rgb(255 255 255 / 18%), transparent 35%), linear-gradient(125deg, #183d68, #2364a1 58%, #4678a8); }
+.experiment-card--planned .experiment-card__category { color: #607a98; }
+.planned-stage { min-height: 230px; margin: 0; border-color: #d8e4f1; background: linear-gradient(145deg, #f8fbff, #f0f5fb); }
+.planned-stage h3 { color: #173e68; }
+.planned-stage p { color: #5b7390; }
 .experiment-card__visual::after { position: absolute; right: -31px; bottom: -77px; width: 175px; height: 175px; border: 1px solid rgb(255 255 255 / 20%); border-radius: 50%; box-shadow: 0 0 0 17px rgb(255 255 255 / 4%), 0 0 0 34px rgb(255 255 255 / 3%); content: ""; }
 .experiment-card__visual--logic-families, .experiment-card__visual--arithmetic, .experiment-card__visual--alu { background: radial-gradient(circle at 78% 38%, rgb(255 255 255 / 17%), transparent 35%), linear-gradient(125deg, #39244f, #283887 58%, #a21d2e); }
 .experiment-card__module { position: relative; z-index: 1; color: #d8ddef; font-size: 10px; font-weight: 750; letter-spacing: .13em; }

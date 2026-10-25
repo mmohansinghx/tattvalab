@@ -2,14 +2,18 @@ import type { Metadata } from "next";
 import { Suspense } from "react";
 import { notFound } from "next/navigation";
 import { ExperimentWorkflow } from "@/components/experiment-workflow";
+import { PlannedExperimentPage } from "@/components/planned-experiment-page";
 import { experiments, getExperiment } from "@/lib/experiments";
+import { getPlannedExperiment, plannedExperiments } from "@/lib/planned-experiments";
 
-export function generateStaticParams() { return experiments.map(({ slug }) => ({ slug })); }
+export function generateStaticParams() { return [...experiments, ...plannedExperiments].map(({ slug }) => ({ slug })); }
 
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
   const { slug } = await params;
   const experiment = getExperiment(slug);
-  return experiment ? { title: experiment.title, description: experiment.summary } : { title: "Module not found" };
+  const plannedExperiment = getPlannedExperiment(slug);
+  if (experiment) return { title: experiment.title, description: experiment.summary };
+  return plannedExperiment ? { title: plannedExperiment.title, description: "Digital Electronics experiment page outline." } : { title: "Module not found" };
 }
 
 export default function ExperimentPage({ params }: { params: Promise<{ slug: string }> }) {
@@ -23,6 +27,9 @@ function ExperimentLoading() {
 async function ExperimentContent({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
   const experiment = getExperiment(slug);
-  if (!experiment) notFound();
-  return <main id="main-content" className="experiment-page"><div className="container"><ExperimentWorkflow experiment={experiment} /></div></main>;
+  if (experiment) return <main id="main-content" className="experiment-page"><div className="container"><ExperimentWorkflow experiment={experiment} /></div></main>;
+  const plannedExperiment = getPlannedExperiment(slug);
+  if (!plannedExperiment) notFound();
+  const moduleNumber = experiments.length + plannedExperiments.findIndex((item) => item.slug === plannedExperiment.slug) + 1;
+  return <PlannedExperimentPage experiment={plannedExperiment} moduleNumber={moduleNumber} />;
 }

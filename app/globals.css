@@ -52,6 +52,11 @@ button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible
 .button--large { min-height: 49px; padding-inline: 21px; }
 .button--small { min-height: 37px; padding-inline: 14px; border-radius: 8px; font-size: 14px; }
 .site-nav__cta { margin-left: 3px; }
+.site-nav__icon-link { width: 39px; height: 39px; display: grid; flex: 0 0 auto; place-items: center; padding: 0 !important; color: #1d5c9c; border: 1px solid #d4e2f1; border-radius: 10px; background: #fff; }
+.site-nav__icon-link:hover { color: #a21d2e !important; border-color: #afc6df; }
+.site-nav__icon-link[aria-current="page"]::after { display: none; }
+.site-nav__settings { display: inline-flex; align-items: center; gap: 7px; color: #4d5e75; }
+.site-nav__settings:hover, .site-nav__settings[aria-current="page"] { color: #15589b !important; }
 .text-link, .text-button { display: inline-flex; align-items: center; gap: 8px; padding: 0; color: #514888; border: 0; background: transparent; font-size: 15px; font-weight: 640; cursor: pointer; transition: color .18s, gap .18s; }
 .text-link:hover, .text-button:hover:not(:disabled) { color: #8c315f; gap: 11px; }
 .text-button:disabled { opacity: .42; cursor: not-allowed; }
@@ -1575,6 +1580,8 @@ body { background: #eaeaea; color: #171b2d; font-family: "Metropolis", "Segoe UI
   .tattvalab-visual { width: min(100%, 560px); margin: 0 auto; }
 }
 @media (max-width: 740px) {
+  .site-nav__icon-link { align-self: flex-start; margin: 5px 0 8px; }
+  .site-nav__settings { padding: 12px 4px; border-bottom: 1px solid #e2e8f0; }
   .tattvalab-home { padding: 20px 0 48px; }
   .tattvalab-hero { gap: 27px; padding: 31px 25px; border-radius: 23px; }
   .tattvalab-hero h1 { font-size: clamp(42px, 9vw, 60px); }
@@ -1586,4 +1593,46 @@ body { background: #eaeaea; color: #171b2d; font-family: "Metropolis", "Segoe UI
   .experiment-list-row__main { padding: 15px 16px 14px; }
   .experiment-list-row__action { min-height: 62px; flex-direction: row; align-items: center; justify-content: space-between; gap: 12px; padding: 12px 16px; }
   .experiment-list-row__action > span { font-size: 10px; }
+}
+
+.settings-page { min-height: calc(100vh - 150px); padding: 18px 0 72px; background: radial-gradient(ellipse at 88% 0%, rgb(38 102 173 / 9%), transparent 34%), linear-gradient(180deg, #edf3fb, #e8edf5); }
+.settings-page .breadcrumbs { margin-bottom: 32px; }
+.settings-page__heading { margin: 0 0 27px; }
+.settings-page__heading .eyebrow { color: #a21d2e; font-size: 12px; font-weight: 750; letter-spacing: .12em; }
+.settings-page__heading h1 { margin: 8px 0 7px; color: #15345f; font-size: clamp(38px, 5vw, 54px); letter-spacing: -.06em; line-height: 1.05; }
+.settings-page__heading h1 span { color: #a21d2e; }
+.settings-page__heading p { margin: 0; color: #5c7089; font-size: 16px; }
+.settings-controls { display: grid; max-width: 850px; gap: 15px; }
+.settings-card { padding: 22px 24px; border: 1px solid #d4dfed; border-radius: 15px; background: #fff; box-shadow: 0 8px 25px rgb(25 61 105 / 5%); }
+.settings-card__heading { display: flex; align-items: flex-start; gap: 13px; }
+.settings-card__icon { display: grid; width: 39px; height: 39px; flex: 0 0 auto; place-items: center; color: #1d5e9f; border: 1px solid #d8e7f7; border-radius: 11px; background: #eff6ff; }
+.settings-card__heading h2 { margin: 0; color: #183b68; font-size: 19px; }
+.settings-card__heading p { margin: 4px 0 0; color: #687b91; font-size: 14px; line-height: 1.5; }
+.settings-theme { display: flex; align-items: center; gap: 13px; margin: 20px 0 0 52px; padding: 14px 15px; border: 1px solid #e0e7f0; border-radius: 11px; background: #f8faff; }
+.settings-theme__swatches { display: flex; padding-left: 1px; }
+.settings-theme__swatches i { width: 21px; height: 21px; margin-left: -2px; border: 2px solid #fff; border-radius: 50%; background: #183d77; }
+.settings-theme__swatches i:nth-child(2) { background: #3275b8; }
+.settings-theme__swatches i:nth-child(3) { background: #a52e41; }
+.settings-theme > span:nth-child(2) { display: grid; gap: 2px; }
+.settings-theme strong { color: #29496e; font-size: 14px; }
+.settings-theme small { color: #79869a; font-size: 12px; }
+.settings-theme__active { display: inline-flex; align-items: center; gap: 5px; margin-left: auto; color: #246b56; font-size: 12px; font-weight: 700; }
+.settings-option { display: flex; align-items: center; justify-content: space-between; gap: 18px; margin: 19px 0 0 52px; padding-top: 17px; border-top: 1px solid #e6ebf2; }
+.settings-option strong { color: #29496e; font-size: 14px; }
+.settings-option p { margin: 4px 0 0; color: #748298; font-size: 13px; }
+.settings-switch { position: relative; width: 46px; height: 26px; flex: 0 0 auto; padding: 3px; border: 1px solid #c7d2e1; border-radius: 999px; background: #dce3ed; cursor: pointer; transition: background .18s, border-color .18s; }
+.settings-switch > span { display: block; width: 18px; height: 18px; border-radius: 50%; background: #fff; box-shadow: 0 1px 3px rgb(14 33 57 / 20%); transition: transform .18s; }
+.settings-switch--on { border-color: #1e5d9e; background: #1e5d9e; }
+.settings-switch--on > span { transform: translateX(19px); }
+.settings-controls__footer { display: flex; align-items: center; justify-content: space-between; gap: 15px; padding: 3px 3px 0; color: #748298; font-size: 12px; }
+.settings-reset { display: inline-flex; align-items: center; gap: 7px; padding: 7px 10px; color: #315a85; border: 1px solid #d6e1ee; border-radius: 8px; background: #f8fbff; font-size: 12px; font-weight: 650; cursor: pointer; }
+.settings-reset:hover { color: #a21d2e; border-color: #c7d7e8; background: #fff; }
+html[data-reduce-motion="true"] *, html[data-reduce-motion="true"] *::before, html[data-reduce-motion="true"] *::after { scroll-behavior: auto !important; animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; }
+
+@media (max-width: 640px) {
+  .settings-page { padding-top: 13px; }
+  .settings-page .breadcrumbs { margin-bottom: 24px; }
+  .settings-card { padding: 18px; }
+  .settings-theme, .settings-option { margin-left: 0; }
+  .settings-controls__footer { align-items: flex-start; flex-direction: column; }
 }

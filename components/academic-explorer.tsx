@@ -12,9 +12,7 @@ import {
   GraduationCap,
   Zap,
 } from "lucide-react";
-import { ExperimentCard } from "@/components/experiment-card";
 import { PlannedExperimentCard } from "@/components/planned-experiment-card";
-import { experiments } from "@/lib/experiments";
 import { plannedExperiments } from "@/lib/planned-experiments";
 
 const levels = [
@@ -44,40 +42,11 @@ const subjects = [
   },
 ] as const;
 
-const tracks = [
-  {
-    number: "01",
-    title: "Start with logic",
-    description: "Get comfortable with binary rules and the electrical signals behind them.",
-    slugs: ["logic-gate-explorer", "digital-logic-families"],
-  },
-  {
-    number: "02",
-    title: "Combine and calculate",
-    description: "Select data, decode inputs, compare words and do binary arithmetic.",
-    slugs: ["multiplexer-logic-design", "decoder-logic-design", "digital-comparator", "adders-and-subtractors", "bcd-7-segment-decoder"],
-  },
-  {
-    number: "03",
-    title: "Store and move bits",
-    description: "See how clocked circuits remember data and shift it between stages.",
-    slugs: ["flip-flops", "shift-registers"],
-  },
-  {
-    number: "04",
-    title: "Put the pieces together",
-    description: "Meet the arithmetic logic unit at the heart of a processor datapath.",
-    slugs: ["arithmetic-logic-unit"],
-  },
-] as const;
-
 export function AcademicExplorer() {
   const [level, setLevel] = useState<LevelId>("graduation");
   const [subject, setSubject] = useState<SubjectId>("digital-electronics");
   const available = level === "graduation" && subject === "digital-electronics";
   const selectedSubject = subjects.find((item) => item.id === subject) ?? subjects[2];
-  const experimentsBySlug = new Map(experiments.map((experiment) => [experiment.slug, experiment]));
-
   function showAvailableCollection() {
     setLevel("graduation");
     setSubject("digital-electronics");
@@ -133,7 +102,7 @@ export function AcademicExplorer() {
                 <span className="academic-subject__top">
                   <span className="academic-subject__icon"><Icon size={21} strokeWidth={1.8} /></span>
                   <span className={`academic-subject__status${hasCollection ? " academic-subject__status--ready" : ""}`}>
-                    {hasCollection ? "10 labs ready" : "Coming soon"}
+                    {hasCollection ? "10 experiments ready" : "Coming soon"}
                   </span>
                 </span>
                 <strong>{title}</strong>
@@ -150,41 +119,17 @@ export function AcademicExplorer() {
             <div>
               <span className="eyebrow">Graduation · Digital Electronics</span>
               <h3>Start anywhere in the collection.</h3>
-              <p>10 existing labs are ready. The 10 experiment pages from your list have their own URLs and are ready for your content.</p>
+              <p>These are the 10 Digital Electronics experiments from your photo. Open any title to reach its own page.</p>
             </div>
-            <Link className="button button--primary" href="/labs/digital-electronics">Explore all 20 modules <ArrowRight size={16} /></Link>
-          </div>
-          <div className="academic-path-grid">
-            {tracks.map((track) => (
-              <article className="academic-path" key={track.number}>
-                <span className="academic-path__number">{track.number}</span>
-                <h4>{track.title}</h4>
-                <p>{track.description}</p>
-                <div>
-                  {track.slugs.map((slug) => {
-                    const experiment = experimentsBySlug.get(slug);
-                    return experiment ? <Link href={`/experiment/${slug}`} key={slug}>{experiment.title}<ArrowUpRight size={14} /></Link> : null;
-                  })}
-                </div>
-              </article>
-            ))}
+            <Link className="button button--primary" href="/labs/digital-electronics">Explore all 10 experiments <ArrowRight size={16} /></Link>
           </div>
           <div className="academic-collection__modules">
             <div className="section-heading section-heading--left">
-              <div><span className="eyebrow">Current learning content</span><h3>10 experiments ready</h3></div>
-              <span>Choose a module to open its aim, theory or pre-test.</span>
+              <div><span className="eyebrow">Digital Electronics · Graduation</span><h3>All 10 experiments</h3></div>
+              <span>Each title opens its own experiment page.</span>
             </div>
             <div className="experiment-grid">
-              {experiments.map((experiment, index) => <ExperimentCard key={experiment.slug} experiment={experiment} index={index} />)}
-            </div>
-          </div>
-          <div className="academic-collection__modules">
-            <div className="section-heading section-heading--left">
-              <div><span className="eyebrow">Your experiment list</span><h3>10 page outlines · content pending</h3></div>
-              <span>Open a module to see its separate page and section structure.</span>
-            </div>
-            <div className="experiment-grid">
-              {plannedExperiments.map((experiment, index) => <PlannedExperimentCard key={experiment.slug} experiment={experiment} index={experiments.length + index} />)}
+              {plannedExperiments.map((experiment, index) => <PlannedExperimentCard key={experiment.slug} experiment={experiment} index={index} moduleNumber={index + 1} />)}
             </div>
           </div>
         </div>

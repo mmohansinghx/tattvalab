@@ -1,4 +1,4 @@
-export type SubjectId = "digital-electronics";
+export type SubjectId = "physics" | "basic-electrical" | "digital-electronics";
 export type SimulationKind = "none" | "logic-gates" | "ohms-law" | "constant-acceleration";
 export type DiagramKind = "seven-segment" | "logic-families" | "boolean-logic" | "multiplexer" | "decoder" | "comparator" | "arithmetic" | "flip-flop" | "shift-register" | "alu";
 
@@ -42,11 +42,23 @@ export type Experiment = {
 };
 
 export const subjects: Record<SubjectId, { title: string; shortTitle: string; description: string; number: string }> = {
+  physics: {
+    title: "Physics",
+    shortTitle: "Physics",
+    description: "Graduation-level Physics collection. Lab content is being prepared.",
+    number: "01",
+  },
+  "basic-electrical": {
+    title: "Basic Electrical & Electronics",
+    shortTitle: "Basic Electrical & Electronics",
+    description: "Graduation-level Basic Electrical & Electronics collection. Lab content is being prepared.",
+    number: "02",
+  },
   "digital-electronics": {
     title: "Digital Electronics",
     shortTitle: "Digital Electronics",
     description: "Learn how digital circuits store, select, compare and process information using 0s and 1s.",
-    number: "01",
+    number: "03",
   },
 };
 

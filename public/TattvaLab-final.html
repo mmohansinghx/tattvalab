@@ -4,8 +4,8 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="theme-color" content="#283887">
-  <meta name="description" content="A guided Digital Electronics learning lab with clear theory, diagrams and practice.">
-  <title>TattvaLab — Digital Electronics</title>
+  <meta name="description" content="Choose a subject and study level in the TattvaLab virtual lab.">
+  <title>TattvaLab — Virtual Labs</title>
   <style>
     :root {
       color-scheme: light;
@@ -85,6 +85,46 @@
     .eyebrow { color: var(--red); font-size: 11px; font-weight: 800; letter-spacing: .11em; }
     .section-head h2 { margin: 6px 0 0; color: var(--blue-dark); font-size: clamp(29px, 3.5vw, 42px); letter-spacing: -.055em; line-height: 1.15; }
     .section-head p { max-width: 420px; margin: 0; color: var(--muted); }
+    .subject-selector { margin-top: 48px; padding: clamp(22px, 3.4vw, 38px); border: 1px solid #cbd0dd; border-radius: 23px; background: linear-gradient(145deg, #f0f1f5, #e1e4eb); box-shadow: 0 18px 45px #202d550f; }
+    .selector-heading { display: flex; align-items: end; justify-content: space-between; gap: 24px; margin-bottom: 24px; }
+    .selector-heading h2 { margin: 6px 0 0; color: var(--blue-dark); font-size: clamp(28px, 3vw, 37px); letter-spacing: -.05em; line-height: 1.18; }
+    .selector-heading p { max-width: 390px; margin: 0; color: #59657d; }
+    .selector-group + .selector-group { margin-top: 25px; }
+    .selector-label { display: flex; align-items: center; gap: 8px; margin-bottom: 11px; color: var(--blue); font-size: 14px; font-weight: 750; }
+    .selector-label i { width: 8px; height: 8px; border-radius: 50%; background: var(--red); }
+    .level-options, .subject-options { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; }
+    .choice-button { min-width: 0; color: #26345d; border: 1px solid #cbd0dd; border-radius: 14px; background: #f6f6f8; text-align: left; cursor: pointer; transition: border-color .18s, transform .18s, box-shadow .18s, background .18s; }
+    .choice-button:hover { transform: translateY(-2px); border-color: #8996c1; box-shadow: 0 10px 22px #273e9117; }
+    .choice-button:focus-visible { outline: 3px solid #4b93d2; outline-offset: 3px; }
+    .level-option { display: flex; min-height: 76px; align-items: center; justify-content: space-between; gap: 10px; padding: 13px 15px; }
+    .level-option > span:first-child { display: grid; gap: 3px; }
+    .level-option strong { color: var(--blue-dark); font-size: 17px; }
+    .level-option small { color: #737c91; font-size: 12px; }
+    .choice-mark { width: 29px; height: 29px; display: grid; flex: 0 0 auto; place-items: center; color: #6b6f83; border: 1px solid #d9dce5; border-radius: 9px; background: #fff; font-size: 11px; font-weight: 800; }
+    .level-option[aria-pressed="true"] { border-color: #5266aa; background: linear-gradient(115deg, #283887, #464078); box-shadow: 0 8px 18px #28388729; }
+    .level-option[aria-pressed="true"] strong, .level-option[aria-pressed="true"] small { color: #fff; }
+    .level-option[aria-pressed="true"] .choice-mark { color: #fff; border-color: #ffffff60; background: #ffffff20; }
+    .subject-option { display: flex; min-height: 192px; flex-direction: column; padding: 16px; }
+    .subject-option[aria-pressed="true"] { border-color: #6676b2; box-shadow: 0 0 0 2px #2838871c, 0 10px 23px #28388714; }
+    .subject-option__top { display: flex; align-items: center; justify-content: space-between; gap: 8px; margin-bottom: 17px; }
+    .subject-icon { width: 40px; height: 40px; display: grid; place-items: center; color: #5264a4; border: 1px solid #d8dce9; border-radius: 12px; background: linear-gradient(135deg, #e8ebf5, #f6f5f8); font-size: 12px; font-weight: 800; }
+    .subject-option:nth-child(2) .subject-icon { color: #785186; background: linear-gradient(135deg, #f0eaf3, #f8f5f8); }
+    .subject-option:nth-child(3) .subject-icon { color: #9b4d6b; background: linear-gradient(135deg, #f4e9ed, #f9f5f7); }
+    .subject-status { padding: 5px 8px; color: #7a607f; border: 1px solid #e4dae8; border-radius: 999px; background: #f8f3f8; font-size: 11px; font-weight: 700; white-space: nowrap; }
+    .subject-status--ready { color: #28745d; border-color: #cde4d8; background: #edf6f1; }
+    .subject-option > strong { color: var(--blue-dark); font-size: 17px; line-height: 1.3; }
+    .subject-option__detail { flex: 1; margin-top: 6px; color: #68738a; font-size: 12px; }
+    .subject-option__action { display: flex; align-items: center; justify-content: space-between; gap: 8px; margin-top: 13px; padding-top: 10px; color: var(--blue); border-top: 1px solid #dfe2e9; font-size: 12px; font-weight: 700; }
+    .collection-open { margin-top: 28px; padding-top: 25px; border-top: 1px solid #ccd1df; }
+    .collection-open__head { display: flex; align-items: center; justify-content: space-between; gap: 20px; }
+    .collection-open__head h3 { margin: 6px 0; color: var(--blue-dark); font-size: clamp(23px, 2.6vw, 31px); letter-spacing: -.04em; }
+    .collection-open__head p { margin: 0; color: #59657d; font-size: 14px; }
+    .collection-open__head .button { flex: 0 0 auto; }
+    .availability-panel { display: grid; grid-template-columns: 43px minmax(0, 1fr) auto; align-items: center; gap: 15px; margin-top: 27px; padding: 19px; border: 1px dashed #aeb8d1; border-radius: 15px; background: radial-gradient(circle at 100% 0, #28388712, transparent 42%), #f4f4f6; }
+    .availability-panel__icon { width: 42px; height: 42px; display: grid; place-items: center; color: var(--blue); border: 1px solid #d6dbea; border-radius: 12px; background: #eaedf5; font-size: 18px; font-weight: 750; }
+    .availability-panel h3 { margin: 4px 0; color: var(--blue-dark); font-size: 19px; }
+    .availability-panel p { margin: 0; color: #667189; font-size: 13px; line-height: 1.6; }
+    .availability-panel .button { white-space: nowrap; }
     .path-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 15px; }
     .path-card { position: relative; padding: 21px; overflow: hidden; border: 1px solid var(--line); border-radius: 16px; background: linear-gradient(135deg, #e9e9eb, #dcdee4); }
     .path-card::after { position: absolute; top: -65px; right: -55px; width: 140px; height: 140px; border: 1px solid #28388724; border-radius: 50%; box-shadow: 0 0 0 18px #28388708, 0 0 0 36px #28388705; content: ""; }
@@ -241,7 +281,7 @@
     .site-footer a { color: #fff; font-weight: 700; }
     .sr-only { position: absolute; width: 1px; height: 1px; padding: 0; overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; clip-path: inset(50%); }
     @media (max-width: 880px) { .hero { grid-template-columns: 1fr 340px; gap: 24px; padding: 38px; } .lab-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } .lab-hero { grid-template-columns: minmax(0, 1fr) 245px; gap: 23px; } }
-    @media (max-width: 700px) { .shell { width: min(100% - 30px, 560px); } .topbar__inner { min-height: 67px; } .nav { gap: 12px; font-size: 13px; } .nav a:not(.nav__cta) { display: none; } .hero { grid-template-columns: 1fr; gap: 25px; min-height: 0; margin-top: 16px; padding: 28px 22px; border-radius: 22px; } .hero h1 { font-size: clamp(41px, 9vw, 57px); } .hero__copy > p { font-size: 16px; } .logic-card { max-width: 480px; width: 100%; margin-inline: auto; transform: none; } .section { margin-top: 49px; } .section-head { align-items: start; flex-direction: column; gap: 8px; } .path-grid { grid-template-columns: 1fr; } .lab-grid { grid-template-columns: 1fr; } .lab-card h3, .lab-card p { min-height: 0; } .lab-hero { grid-template-columns: 1fr; gap: 20px; padding: 26px 21px; border-radius: 21px; } .lab-route { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; padding: 13px; } .lab-route > span { grid-column: 1 / -1; } .lab-route__item { align-items: flex-start; flex-direction: column; gap: 6px; } .lab-route__item small { font-size: 10px; } .workflow { margin-top: 15px; border-radius: 17px; } .workflow__head { padding: 17px 16px 13px; } .workflow__head h2 { font-size: 21px; } .workflow__head p { max-width: 245px; } .workflow__count { font-size: 9px; } .workflow__content { padding: 17px 14px; } .aim-grid, .assessment { grid-template-columns: 1fr; gap: 16px; } .theory-opening { grid-template-columns: 1fr; } .highlights { grid-template-columns: 1fr; } .stepper { top: 67px; padding-inline: 7px; } .stepper button { min-width: 82px; min-height: 51px; font-size: 11px; } .workflow__foot { padding: 10px 12px; } .workflow__foot > span { font-size: 11px; } }
+    @media (max-width: 700px) { .shell { width: min(100% - 30px, 560px); } .topbar__inner { min-height: 67px; } .nav { gap: 12px; font-size: 13px; } .nav a:not(.nav__cta) { display: none; } .hero { grid-template-columns: 1fr; gap: 25px; min-height: 0; margin-top: 16px; padding: 28px 22px; border-radius: 22px; } .hero h1 { font-size: clamp(41px, 9vw, 57px); } .hero__copy > p { font-size: 16px; } .logic-card { max-width: 480px; width: 100%; margin-inline: auto; transform: none; } .section { margin-top: 49px; } .section-head { align-items: start; flex-direction: column; gap: 8px; } .selector-heading { align-items: start; flex-direction: column; gap: 8px; } .subject-selector { margin-top: 30px; padding: 21px 16px; border-radius: 19px; } .selector-group + .selector-group { margin-top: 22px; } .level-options { gap: 7px; } .level-option { min-height: 69px; padding: 10px; } .level-option strong { font-size: 15px; } .level-option small { font-size: 10px; } .subject-options { grid-template-columns: 1fr; gap: 8px; } .subject-option { min-height: 0; padding: 13px; } .subject-option__top { margin-bottom: 10px; } .subject-option__detail { margin-top: 4px; } .collection-open__head { align-items: start; flex-direction: column; } .availability-panel { grid-template-columns: 37px minmax(0, 1fr); gap: 11px; padding: 15px; } .availability-panel__icon { width: 37px; height: 37px; } .availability-panel .button { grid-column: 1 / -1; justify-self: start; } .path-grid { grid-template-columns: 1fr; } .lab-grid { grid-template-columns: 1fr; } .lab-card h3, .lab-card p { min-height: 0; } .lab-hero { grid-template-columns: 1fr; gap: 20px; padding: 26px 21px; border-radius: 21px; } .lab-route { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; padding: 13px; } .lab-route > span { grid-column: 1 / -1; } .lab-route__item { align-items: flex-start; flex-direction: column; gap: 6px; } .lab-route__item small { font-size: 10px; } .workflow { margin-top: 15px; border-radius: 17px; } .workflow__head { padding: 17px 16px 13px; } .workflow__head h2 { font-size: 21px; } .workflow__head p { max-width: 245px; } .workflow__count { font-size: 9px; } .workflow__content { padding: 17px 14px; } .aim-grid, .assessment { grid-template-columns: 1fr; gap: 16px; } .theory-opening { grid-template-columns: 1fr; } .highlights { grid-template-columns: 1fr; } .stepper { top: 67px; padding-inline: 7px; } .stepper button { min-width: 82px; min-height: 51px; font-size: 11px; } .workflow__foot { padding: 10px 12px; } .workflow__foot > span { font-size: 11px; } }
     @media (max-width: 430px) { .hero { padding: 25px 18px; } .hero__actions { align-items: flex-start; flex-direction: column; gap: 9px; } .logic-card { padding: 17px; } .lab-hero { padding: 23px 18px; } .lab-hero__actions { align-items: flex-start; flex-direction: column; gap: 5px; } .lab-route { gap: 5px; padding: 11px; } .lab-route__item small { font-size: 10px; } .workflow__head { align-items: flex-start; gap: 5px; } .workflow__count { margin-top: 17px; } .chapter { grid-template-columns: 35px 1fr; gap: 10px; padding: 13px; } .chapter__number { width: 33px; height: 33px; border-radius: 10px; } .chapter p, .example-card p { font-size: 14px; } .formula { font-size: 14px; } .simulation-card { grid-template-columns: 1fr; padding: 20px; } .report__grid { grid-template-columns: 1fr; } }
     @media print { .topbar, .lab-hero, .stepper, .workflow__foot, .site-footer, .no-print { display: none !important; } body { background: #fff; } .shell { width: 100%; } .workflow { box-shadow: none; } }
   </style>
@@ -1880,6 +1920,18 @@
     const app = document.querySelector("#app");
     let activeSlug = null;
     let activeStage = "Aim";
+    let selectedLevel = "graduation";
+    let selectedSubject = "digital-electronics";
+    const levels = [
+      { id: "class-11", title: "Class 11", detail: "School level" },
+      { id: "class-12", title: "Class 12", detail: "School level" },
+      { id: "graduation", title: "Graduation", detail: "Undergraduate" },
+    ];
+    const subjects = [
+      { id: "physics", title: "Physics", mark: "PH" },
+      { id: "basic-electrical", title: "Basic Electrical & Electronics", mark: "BE" },
+      { id: "digital-electronics", title: "Digital Electronics", mark: "DE" },
+    ];
     const quizSessions = Object.create(null);
     const feedbackRatings = Object.create(null);
     const safe = (value) => String(value ?? "").replace(/[&<>"']/g, (character) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" })[character]);
@@ -1895,7 +1947,7 @@
           <span class="brand__mark" aria-hidden="true"><svg viewBox="0 0 32 32" fill="none"><path d="M6 8h20M10 13h12M16 8v17M8 23h4m8-3h4" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/><circle cx="8" cy="23" r="2" fill="#f4a8b3"/><circle cx="24" cy="20" r="2" fill="#f4a8b3"/></svg></span>
           <span>tattvalab</span>
         </a>
-        <nav class="nav" aria-label="Main navigation"><a href="#catalogue" data-action="catalogue">Explore labs</a><a href="#paths" data-action="paths">Learning paths</a><a class="nav__cta" href="#catalogue" data-action="catalogue">All 10 experiments&nbsp; ↗</a></nav>
+        <nav class="nav" aria-label="Main navigation"><a href="#subjects" data-action="subjects">Subjects</a><a href="#paths" data-action="paths">Learning paths</a><a class="nav__cta" href="#subjects" data-action="subjects">Choose a level&nbsp; ↗</a></nav>
       </div></header>`;
     }
 
@@ -1919,6 +1971,15 @@
     ];
 
     function renderHome() {
+      const collectionReady = selectedLevel === "graduation" && selectedSubject === "digital-electronics";
+      const currentLevel = levels.find((level) => level.id === selectedLevel);
+      const currentSubject = subjects.find((subject) => subject.id === selectedSubject);
+      const levelOptions = levels.map((level) => `<button type="button" class="choice-button level-option" data-action="select-level" data-level="${level.id}" aria-pressed="${selectedLevel === level.id}"><span><strong>${safe(level.title)}</strong><small>${safe(level.detail)}</small></span><span class="choice-mark" aria-hidden="true">${selectedLevel === level.id ? "✓" : "↗"}</span></button>`).join("");
+      const subjectOptions = subjects.map((subject) => {
+        const selected = selectedSubject === subject.id;
+        const ready = selectedLevel === "graduation" && subject.id === "digital-electronics";
+        return `<button type="button" class="choice-button subject-option" data-action="select-subject" data-subject="${subject.id}" aria-pressed="${selected}"><span class="subject-option__top"><span class="subject-icon" aria-hidden="true">${subject.mark}</span><span class="subject-status ${ready ? "subject-status--ready" : ""}">${ready ? "10 labs ready" : "Content later"}</span></span><strong>${safe(subject.title)}</strong><span class="subject-option__detail">${selected ? "Selected subject" : "Choose this subject"}</span><span class="subject-option__action">${selected ? "Selected" : "Choose subject"}<span aria-hidden="true">↗</span></span></button>`;
+      }).join("");
       const pathCards = paths.map((path, index) => {
         const links = path.slugs.map((slug) => {
           const lab = labs.find((item) => item.slug === slug);
@@ -1934,20 +1995,24 @@
         ${labButton(lab)}
       </article>`).join("");
       return `${renderHeader()}<main id="main-content" class="shell">
-        <section class="hero"><div class="hero__copy"><span class="kicker"><i></i> DIGITAL ELECTRONICS · GUIDED LABS</span>
-          <h1>Digital logic, made clear.<br><em>One circuit at a time.</em></h1>
-          <p>Explore 10 guided labs with clear theory, circuit diagrams, worked examples and quick checks.</p>
-          <div class="hero__actions"><a class="button button--light" href="#catalogue" data-action="catalogue">Explore all 10 labs&nbsp; →</a><button class="hero__link" data-action="open" data-slug="logic-gate-explorer">Start with logic gates&nbsp; ↗</button></div>
-          <div class="hero__facts"><span><strong>10</strong> experiments</span><i></i><span><strong>3</strong> learning phases</span><i></i><span>Work at your pace</span></div>
+        <section class="hero"><div class="hero__copy"><span class="kicker"><i></i> VIRTUAL LABS · THREE SUBJECTS · THREE LEVELS</span>
+          <h1>Learn it clearly.<br><em>See ideas connect.</em></h1>
+          <p>Choose Physics, Basic Electrical &amp; Electronics, or Digital Electronics. Select your level and open the collection that is ready.</p>
+          <div class="hero__actions"><a class="button button--light" href="#subjects" data-action="subjects">Choose your level&nbsp; →</a><button class="hero__link" data-action="open" data-slug="logic-gate-explorer">Start with logic gates&nbsp; ↗</button></div>
+          <div class="hero__facts"><span><strong>3</strong> subjects</span><i></i><span><strong>3</strong> study levels</span><i></i><span><strong>10</strong> Graduation labs ready</span></div>
         </div>${renderLogicPreview()}</section>
-        <section class="section" id="paths"><div class="section-head"><div><span class="eyebrow">A CLEAR ROUTE THROUGH THE SUBJECT</span><h2>Choose a starting point.</h2></div><p>Follow a learning path, or jump straight to the experiment you need.</p></div><div class="path-grid">${pathCards}</div></section>
-        <section class="section" id="catalogue"><div class="section-head"><div><span class="eyebrow">THEORY · DIAGRAMS · PRACTICE</span><h2>All ten experiments.</h2></div><p>Open any module directly. Theory, pre-test, procedure and report are one click away.</p></div><div class="lab-grid">${labCards}</div></section>
+        <section class="subject-selector" id="subjects" aria-labelledby="subject-selector-title"><div class="selector-heading"><div><span class="eyebrow">CHOOSE YOUR LEARNING PATH</span><h2 id="subject-selector-title">Pick a level. Choose a subject.</h2></div><p>Switch between class levels and subjects. Available course material is shown below.</p></div>
+          <div class="selector-group"><div class="selector-label"><i></i> Study level</div><div class="level-options" role="group" aria-label="Choose a study level">${levelOptions}</div></div>
+          <div class="selector-group"><div class="selector-label"><i></i> Subject</div><div class="subject-options" role="group" aria-label="Choose a subject">${subjectOptions}</div></div>
+        </section>
+        <section class="section" id="paths"><div class="section-head"><div><span class="eyebrow">${collectionReady ? "GRADUATION · DIGITAL ELECTRONICS" : "YOUR SELECTION"}</span><h2>${collectionReady ? "Choose a starting point." : "This collection is coming later."}</h2></div><p>${collectionReady ? "Jump straight into any topic. Theory, pre-test, procedure and report are available inside each experiment." : "Your subject and level options are ready. Course content has not been added for this selection yet."}</p></div>${collectionReady ? `<div class="path-grid">${pathCards}</div>` : `<div class="availability-panel"><span class="availability-panel__icon" aria-hidden="true">${safe(currentSubject?.mark || "")}</span><div><span class="eyebrow">CONTENT NOT ADDED YET</span><h3>${safe(currentLevel?.title || "Selected level")} · ${safe(currentSubject?.title || "Selected subject")}</h3><p>Only Graduation · Digital Electronics has the current 10 experiments. Other subject content can be added later.</p></div><button class="button button--primary button--small" type="button" data-action="show-available">View current labs&nbsp; →</button></div>`}</section>
+        <section class="section" id="catalogue"><div class="section-head"><div><span class="eyebrow">${collectionReady ? "THEORY · DIAGRAMS · PRACTICE" : "CURRENTLY AVAILABLE"}</span><h2>${collectionReady ? "All ten experiments." : "Graduation · Digital Electronics."}</h2></div><p>${collectionReady ? "Open any module directly. Aim, theory and pre-test are one click away." : "Select Graduation and Digital Electronics above to open the current collection."}</p></div>${collectionReady ? `<div class="lab-grid">${labCards}</div>` : `<div class="availability-panel"><span class="availability-panel__icon" aria-hidden="true">DE</span><div><span class="eyebrow">10 EXPERIMENTS READY</span><h3>Digital Electronics · Graduation</h3><p>No additional subject theory has been added yet.</p></div><button class="button button--primary button--small" type="button" data-action="show-available">Open the 10 labs&nbsp; →</button></div>`}</section>
         <p class="disclaimer">TattvaLab is an independent learning resource and is not an official Medi-Caps University product or student record.</p>
       </main>${renderFooter()}`;
     }
 
     function renderFooter() {
-      return `<footer class="site-footer"><div class="shell site-footer__inner"><span>Understand. Experiment. Discover. Digital Electronics, explained clearly.</span><a href="#home" data-action="home">TattvaLab</a></div></footer>`;
+      return `<footer class="site-footer"><div class="shell site-footer__inner"><span>Understand. Experiment. Discover. Virtual labs, one collection at a time.</span><a href="#home" data-action="home">TattvaLab</a></div></footer>`;
     }
 
     function renderDiagram(lab) {
@@ -2085,6 +2150,25 @@
       if (action === "catalogue" || action === "paths") {
         if (activeSlug) { activeSlug = null; render(); }
         window.setTimeout(() => document.querySelector(action === "paths" ? "#paths" : "#catalogue")?.scrollIntoView({ behavior: "smooth" }), 20);
+      }
+      if (action === "subjects") document.querySelector("#subjects")?.scrollIntoView({ behavior: "smooth" });
+      if (action === "select-level") {
+        selectedLevel = control.dataset.level;
+        activeSlug = null;
+        render();
+        document.querySelector("#subjects")?.scrollIntoView({ behavior: "smooth", block: "start" });
+      }
+      if (action === "select-subject") {
+        selectedSubject = control.dataset.subject;
+        activeSlug = null;
+        render();
+        document.querySelector("#subjects")?.scrollIntoView({ behavior: "smooth", block: "start" });
+      }
+      if (action === "show-available") {
+        selectedLevel = "graduation";
+        selectedSubject = "digital-electronics";
+        render();
+        window.setTimeout(() => document.querySelector("#catalogue")?.scrollIntoView({ behavior: "smooth" }), 20);
       }
       if (action === "open") openLab(control.dataset.slug);
       if (action === "stage") setStage(control.dataset.stage);

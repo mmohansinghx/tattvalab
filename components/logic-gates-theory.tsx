@@ -1,14 +1,68 @@
-const gateCards = [
-  { name: "AND", symbol: "and", expression: "Y = A · B", rule: "The output is 1 only when both inputs are 1." },
-  { name: "OR", symbol: "or", expression: "Y = A + B", rule: "The output is 1 when at least one input is 1." },
-  { name: "NOT", symbol: "not", expression: "Y = A̅", rule: "A single input is reversed: 0 becomes 1, and 1 becomes 0." },
-  { name: "NAND", symbol: "nand", expression: "Y = (A · B)̅", rule: "This is the inverted AND result; it is 0 only when both inputs are 1." },
-  { name: "NOR", symbol: "nor", expression: "Y = (A + B)̅", rule: "This is the inverted OR result; it is 1 only when both inputs are 0." },
-  { name: "EX-OR", symbol: "xor", expression: "Y = A ⊕ B", rule: "The output is 1 when the two inputs are different." },
-  { name: "EX-NOR", symbol: "xnor", expression: "Y = (A ⊕ B)̅", rule: "The output is 1 when the two inputs are the same." },
-] as const;
+type GateKind = "and" | "or" | "not" | "nand" | "nor" | "xor" | "xnor";
 
-function GateSymbol({ kind }: { kind: (typeof gateCards)[number]["symbol"] }) {
+const gateSections: {
+  number: string;
+  title: string;
+  kind: GateKind;
+  expression: string;
+  explanation: string;
+  headers: string[];
+  rows: string[][];
+  diagram: [string, string, string];
+  implementation: string;
+}[] = [
+  {
+    number: "01", title: "AND gate", kind: "and", expression: "Y = A · B",
+    explanation: "An AND gate gives a high output only when every input is high. For two inputs, both A and B must be 1 for Y to become 1.",
+    headers: ["A", "B", "Y"], rows: [["0", "0", "0"], ["0", "1", "0"], ["1", "0", "0"], ["1", "1", "1"]],
+    diagram: ["Inputs A and B", "Both conditions must be true", "Y = 1"],
+    implementation: "In a resistor-transistor network, the input and transistor arrangement is chosen so the required combination of input conditions controls the output. The exact circuit depends on the logic-family design.",
+  },
+  {
+    number: "02", title: "OR gate", kind: "or", expression: "Y = A + B",
+    explanation: "An OR gate gives a high output when one or more inputs are high. It gives 0 only when every input is 0.",
+    headers: ["A", "B", "Y"], rows: [["0", "0", "0"], ["0", "1", "1"], ["1", "0", "1"], ["1", "1", "1"]],
+    diagram: ["Input A path", "Either input can raise output", "Y = 1"],
+    implementation: "A diode-resistor network can combine OR inputs: a high input can forward-bias its diode path and raise the output node. The circuit polarity and resistor arrangement determine the actual voltage levels.",
+  },
+  {
+    number: "03", title: "NOT gate (inverter)", kind: "not", expression: "Y = A̅",
+    explanation: "A NOT gate has one input and produces its opposite value. It changes 0 to 1 and 1 to 0.",
+    headers: ["A", "Y"], rows: [["0", "1"], ["1", "0"]],
+    diagram: ["Input A", "Transistor inverter", "Y = A̅"],
+    implementation: "In a common transistor inverter, a low input leaves the transistor off and a pull-up can hold the output high. A high input turns the transistor on, pulling the output low.",
+  },
+  {
+    number: "04", title: "NAND gate", kind: "nand", expression: "Y = (A · B)̅",
+    explanation: "NAND means NOT-AND. First apply the AND rule, then invert its result. The output is low only when both inputs are high.",
+    headers: ["A", "B", "Y"], rows: [["0", "0", "1"], ["0", "1", "1"], ["1", "0", "1"], ["1", "1", "0"]],
+    diagram: ["AND condition", "Invert the result", "Y = (A · B)̅"],
+    implementation: "The output stage reverses the AND condition. A NAND gate is a universal gate: combinations of NAND gates can be arranged to create other Boolean functions.",
+  },
+  {
+    number: "05", title: "NOR gate", kind: "nor", expression: "Y = (A + B)̅",
+    explanation: "NOR means NOT-OR. It gives a high output only when all inputs are low; any high input makes the output low.",
+    headers: ["A", "B", "Y"], rows: [["0", "0", "1"], ["0", "1", "0"], ["1", "0", "0"], ["1", "1", "0"]],
+    diagram: ["OR condition", "Invert the result", "Y = (A + B)̅"],
+    implementation: "The output is the inverted OR result. NOR is also a universal gate, so a network of NOR gates can implement any Boolean function.",
+  },
+  {
+    number: "06", title: "Exclusive-OR (EX-OR) gate", kind: "xor", expression: "Y = A ⊕ B = A̅B + AB̅",
+    explanation: "An EX-OR gate gives a high output when its two inputs are different. Exactly one input must be 1.",
+    headers: ["A", "B", "Y"], rows: [["0", "0", "0"], ["0", "1", "1"], ["1", "0", "1"], ["1", "1", "0"]],
+    diagram: ["A̅B or AB̅", "Combine the two cases", "Y = 1 when different"],
+    implementation: "The expression A̅B + AB̅ describes two separate cases: A low with B high, or A high with B low. AND, OR and NOT operations can combine those cases into an EX-OR function.",
+  },
+  {
+    number: "07", title: "Exclusive-NOR (EX-NOR) gate", kind: "xnor", expression: "Y = (A ⊕ B)̅ = AB + A̅B̅",
+    explanation: "An EX-NOR gate gives a high output when its two inputs match: both 0 or both 1.",
+    headers: ["A", "B", "Y"], rows: [["0", "0", "1"], ["0", "1", "0"], ["1", "0", "0"], ["1", "1", "1"]],
+    diagram: ["AB or A̅B̅", "Combine the matching cases", "Y = 1 when equal"],
+    implementation: "The expression AB + A̅B̅ covers the two matching cases. An EX-NOR gate is the inverted form of EX-OR and is often used to compare two binary values.",
+  },
+];
+
+function GateSymbol({ kind }: { kind: GateKind }) {
   const isNot = kind === "not";
   const isInverted = kind === "nand" || kind === "nor" || kind === "xnor";
   const isOrFamily = kind === "or" || kind === "nor" || kind === "xor" || kind === "xnor";
@@ -40,79 +94,72 @@ export function LogicGatesTheory() {
     <article className="logic-theory" aria-label="Logic gates theory">
       <section className="logic-theory__intro">
         <span className="eyebrow">THEORY · DIGITAL LOGIC</span>
-        <h3>Logic gates turn binary inputs into a defined output.</h3>
-        <p>Digital circuits represent information with two states, written as 0 and 1. A logic gate applies a rule to its input signals and produces an output. Because a gate has no memory, its output depends on the input values present at that moment.</p>
+        <h3>Verification and interpretation of logic-gate truth tables</h3>
+        <h4>Introduction</h4>
+        <p>Digital circuits use two logic states, written as 0 and 1. A logic gate is a circuit with one or more inputs and an output; it applies a defined Boolean rule to those input states. The seven gates in this experiment are AND, OR, NOT, NAND, NOR, EX-OR and EX-NOR.</p>
         <div className="logic-theory__principle">
           <span className="logic-theory__principle-icon">0 / 1</span>
-          <p><strong>One rule, every possible input.</strong> A truth table lists all input combinations and the output for each one. With <em>n</em> binary inputs, there are 2<sup>n</sup> combinations to check.</p>
+          <p><strong>Read a truth table row by row.</strong> It lists every possible input combination and the output produced by the gate. A complete table for <em>n</em> binary inputs contains 2<sup>n</sup> rows.</p>
         </div>
       </section>
 
-      <section className="logic-theory__section" aria-labelledby="logic-gate-rules-title">
-        <div className="logic-theory__section-heading">
-          <div><span className="eyebrow">01 · GATE RULES</span><h4 id="logic-gate-rules-title">Seven gates, seven ways to decide</h4></div>
-          <p>Read the symbol, then connect its equation to the output rule.</p>
-        </div>
-        <div className="logic-theory__gate-grid">
-          {gateCards.map((gate) => (
-            <section className="logic-theory__gate-card" key={gate.name}>
-              <div className="logic-theory__gate-card-top"><span>{gate.name}</span><GateSymbol kind={gate.symbol} /></div>
-              <strong className="logic-theory__equation">{gate.expression}</strong>
-              <p>{gate.rule}</p>
-            </section>
-          ))}
-        </div>
-        <p className="logic-theory__caption"><strong>Diagram 1.</strong> Original logic-symbol sketches for the seven gates in this experiment. The small output circle marks an inverted result.</p>
-        <div className="logic-theory__identity">
-          <span className="eyebrow">BUILDING THE PARITY GATES</span>
-          <p><strong>XOR:</strong> Y = A̅B + AB̅ &nbsp;·&nbsp; <strong>XNOR:</strong> Y = AB + A̅B̅. Each expression combines two cases: unlike inputs for XOR, matching inputs for XNOR.</p>
-        </div>
-      </section>
-
-      <section className="logic-theory__section" aria-labelledby="logic-truth-table-title">
-        <div className="logic-theory__section-heading">
-          <div><span className="eyebrow">02 · COMPLETE OUTPUTS</span><h4 id="logic-truth-table-title">Compare every two-input case</h4></div>
-          <span className="logic-theory__table-tag">1 = HIGH · 0 = LOW</span>
-        </div>
-        <p className="logic-theory__body-copy">For two inputs, write the four input pairs once. The NOT columns show the inversion of each input; the remaining columns show the output of each two-input gate.</p>
-        <div className="logic-theory__table-wrap" role="region" aria-label="Truth table for logic gates" tabIndex={0}>
-          <table className="logic-theory__truth-table">
-            <thead><tr><th>A</th><th>B</th><th>NOT A</th><th>NOT B</th><th>AND</th><th>OR</th><th>NAND</th><th>NOR</th><th>XOR</th><th>XNOR</th></tr></thead>
-            <tbody>
-              <tr><td>0</td><td>0</td><td>1</td><td>1</td><td>0</td><td>0</td><td>1</td><td>1</td><td>0</td><td>1</td></tr>
-              <tr><td>0</td><td>1</td><td>1</td><td>0</td><td>0</td><td>1</td><td>1</td><td>0</td><td>1</td><td>0</td></tr>
-              <tr><td>1</td><td>0</td><td>0</td><td>1</td><td>0</td><td>1</td><td>1</td><td>0</td><td>1</td><td>0</td></tr>
-              <tr><td>1</td><td>1</td><td>0</td><td>0</td><td>1</td><td>1</td><td>0</td><td>0</td><td>0</td><td>1</td></tr>
-            </tbody>
-          </table>
-        </div>
-        <p className="logic-theory__caption"><strong>Diagram 2.</strong> Truth table for all input pairs. NOT A and NOT B are listed separately because NOT gates each act on one signal.</p>
-      </section>
+      <div className="logic-theory__gate-list">
+        {gateSections.map((gate) => (
+          <section className="logic-theory__gate-section" key={gate.kind} aria-labelledby={`logic-gate-${gate.kind}`}>
+            <div className="logic-theory__gate-heading">
+              <span className="eyebrow">GATE {gate.number}</span>
+              <h4 id={`logic-gate-${gate.kind}`}>{gate.title}</h4>
+            </div>
+            <p className="logic-theory__gate-explanation">{gate.explanation}</p>
+            <div className="logic-theory__gate-layout">
+              <div className="logic-theory__symbol-card">
+                <span className="logic-theory__subheading">Logic symbol</span>
+                <GateSymbol kind={gate.kind} />
+                <strong className="logic-theory__equation">{gate.expression}</strong>
+              </div>
+              <div className="logic-theory__table-card">
+                <div className="logic-theory__table-title"><span className="logic-theory__subheading">Truth table</span><small>1 = HIGH · 0 = LOW</small></div>
+                <table className="logic-theory__truth-table">
+                  <thead><tr>{gate.headers.map((header) => <th key={header}>{header}</th>)}</tr></thead>
+                  <tbody>{gate.rows.map((row, index) => <tr key={`${gate.kind}-${index}`}>{row.map((value, column) => <td key={`${gate.kind}-${index}-${column}`}>{value}</td>)}</tr>)}</tbody>
+                </table>
+              </div>
+            </div>
+            <div className="logic-theory__implementation">
+              <span className="logic-theory__subheading">Implementation idea</span>
+              <div className="logic-theory__implementation-flow" role="img" aria-label={`${gate.title} conceptual implementation diagram`}>
+                {gate.diagram.map((item, index) => <span className="logic-theory__flow-item" key={item}>{index > 0 && <i aria-hidden="true">→</i>}<strong>{item}</strong></span>)}
+              </div>
+              <p>{gate.implementation}</p>
+            </div>
+          </section>
+        ))}
+      </div>
 
       <section className="logic-theory__section" aria-labelledby="logic-families-title">
         <div className="logic-theory__section-heading">
-          <div><span className="eyebrow">03 · CIRCUIT FAMILIES</span><h4 id="logic-families-title">How RTL, DTL and TTL build the rule</h4></div>
+          <div><span className="eyebrow">CIRCUIT FAMILIES</span><h4 id="logic-families-title">RTL, DTL and TTL</h4></div>
         </div>
-        <p className="logic-theory__body-copy">The truth table describes what a gate does. RTL, DTL and TTL describe different ways of building the electronic circuit that performs that rule. The exact component arrangement depends on the gate and circuit design.</p>
+        <p className="logic-theory__body-copy">The truth table tells us what the gate does; RTL, DTL and TTL describe different circuit technologies used to realise logic functions. Their internal designs differ, but the Boolean rule being implemented remains the reference for the output.</p>
         <div className="logic-theory__family-diagram" role="img" aria-label="Conceptual comparison of RTL, DTL and TTL logic circuit stages">
           <div className="logic-theory__family-row"><strong>RTL</strong><span>Resistor input network</span><i>→</i><span>Transistor switching</span><i>→</i><span>Output</span></div>
           <div className="logic-theory__family-row"><strong>DTL</strong><span>Diode input network</span><i>→</i><span>Transistor switching</span><i>→</i><span>Output</span></div>
           <div className="logic-theory__family-row"><strong>TTL</strong><span>Transistor input stage</span><i>→</i><span>Transistor switching</span><i>→</i><span>Output driver</span></div>
         </div>
         <div className="logic-theory__family-notes">
-          <p><strong>RTL</strong> uses resistors to feed transistor control terminals. The transistor network switches a load; its connections and output polarity determine the gate function. A transistor inverter is a useful example: when the transistor is off, a pull-up can make the output high; when it turns on, it pulls the output low.</p>
-          <p><strong>DTL</strong> combines input conditions with diodes before a transistor stage. In an OR-style diode network, a high input can forward-bias its diode path and raise the network output; the following transistor stage conditions that signal.</p>
-          <p><strong>TTL</strong> uses transistors in its input and switching stages. Many TTL designs use a multi-emitter input transistor and a separate output stage, with the output arrangement chosen to suit its load and the next circuit.</p>
+          <p><strong>RTL:</strong> resistors feed transistor control terminals; transistor switching and output polarity create the required logic result.</p>
+          <p><strong>DTL:</strong> diodes combine input conditions before a transistor stage processes the signal.</p>
+          <p><strong>TTL:</strong> transistor stages handle the inputs and switching, with an output stage designed to drive the next circuit.</p>
         </div>
-        <p className="logic-theory__caption"><strong>Diagram 3.</strong> Simplified functional view of common logic-family stages; individual IC internals vary.</p>
+        <p className="logic-theory__caption"><strong>Diagram.</strong> Simplified functional view; actual internal circuits depend on the gate and IC design.</p>
       </section>
 
       <section className="logic-theory__takeaways" aria-label="Important points">
         <span className="eyebrow">IMPORTANT POINTS</span>
         <ul>
-          <li><strong>NAND and NOR are universal gates:</strong> suitable combinations of either gate can reproduce the other basic logic functions.</li>
-          <li><strong>XOR checks for a difference:</strong> its output is 1 when exactly one of two inputs is 1; XNOR is 1 when the inputs match.</li>
-          <li><strong>Logic family changes electrical behaviour,</strong> such as input requirements, output drive and delay. For hardware, use the particular IC’s datasheet.</li>
+          <li><strong>NAND and NOR are universal gates:</strong> networks of either can be used to implement other logic functions.</li>
+          <li><strong>EX-OR detects different inputs;</strong> EX-NOR detects matching inputs.</li>
+          <li><strong>For a physical circuit, check the exact IC datasheet</strong> for voltage levels, output drive and timing.</li>
         </ul>
       </section>
     </article>

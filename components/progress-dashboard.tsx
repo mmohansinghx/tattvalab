@@ -10,10 +10,14 @@ import { getProgressSnapshot, getServerProgressSnapshot, subscribeProgress } fro
 export function ProgressDashboard({ compact = false }: { compact?: boolean }) {
   const progress = useSyncExternalStore(subscribeProgress, getProgressSnapshot, getServerProgressSnapshot);
   const completed = useMemo(() => plannedExperiments.filter((experiment) => progress[experiment.slug]?.completedAt).map((experiment) => ({ experiment, record: progress[experiment.slug] })).sort((a, b) => (b.record.completedAt ?? "").localeCompare(a.record.completedAt ?? "")), [progress]);
-  const scores = useMemo(() => completed.flatMap(({ experiment, record }) => [
-    record.preTestScore === null ? null : { name: experiment.title.replace(" explorer", ""), stage: "Pre-test", score: record.preTestScore },
-    record.postTestScore === null ? null : { name: experiment.title.replace(" explorer", ""), stage: "Post-test", score: record.postTestScore },
-  ].filter((item): item is { name: string; stage: string; score: number } => item !== null)), [completed]);
+  const scores = useMemo(() => plannedExperiments.flatMap((experiment) => {
+    const record = progress[experiment.slug];
+    if (!record) return [];
+    return [
+      record.preTestScore === null ? null : { name: experiment.title.replace(" explorer", ""), stage: "Pre-test", score: record.preTestScore },
+      record.postTestScore === null ? null : { name: experiment.title.replace(" explorer", ""), stage: "Post-test", score: record.postTestScore },
+    ].filter((item): item is { name: string; stage: string; score: number } => item !== null);
+  }), [progress]);
   if (compact) {
     return <div className="progress-preview">
       {completed.length ? <><div className="progress-preview__count"><span>{String(completed.length).padStart(2, "0")}</span><small>experiments completed</small></div><div className="progress-preview__recent">{completed.slice(0, 2).map(({ experiment }) => <span key={experiment.slug}><span className="progress-check">✓</span>{experiment.title}</span>)}</div></> : <div className="progress-preview__empty"><span className="progress-preview__icon"><BookOpen size={20} /></span><span><strong>Your progress starts here</strong><small>Tracking will start when content is added.</small></span></div>}

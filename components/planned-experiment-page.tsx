@@ -5,6 +5,7 @@ import Link from "next/link";
 import { ArrowLeft, ArrowRight, BookOpen, Check, FileText } from "lucide-react";
 import type { PlannedExperiment } from "@/lib/planned-experiments";
 import { LogicGatesTheory } from "@/components/logic-gates-theory";
+import { LogicGatesPretest } from "@/components/logic-gates-pretest";
 
 const stages = ["Aim", "Theory", "Pretest", "Procedure", "Simulation", "Posttest", "References", "Feedback", "Report"] as const;
 
@@ -40,7 +41,7 @@ export function PlannedExperimentPage({ experiment, moduleNumber, initialSection
 
           <section className="workflow-card" aria-label="Experiment page structure">
             <div className="workflow-card__top">
-              <div><span className="eyebrow">YOUR EXPERIMENT · {stage === "Theory" && experiment.hasTheory ? "THEORY READY" : "CONTENT PENDING"}</span><h2>{stage}</h2><p>{stage === "Theory" && experiment.hasTheory ? "Review the gate symbols, Boolean rules and complete truth table." : `Add your ${stage.toLowerCase()} content here when ready.`}</p></div>
+              <div><span className="eyebrow">YOUR EXPERIMENT · {stage === "Theory" && experiment.hasTheory ? "THEORY READY" : stage === "Pretest" && experiment.hasPretest ? "20-QUESTION TEST READY" : "CONTENT PENDING"}</span><h2>{stage}</h2><p>{stage === "Theory" && experiment.hasTheory ? "Review the gate symbols, Boolean rules and complete truth table." : stage === "Pretest" && experiment.hasPretest ? "Test your understanding from easy fundamentals through advanced logic." : `Add your ${stage.toLowerCase()} content here when ready.`}</p></div>
               <span className="workflow-card__count"><strong>{String(stepIndex + 1).padStart(2, "0")}</strong><i />{String(stages.length).padStart(2, "0")} SECTIONS</span>
             </div>
             <div className="workflow-stepper" role="group" aria-label="Experiment sections">
@@ -49,6 +50,8 @@ export function PlannedExperimentPage({ experiment, moduleNumber, initialSection
             <div className="workflow-content">
               {stage === "Theory" && experiment.hasTheory ? (
                 <LogicGatesTheory />
+              ) : stage === "Pretest" && experiment.hasPretest ? (
+                <LogicGatesPretest experimentSlug={experiment.slug} />
               ) : stage === "Aim" && experiment.aim ? (
                 <div className="planned-stage-aim">
                   <span className="eyebrow">EXPERIMENT AIM</span>

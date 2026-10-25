@@ -3,6 +3,7 @@ export type PlannedExperiment = {
   title: string;
   aim?: string;
   hasTheory?: boolean;
+  hasPretest?: boolean;
 };
 
 export const plannedExperiments: PlannedExperiment[] = [
@@ -11,6 +12,7 @@ export const plannedExperiments: PlannedExperiment[] = [
     title: "Logic gates using RTL, DTL and TTL",
     aim: "To verify and interpret the truth tables of logic gates (AND, OR, NOT, NAND, NOR, Ex-OR, Ex-NOR).",
     hasTheory: true,
+    hasPretest: true,
   },
   { slug: "logic-functions-gate-ics", title: "Logic functions using logic gate ICs" },
   { slug: "half-full-adders", title: "Half Adder and Full Adder circuits" },

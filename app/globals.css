@@ -1280,7 +1280,14 @@ body { background: #eaeaea; color: #171b2d; font-family: "Metropolis", "Segoe UI
 .logic-theory__principle-icon { display: grid; flex: 0 0 58px; width: 58px; height: 58px; place-items: center; color: #fff; border-radius: 16px; background: linear-gradient(140deg, #25366f, #315b94); font-size: 15px; font-weight: 800; }
 .logic-theory__principle p { margin: 0; color: #415874; font-size: 15px; line-height: 1.7; }
 .logic-theory__principle strong { color: #1d326b; }
+.logic-theory__contents { position: sticky; top: 10px; z-index: 2; display: flex; align-items: center; gap: 7px; overflow-x: auto; padding: 9px; border: 1px solid #d6e2ef; border-radius: 12px; background: rgb(255 255 255 / 94%); box-shadow: 0 6px 18px rgb(25 61 105 / 6%); scrollbar-width: thin; }
+.logic-theory__contents > span { flex: 0 0 auto; padding: 0 6px; color: #8a97a8; font-size: 9px; font-weight: 800; letter-spacing: .09em; }
+.logic-theory__contents a { flex: 0 0 auto; padding: 7px 9px; color: #315b94; border: 1px solid transparent; border-radius: 8px; font-size: 11px; font-weight: 700; text-decoration: none; }
+.logic-theory__contents a:hover { border-color: #d5e3f2; background: #f1f6fb; }
+.logic-theory__multi-input-note { display: grid; gap: 5px; padding: 15px 17px; color: #405a79; border: 1px solid #d4e2f1; border-radius: 12px; background: #f2f7fc; font-size: 14px; line-height: 1.65; }
+.logic-theory__multi-input-note strong { color: #1d326b; }
 .logic-theory__section { display: grid; gap: 17px; }
+.logic-theory__study-section { scroll-margin-top: 80px; }
 .logic-theory__section-heading { display: flex; align-items: end; justify-content: space-between; gap: 18px; }
 .logic-theory__section-heading h4 { margin: 5px 0 0; color: #1d326b; font-size: clamp(21px, 2.3vw, 27px); line-height: 1.25; letter-spacing: -.025em; }
 .logic-theory__section-heading > p { max-width: 300px; margin: 0; color: #61748d; font-size: 13px; line-height: 1.55; text-align: right; }
@@ -1301,6 +1308,55 @@ body { background: #eaeaea; color: #171b2d; font-family: "Metropolis", "Segoe UI
 .logic-theory__truth-table th { color: #49617e; background: #f1f6fb; font-size: 12px; font-weight: 750; }
 .logic-theory__truth-table td { color: #263d5a; font-size: 14px; font-weight: 650; }
 .logic-theory__truth-table tr:last-child td { border-bottom: 0; }
+.logic-theory__truth-table th[scope="row"] { color: #315b72; background: #f8fbfe; text-align: left; }
+.logic-theory__table-wrap { overflow-x: auto; border: 1px solid #d6e1ee; border-radius: 11px; background: #fff; scrollbar-color: #9bb2cd #edf3f9; }
+.logic-theory__law-table { min-width: 690px; }
+.logic-theory__law-wrap { overflow-x: auto; border: 1px solid #d6e1ee; border-radius: 13px; background: #fff; }
+.logic-theory__family-table { min-width: 790px; }
+.logic-theory__family-table th, .logic-theory__family-table td { text-align: left; vertical-align: top; }
+.logic-theory__family-table-wrap { overflow-x: auto; }
+.logic-theory__notation-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 11px; }
+.logic-theory__notation-grid > div { display: grid; gap: 7px; align-content: start; padding: 14px; border: 1px solid #d8e4f1; border-radius: 12px; background: #fff; }
+.logic-theory__notation-grid strong { color: #1d326b; font-size: 14px; }
+.logic-theory__notation-grid span, .logic-theory__notation-grid em { color: #526780; font-size: 13px; font-style: normal; line-height: 1.6; }
+.logic-theory__notation-grid em { color: #315b94; font-weight: 650; }
+.logic-theory__highlight { display: grid; gap: 9px; padding: 17px; border-left: 4px solid #315b94; border-radius: 5px 12px 12px 5px; background: #edf5fc; }
+.logic-theory__highlight > strong { color: #1d326b; font-size: 14px; }
+.logic-theory__highlight > div { display: flex; flex-wrap: wrap; gap: 9px; }
+.logic-theory__highlight > div span { padding: 8px 11px; color: #1e4f82; border: 1px solid #d3e2f1; border-radius: 8px; background: #fff; font-family: "Cambria Math", Georgia, serif; font-size: 16px; font-weight: 700; }
+.logic-theory__highlight p { margin: 0; color: #536b84; font-size: 13px; line-height: 1.65; }
+.logic-theory__precedence { display: grid; gap: 5px; padding: 15px 17px; border: 1px solid #dce6f0; border-radius: 11px; background: #fff; }
+.logic-theory__precedence strong { color: #1d326b; font-size: 13px; }
+.logic-theory__precedence span { color: #315b94; font-size: 15px; font-weight: 750; }
+.logic-theory__precedence small { color: #657991; font-size: 12px; line-height: 1.6; }
+.logic-theory__worked-identity { display: grid; gap: 9px; padding: 16px 18px; border: 1px solid #d8e4f1; border-radius: 12px; background: linear-gradient(145deg, #f8fbff, #f0f5fb); }
+.logic-theory__worked-identity > strong { color: #1d326b; font-family: "Cambria Math", Georgia, serif; font-size: 20px; }
+.logic-theory__worked-identity ol { display: grid; gap: 5px; margin: 0; padding-left: 20px; color: #526780; font-size: 13px; line-height: 1.65; }
+.logic-theory__steps { display: grid; gap: 9px; margin: 0; padding: 0; list-style: none; counter-reset: steps; }
+.logic-theory__steps li { position: relative; padding: 11px 13px 11px 43px; color: #526780; border: 1px solid #e0e8f1; border-radius: 10px; background: #fff; font-size: 14px; line-height: 1.55; counter-increment: steps; }
+.logic-theory__steps li::before { position: absolute; top: 10px; left: 12px; color: #315b94; content: counter(steps, decimal-leading-zero); font-size: 11px; font-weight: 800; }
+.logic-theory__steps strong { color: #1d326b; }
+.logic-theory__worked-example { display: grid; gap: 12px; padding: 16px; border: 1px solid #d8e4f1; border-radius: 14px; background: #fff; }
+.logic-theory__example-heading h5 { margin: 5px 0 4px; color: #1d326b; font-size: 18px; }
+.logic-theory__example-heading p { margin: 0; color: #637790; font-size: 13px; line-height: 1.6; }
+.logic-theory__example-check { padding: 12px 14px; color: #405a79; border: 1px solid #d4e2f1; border-radius: 10px; background: #f2f7fc; font-size: 14px; line-height: 1.6; }
+.logic-theory__example-check strong { color: #1d326b; }
+.logic-theory__canonical-note { padding: 12px 14px; color: #526780; border: 1px solid #d8e4f1; border-radius: 10px; background: #fff; font-size: 13px; line-height: 1.7; }
+.logic-theory__canonical-note strong { color: #1d326b; }
+.logic-theory__kmap { display: grid; gap: 12px; padding: 16px; border: 1px solid #d8e4f1; border-radius: 14px; background: #f8fbfe; scroll-margin-top: 80px; }
+.logic-theory__kmap-wrap { width: min(100%, 560px); margin: 0 auto; overflow-x: auto; border: 1px solid #d6e1ee; border-radius: 11px; background: #fff; }
+.logic-theory__kmap-table { min-width: 430px; }
+.logic-theory__kmap-table th:first-child { min-width: 90px; }
+.logic-theory__kmap-group { color: #fff !important; background: #315b94 !important; }
+.logic-theory__kmap-steps { display: grid; gap: 5px; margin: 0; padding-left: 20px; color: #526780; font-size: 13px; line-height: 1.65; }
+.logic-theory__forms-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+.logic-theory__universal-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 13px; }
+.logic-theory__universal-card { display: grid; gap: 9px; padding: 17px; border: 1px solid #d8e4f1; border-radius: 13px; background: linear-gradient(145deg, #fff, #f6f9fd); }
+.logic-theory__universal-card > div { display: grid; gap: 4px; padding-top: 9px; border-top: 1px solid #e7edf4; }
+.logic-theory__universal-card > div strong { color: #315b94; font-size: 11px; letter-spacing: .06em; text-transform: uppercase; }
+.logic-theory__universal-card code { color: #233d61; font-family: "Cambria Math", Georgia, serif; font-size: 14px; line-height: 1.5; white-space: normal; }
+.logic-theory__bubble-note { margin: 0; padding: 12px 14px; color: #526780; border-left: 3px solid #5786b7; background: #f1f6fb; font-size: 13px; line-height: 1.65; }
+.logic-theory__bubble-note strong { color: #1d326b; }
 .logic-theory__implementation { display: grid; gap: 8px; padding: 13px 15px; border-left: 3px solid #5786b7; border-radius: 4px 10px 10px 4px; background: #f1f6fb; }
 .logic-theory__implementation-flow { display: flex; align-items: center; justify-content: flex-start; gap: 8px; }
 .logic-theory__flow-item { display: flex; align-items: center; gap: 8px; }
@@ -1317,6 +1373,44 @@ body { background: #eaeaea; color: #171b2d; font-family: "Metropolis", "Segoe UI
 .logic-theory__family-notes { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; }
 .logic-theory__family-notes p { margin: 0; padding: 13px; color: #516780; border-left: 3px solid #5786b7; border-radius: 4px 10px 10px 4px; background: #f4f8fc; font-size: 13px; line-height: 1.65; }
 .logic-theory__family-notes strong { color: #1d326b; }
+.logic-theory__family-detail-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 11px; }
+.logic-theory__family-detail-grid > div { display: grid; align-content: start; gap: 8px; padding: 15px; border: 1px solid #d8e4f1; border-radius: 12px; background: #fff; }
+.logic-theory__family-detail-grid p { margin: 0; color: #526780; font-size: 13px; line-height: 1.7; }
+.logic-theory__electrical { display: grid; gap: 14px; margin-top: 10px; padding: 17px; border: 1px solid #d8e4f1; border-radius: 14px; background: #f8fbfe; }
+.logic-theory__electrical .logic-theory__section-heading h4 { font-size: 21px; }
+.logic-theory__voltage-grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 9px; }
+.logic-theory__voltage-grid > div { display: grid; align-content: start; gap: 5px; padding: 11px; border: 1px solid #d8e4f1; border-radius: 10px; background: #fff; }
+.logic-theory__voltage-grid strong { color: #1d326b; font-size: 14px; }
+.logic-theory__voltage-grid span { color: #657991; font-size: 11px; line-height: 1.5; }
+.logic-theory__margin-formulas { display: grid; gap: 7px; padding: 13px 15px; border-left: 3px solid #315b94; border-radius: 4px 10px 10px 4px; background: #edf5fc; }
+.logic-theory__margin-formulas > strong { color: #1d326b; font-size: 14px; }
+.logic-theory__margin-formulas > span { color: #315b72; font-family: "Cambria Math", Georgia, serif; font-size: 14px; }
+.logic-theory__margin-formulas p { margin: 0; color: #637790; font-size: 12px; line-height: 1.6; }
+.logic-theory__characteristic-list { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 9px; }
+.logic-theory__characteristic-list p { margin: 0; padding: 11px; color: #526780; border: 1px solid #e0e8f1; border-radius: 9px; background: #fff; font-size: 12px; line-height: 1.6; }
+.logic-theory__characteristic-list strong { color: #1d326b; }
+.logic-theory__logic-convention, .logic-theory__part-example { margin: 0; padding: 12px 14px; color: #526780; border-radius: 9px; background: #fff; font-size: 12px; line-height: 1.65; }
+.logic-theory__logic-convention strong, .logic-theory__part-example strong { color: #1d326b; }
+.logic-theory__method-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
+.logic-theory__method-grid > div { display: grid; align-content: start; gap: 7px; padding: 15px; border: 1px solid #d8e4f1; border-radius: 12px; background: #fff; }
+.logic-theory__method-grid > div > span { color: #5786b7; font-size: 11px; font-weight: 800; letter-spacing: .09em; }
+.logic-theory__method-grid > div > strong { color: #1d326b; font-size: 15px; }
+.logic-theory__method-grid ol { display: grid; gap: 5px; margin: 0; padding-left: 18px; color: #526780; font-size: 12px; line-height: 1.6; }
+.logic-theory__worked-proof p { margin: 0; color: #526780; font-size: 13px; line-height: 1.7; }
+.logic-theory__common-errors { padding: 16px 18px; border: 1px solid #e2dcbf; border-left: 4px solid #b19038; border-radius: 5px 12px 12px 5px; background: #fffdf4; }
+.logic-theory__common-errors .eyebrow { color: #967323; }
+.logic-theory__common-errors ul { display: grid; gap: 7px; margin: 11px 0 0; padding-left: 18px; color: #655e4c; font-size: 13px; line-height: 1.6; }
+.logic-theory__common-errors strong { color: #47402f; }
+.logic-theory__self-check { border: 1px solid #d8e4f1; border-radius: 11px; background: #fff; }
+.logic-theory__self-check summary { padding: 13px 15px; color: #315b94; font-size: 14px; font-weight: 750; cursor: pointer; }
+.logic-theory__self-check > div { display: grid; gap: 7px; padding: 0 15px 13px; }
+.logic-theory__self-check p { margin: 0; color: #526780; font-size: 13px; line-height: 1.65; }
+.logic-theory__self-check strong { color: #1d326b; }
+.logic-theory__takeaways { scroll-margin-top: 80px; }
+.logic-theory__takeaways strong { color: #1d326b; }
+.logic-theory__takeaways .eyebrow { color: #315b94; }
+.logic-theory__takeaways ul { display: grid; gap: 10px; margin: 12px 0 0; padding-left: 20px; color: #465c78; font-size: 14px; line-height: 1.7; }
+.logic-theory__family-detail-grid { scroll-margin-top: 80px; }
 .logic-theory__takeaways { padding: 19px 21px; border: 1px solid #cbdced; border-left: 4px solid #315b94; border-radius: 12px; background: #eff5fb; }
 .logic-theory__takeaways .eyebrow { color: #315b94; }
 .logic-theory__takeaways ul { display: grid; gap: 10px; margin: 12px 0 0; padding-left: 20px; color: #465c78; font-size: 14px; line-height: 1.7; }
@@ -1718,20 +1812,29 @@ html[data-reduce-motion="true"] *, html[data-reduce-motion="true"] *::before, ht
 @media (max-width: 900px) {
   .logic-theory__gate-layout { grid-template-columns: minmax(150px, .7fr) minmax(220px, 1.3fr); }
   .logic-theory__family-notes { grid-template-columns: 1fr; }
+  .logic-theory__family-detail-grid { grid-template-columns: 1fr; }
+  .logic-theory__voltage-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .logic-theory__characteristic-list { grid-template-columns: 1fr; }
 }
 @media (max-width: 640px) {
   .logic-theory__intro > p, .logic-theory__body-copy { font-size: 15px; }
+  .logic-theory__contents { top: 3px; gap: 3px; padding: 6px; }
+  .logic-theory__contents > span { font-size: 8px; }
+  .logic-theory__contents a { padding: 6px 7px; font-size: 10px; }
   .logic-theory__principle { align-items: flex-start; padding: 15px; }
   .logic-theory__principle-icon { flex-basis: 49px; width: 49px; height: 49px; border-radius: 13px; }
   .logic-theory__principle p { font-size: 14px; }
+  .logic-theory__notation-grid, .logic-theory__forms-grid, .logic-theory__universal-grid, .logic-theory__method-grid { grid-template-columns: 1fr; }
   .logic-theory__section-heading { align-items: flex-start; flex-direction: column; }
   .logic-theory__section-heading > p { text-align: left; }
   .logic-theory__gate-layout { grid-template-columns: 1fr; }
   .logic-theory__symbol-card { min-height: 145px; }
+  .logic-theory__law-table { min-width: 600px; }
   .logic-theory__implementation-flow { align-items: stretch; flex-direction: column; }
   .logic-theory__flow-item { align-items: center; }
   .logic-theory__flow-item > i { transform: rotate(90deg); }
   .logic-theory__flow-item > strong { flex: 1; }
+  .logic-theory__voltage-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .logic-theory__family-diagram { padding: 12px; }
   .logic-theory__family-row { grid-template-columns: 42px minmax(0, 1fr); gap: 6px 9px; }
   .logic-theory__family-row > span { grid-column: 2; text-align: left; }

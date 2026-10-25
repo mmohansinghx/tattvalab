@@ -7,11 +7,11 @@ import type { PlannedExperiment } from "@/lib/planned-experiments";
 import { LogicGatesTheory } from "@/components/logic-gates-theory";
 import { LogicGatesPretest } from "@/components/logic-gates-pretest";
 
-const stages = ["Aim", "Theory", "Theory Test", "Procedure", "Simulation", "Posttest", "References", "Feedback", "Report"] as const;
+const stages = ["Aim", "Theory", "Theory Test", "Procedure", "Simulation", "Final Test", "References", "Feedback", "Report"] as const;
 
 export function PlannedExperimentPage({ experiment, moduleNumber, initialSection = "Aim" }: { experiment: PlannedExperiment; moduleNumber: number; initialSection?: string }) {
   const normalizedSection = initialSection.toLowerCase().replace(/[\s_-]/g, "");
-  const requestedSection = normalizedSection === "pretest" ? "theorytest" : normalizedSection;
+  const requestedSection = normalizedSection === "pretest" ? "theorytest" : normalizedSection === "posttest" ? "finaltest" : normalizedSection;
   const requestedIndex = stages.findIndex((item) => item.toLowerCase().replace(/[\s_-]/g, "") === requestedSection);
   const [stepIndex, setStepIndex] = useState(requestedIndex < 0 ? 0 : requestedIndex);
   const stage = stages[stepIndex];

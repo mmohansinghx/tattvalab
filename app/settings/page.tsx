@@ -11,7 +11,7 @@ export default function SettingsPage() {
       <div className="container">
         <div className="breadcrumbs"><Link href="/"><ArrowLeft size={14} /> Home</Link><span>/</span><span>Settings</span></div>
         <header className="settings-page__heading">
-          <span className="eyebrow">TATTVA LAB · VIRTUAL LAB</span>
+          <span className="eyebrow">TATTVA LAB · TLAB</span>
           <h1>Settings<span>.</span></h1>
           <p>Adjust the way TattvaLab looks and moves in this browser.</p>
         </header>

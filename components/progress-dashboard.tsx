@@ -15,7 +15,7 @@ export function ProgressDashboard({ compact = false }: { compact?: boolean }) {
     if (!record) return [];
     return [
       record.preTestScore === null ? null : { name: experiment.title.replace(" explorer", ""), stage: "Theory Test", score: record.preTestScore },
-      record.postTestScore === null ? null : { name: experiment.title.replace(" explorer", ""), stage: "Post-test", score: record.postTestScore },
+      record.postTestScore === null ? null : { name: experiment.title.replace(" explorer", ""), stage: "Final Test", score: record.postTestScore },
     ].filter((item): item is { name: string; stage: string; score: number } => item !== null);
   }), [progress]);
   if (compact) {

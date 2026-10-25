@@ -15,7 +15,7 @@ Open `http://localhost:3000`.
 
 ## Learning flow
 
-Each module has direct navigation through Aim, Theory, Pre-test, Procedure, Simulation, Post-test, References, Feedback, and Report. Theory uses original, introductory explanations with key points, examples, and diagrams. Interactive simulations are planned and can be added to the Simulation step later.
+Each module has direct navigation through Aim, Theory, Theory Test, Procedure, Simulation, Final Test, References, Feedback, and Report. Theory uses original, introductory explanations with key points, examples, and diagrams. Interactive simulations are planned and can be added to the Simulation step later.
 
 The ten Digital Electronics modules are:
 

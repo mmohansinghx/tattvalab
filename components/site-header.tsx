@@ -10,8 +10,8 @@ export function SiteHeader() {
   const pathname = usePathname();
   const [open, setOpen] = useState(false);
   const navItems = pathname === "/"
-    ? [{ href: "/labs", label: "Virtual Lab" }, { href: "/#about", label: "About TattvaLab" }]
-    : [{ href: "/labs", label: "Virtual Lab" }, { href: "/progress", label: "My progress" }];
+    ? [{ href: "/labs", label: "TLab" }, { href: "/#about", label: "About TattvaLab" }]
+    : [{ href: "/labs", label: "TLab" }, { href: "/progress", label: "My progress" }];
   return (
     <header className="site-header">
       <div className="container site-header__inner">

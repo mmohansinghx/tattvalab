@@ -6,7 +6,7 @@ App Router project, design tokens, brand mark, shared navigation/footer, homepag
 
 ## Milestone 2 — Learning workflow (complete)
 
-Reusable VLab-style Aim, theory, pretest, procedure, deterministic simulation, posttest, references, feedback, printable report, and local progress architecture.
+Reusable TLab Aim, Theory, Theory Test, Procedure, deterministic Simulation, Final Test, References, Feedback, printable Report, and local progress architecture.
 
 ## Milestone 3 — Validation and handoff (in progress)
 

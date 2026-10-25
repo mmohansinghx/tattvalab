@@ -7,7 +7,7 @@ import { ArrowRight, BookOpen, Check, GraduationCap } from "lucide-react";
 const levels = [
   { id: "class-11", title: "Class 11", detail: "School level", status: "Coming soon", Icon: BookOpen },
   { id: "class-12", title: "Class 12", detail: "School level", status: "Coming soon", Icon: BookOpen },
-  { id: "graduation", title: "Graduation", detail: "Undergraduate", status: "Virtual lab available", Icon: GraduationCap },
+  { id: "graduation", title: "Graduation", detail: "Undergraduate", status: "TLab available", Icon: GraduationCap },
 ] as const;
 
 type LevelId = (typeof levels)[number]["id"];
@@ -22,7 +22,7 @@ export function HomeLevelSelector() {
       <div className="home-levels__heading">
         <span className="eyebrow">CHOOSE YOUR LEARNING LEVEL</span>
         <h2 id="home-levels-title">Start at the right level.</h2>
-        <p>Select a level to see the TattvaLab virtual learning options.</p>
+        <p>Select a level to see the TLab options.</p>
       </div>
 
       <div className="home-level-grid" role="group" aria-label="Choose a study level">
@@ -37,8 +37,8 @@ export function HomeLevelSelector() {
       </div>
 
       <div className="home-levels__response" aria-live="polite">
-        <div><span>{isAvailable ? "AVAILABLE NOW" : "COMING SOON"}</span><p>{isAvailable ? "Graduation virtual lab is available in TattvaLab." : `${selected.title} virtual lab content will be added later.`}</p></div>
-        <Link className="button button--primary" href="/labs">{isAvailable ? "Enter virtual lab" : "Open current virtual lab"} <ArrowRight size={16} /></Link>
+        <div><span>{isAvailable ? "AVAILABLE NOW" : "COMING SOON"}</span><p>{isAvailable ? "Graduation TLab content is available now." : `${selected.title} TLab content will be added later.`}</p></div>
+        <Link className="button button--primary" href="/labs">{isAvailable ? "Enter TLab" : "Open current TLab"} <ArrowRight size={16} /></Link>
       </div>
     </section>
   );

@@ -2,7 +2,7 @@
 
 ## Goal
 
-Provide a dependable and approachable virtual-lab website foundation for engineering students. The MVP demonstrates the learning loop and supports later integration of course-specific material.
+Provide a dependable and approachable TLab foundation for engineering students. The MVP demonstrates the learning loop and supports later integration of course-specific material.
 
 ## Users and needs
 
@@ -15,7 +15,7 @@ Provide a dependable and approachable virtual-lab website foundation for enginee
 - Homepage, catalogue, three subject collections, reusable experiment route, progress dashboard.
 - Search, subject/difficulty filters, sorting, and empty state.
 - Three labelled sample models: Boolean gates, Ohm’s law for an ideal resistor, and one-dimensional constant acceleration.
-- VLab-style Aim, Theory, Pretest, Procedure, Simulation, Posttest, References, Feedback, and printable Report stages. Every stage can be opened directly.
+- TLab Aim, Theory, Theory Test, Procedure, Simulation, Final Test, References, Feedback, and printable Report stages. Every stage can be opened directly.
 - Anonymous progress stored locally in the browser.
 - Responsive design, keyboard operation, reduced motion, and accessible labels.
 

@@ -6,7 +6,7 @@ Home → Explore labs → search/filter/sort → select a labelled sample module
 
 ## Complete a learning loop
 
-Aim → Theory → Pretest → Procedure → Simulation → Posttest → References → Feedback → Report. Every section is directly selectable from the stage navigation. Assessment steps require all displayed questions to be answered and submitted before continuing. Completion is recorded after the submitted Posttest when the learner continues.
+Aim → Theory → Theory Test → Procedure → Simulation → Final Test → References → Feedback → Report. Every section is directly selectable from the stage navigation. The Theory Test can be submitted at any time; unanswered questions count as zero marks.
 
 ## Browse a subject
 

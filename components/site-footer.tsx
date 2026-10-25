@@ -13,7 +13,7 @@ export function SiteFooter() {
         </div>
         <div className="site-footer__links">
           <div><span className="footer-label">TattvaLab</span><Link href="/#about">About TattvaLab</Link></div>
-          <div><span className="footer-label">Virtual lab</span><Link href="/labs">Explore the virtual lab</Link></div>
+          <div><span className="footer-label">TLab</span><Link href="/labs">Explore TLab</Link></div>
         </div>
         <Link className="footer-top-link" href="/labs">Enter TattvaLab <ArrowUpRight size={15} /></Link>
       </div>

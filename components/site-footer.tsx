@@ -8,18 +8,18 @@ export function SiteFooter() {
       <div className="container site-footer__main">
         <div className="site-footer__brand">
           <BrandMark />
-          <p>Understand. Experiment. Discover.</p>
-          <span>Digital Electronics, explained clearly.</span>
+          <p>Understand. Explore. Discover.</p>
+          <span>TattvaLab · Virtual learning, made clear.</span>
         </div>
         <div className="site-footer__links">
-          <div><span className="footer-label">Explore</span><Link href="/labs">All experiments</Link><Link href="/progress">My progress</Link></div>
-          <div><span className="footer-label">Subject</span><Link href="/labs/digital-electronics">Digital Electronics</Link></div>
+          <div><span className="footer-label">TattvaLab</span><Link href="/#about">About TattvaLab</Link></div>
+          <div><span className="footer-label">Virtual lab</span><Link href="/labs">Explore the virtual lab</Link></div>
         </div>
-        <Link className="footer-top-link" href="/labs">Find your next experiment <ArrowUpRight size={15} /></Link>
+        <Link className="footer-top-link" href="/labs">Enter TattvaLab <ArrowUpRight size={15} /></Link>
       </div>
       <div className="container site-footer__bottom">
         <span>© TattvaLab</span>
-        <span>Independent learning resource. Not an official university record or endorsement.</span>
+        <span>An independent space for virtual learning.</span>
       </div>
     </footer>
   );

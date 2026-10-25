@@ -6,14 +6,12 @@ import { useState } from "react";
 import { ArrowUpRight, Menu, X } from "lucide-react";
 import { BrandMark } from "@/components/brand-mark";
 
-const navItems = [
-  { href: "/labs/digital-electronics", label: "Experiments" },
-  { href: "/progress", label: "My progress" },
-];
-
 export function SiteHeader() {
   const pathname = usePathname();
   const [open, setOpen] = useState(false);
+  const navItems = pathname === "/"
+    ? [{ href: "/labs", label: "Virtual Lab" }, { href: "/#about", label: "About TattvaLab" }]
+    : [{ href: "/labs", label: "Virtual Lab" }, { href: "/progress", label: "My progress" }];
   return (
     <header className="site-header">
       <div className="container site-header__inner">
@@ -28,8 +26,8 @@ export function SiteHeader() {
               {item.label}
             </Link>;
           })}
-          <Link className="button button--small button--primary site-nav__cta" href="/labs/digital-electronics" onClick={() => setOpen(false)}>
-            Start learning <ArrowUpRight size={15} aria-hidden="true" />
+          <Link className="button button--small button--primary site-nav__cta" href="/labs" onClick={() => setOpen(false)}>
+            Enter TattvaLab <ArrowUpRight size={15} aria-hidden="true" />
           </Link>
         </nav>
       </div>
